@@ -1,0 +1,42 @@
+{
+  "robotWidth": 0.857,
+  "robotLength": 0.857,
+  "holonomicMode": true,
+  "pathFolders": [
+    "Center Auto",
+    "Left Auto",
+    "Right Auto"
+  ],
+  "autoFolders": [
+    "Center Auto",
+    "Left Auto",
+    "Right Auto"
+  ],
+  "defaultMaxVel": 3.5,
+  "defaultMaxAccel": 3.0,
+  "defaultMaxAngVel": 430.0,
+  "defaultMaxAngAccel": 320.0,
+  "defaultNominalVoltage": 12.0,
+  "robotMass": 62.596,
+  "robotMOI": 6.883,
+  "robotTrackwidth": 0.546,
+  "driveWheelRadius": 0.051,
+  "driveGearing": 6.746,
+  "maxDriveSpeed": 4.9,
+  "driveMotorType": "krakenX60",
+  "driveCurrentLimit": 40.0,
+  "wheelCOF": 2.2,
+  "flModuleX": 0.279,
+  "flModuleY": 0.279,
+  "frModuleX": 0.279,
+  "frModuleY": -0.279,
+  "blModuleX": -0.279,
+  "blModuleY": 0.279,
+  "brModuleX": -0.279,
+  "brModuleY": -0.279,
+  "bumperOffsetX": 0.0,
+  "bumperOffsetY": 0.0,
+  "robotFeatures": [
+    "{\"name\":\"Intake,Hopper\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.54,\"y\":0.0},\"size\":{\"width\":0.7,\"length\":0.22},\"borderRadius\":0.0,\"strokeWidth\":0.02,\"filled\":true}}"
+  ]
+}
