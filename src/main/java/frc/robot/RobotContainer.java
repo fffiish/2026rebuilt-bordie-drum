@@ -24,11 +24,27 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.commands.RobotSuperstructure;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.VisionConstants;
+import frc.robot.constants.indexer.IndexerConstants;
+import frc.robot.constants.intake.IntakeConstants;
+import frc.robot.constants.shooter.ShooterConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.lib.LoggedInterpolatingTableManager;
 import frc.robot.lib.alliancecolor.AllianceChecker;
 import frc.robot.lib.controller.Joysticks;
 import frc.robot.lib.sim.CurrentDrawCalculatorSim;
+import frc.robot.lib.subsystem.angular.AngularIO;
+import frc.robot.lib.subsystem.angular.AngularIOSim;
+import frc.robot.lib.subsystem.angular.AngularIOSparkFlex;
+import frc.robot.lib.subsystem.angular.AngularSubsystem;
+import frc.robot.lib.subsystem.linear.LinearIO;
+import frc.robot.lib.subsystem.linear.LinearIOSim;
+import frc.robot.lib.subsystem.linear.LinearIOSparkFlex;
+import frc.robot.lib.subsystem.linear.LinearSubsystem;
+import frc.robot.lib.subsystem.sensor.canrange.CANRangeIO;
+import frc.robot.lib.subsystem.sensor.canrange.CANRangeIOCANRange;
+import frc.robot.lib.subsystem.sensor.canrange.CANRangeSubsystem;
+import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystem;
+import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystemConfig;
 import frc.robot.subsystems.SuperstructureVisualizer;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -36,6 +52,11 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.IndexerState;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterState;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
@@ -76,9 +97,9 @@ public class RobotContainer {
   private final Drive drive;
   private final Vision vision;
 
-  // TODO(template) 1/4: declare your mechanism subsystems here, e.g.
-  // private final Intake intake;
-  // private final Shooter shooter;
+  private final Intake intake;
+  private final Indexer indexer;
+  private final Shooter shooter;
 
   private final RobotSuperstructure superstructure;
 
@@ -142,24 +163,47 @@ public class RobotContainer {
                   drive::addVisionMeasurement,
                   aimed,
                   new VisionIOLimelight(camera0Name, drive::getRotation),
-                  new VisionIOLimelight(camera1Name, drive::getRotation),
-                  new VisionIOLimelight(camera2Name, drive::getRotation),
-                  new VisionIOLimelight(camera3Name, drive::getRotation));
+                  new VisionIOLimelight(camera1Name, drive::getRotation));
         } else {
           vision = new Vision(drive::addVisionMeasurement, aimed, new VisionIO() {});
         }
 
-        // TODO(template) 2/4: construct mechanism subsystems here, e.g.
-        // if (Constants.intakeHardwareExists) {
-        //   intake =
-        //       new Intake(
-        //           new AngularSubsystem(
-        //               new AngularIOTalonFX(RollerConstants.kTalonFXConfig),
-        //               RollerConstants.kSubsystemConfigReal),
-        //           ...);
-        // } else {
-        //   intake = new Intake(); // blank-IO constructor
-        // }
+        if (Constants.intakeHardwareExists) {
+          intake =
+              new Intake(
+                  new AngularSubsystem(
+                      new AngularIOSparkFlex(IntakeConstants.kPivotSparkFlexConfig),
+                      IntakeConstants.kPivotSubsystemConfigReal),
+                  new AngularSubsystem(
+                      new AngularIOSparkFlex(IntakeConstants.kRollerSparkFlexConfig),
+                      IntakeConstants.kRollerSubsystemConfigReal));
+        } else {
+          intake = blankIntake();
+        }
+
+        if (Constants.indexerHardwareExists) {
+          indexer =
+              buildIndexer(
+                  new AngularSubsystem(
+                      new AngularIOSparkFlex(IndexerConstants.kSparkFlexConfig),
+                      IndexerConstants.kSubsystemConfigReal),
+                  new CANRangeIOCANRange(IndexerConstants.kCANRangeIOConfig));
+        } else {
+          indexer = blankIndexer();
+        }
+
+        if (Constants.shooterHardwareExists) {
+          shooter =
+              new Shooter(
+                  new AngularSubsystem(
+                      new AngularIOSparkFlex(ShooterConstants.kFlywheelSparkFlexConfig),
+                      ShooterConstants.kFlywheelSubsystemConfigReal),
+                  new LinearSubsystem(
+                      new LinearIOSparkFlex(ShooterConstants.kHoodSparkFlexConfig),
+                      ShooterConstants.kHoodSubsystemConfigReal));
+        } else {
+          shooter = blankShooter();
+        }
         break;
 
       case SIM:
@@ -176,17 +220,32 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 aimed,
                 new VisionIOPhotonVisionSim(camera0Name, robotToCamera0, drive::getPose),
-                new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose),
-                new VisionIOPhotonVisionSim(camera2Name, robotToCamera2, drive::getPose),
-                new VisionIOPhotonVisionSim(camera3Name, robotToCamera3, drive::getPose));
+                new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose));
 
-        // TODO(template) 3/4: construct mechanism subsystems with *IOSim implementations, e.g.
-        // intake =
-        //     new Intake(
-        //         new AngularSubsystem(
-        //             new AngularIOSim(RollerConstants.kSimConfig, currentDrawCalculatorSim),
-        //             RollerConstants.kSubsystemConfigSim),
-        //         ...);
+        intake =
+            new Intake(
+                new AngularSubsystem(
+                    new AngularIOSim(IntakeConstants.kPivotSimConfig, currentDrawCalculatorSim),
+                    IntakeConstants.kPivotSubsystemConfigSim),
+                new AngularSubsystem(
+                    new AngularIOSim(IntakeConstants.kRollerSimConfig, currentDrawCalculatorSim),
+                    IntakeConstants.kRollerSubsystemConfigSim));
+
+        indexer =
+            buildIndexer(
+                new AngularSubsystem(
+                    new AngularIOSim(IndexerConstants.kSimConfig, currentDrawCalculatorSim),
+                    IndexerConstants.kSubsystemConfigSim),
+                new CANRangeIO() {});
+
+        shooter =
+            new Shooter(
+                new AngularSubsystem(
+                    new AngularIOSim(ShooterConstants.kFlywheelSimConfig, currentDrawCalculatorSim),
+                    ShooterConstants.kFlywheelSubsystemConfigSim),
+                new LinearSubsystem(
+                    new LinearIOSim(ShooterConstants.kHoodSimConfig, currentDrawCalculatorSim),
+                    ShooterConstants.kHoodSubsystemConfigSim));
         break;
 
       default:
@@ -200,12 +259,13 @@ public class RobotContainer {
                 new ModuleIO() {});
         vision = new Vision(drive::addVisionMeasurement, aimed, new VisionIO() {});
 
-        // TODO(template) 4/4: construct blank-IO mechanism subsystems here so replay is
-        // deterministic, e.g. intake = new Intake();
+        intake = blankIntake();
+        indexer = blankIndexer();
+        shooter = blankShooter();
         break;
     }
 
-    superstructure = new RobotSuperstructure();
+    superstructure = new RobotSuperstructure(intake, indexer, shooter);
     superstructure.registerAutoCommands();
 
     // TODO(template): as subsystems appear, pass their getMeasuredState/getTargetState suppliers
@@ -284,15 +344,26 @@ public class RobotContainer {
                     * superstructure.getDriveMultiplier(false, driverController.rightTrigger),
             drive::getPose));
 
-    // TODO(template): bind your mechanism subsystems here.
-    //
-    // The house style is a state machine per subsystem: each subsystem owns a *State class and
-    // exposes `set(State)` as a command factory. Bindings should read as
-    //     driverController.leftTrigger.whileTrue(intake.set(IntakeState.kIntaking));
-    // rather than poking motors directly. See docs/lib-subsystem.md.
-    //
-    // `operatorController` is unused until then; controls are conventionally split as
-    // driver = drivetrain + intake, operator = scoring mechanisms.
+    /* DRIVER: intake
+    - Left trigger: deploy and intake FUEL (arm + indexer together)
+    - Left bumper: eject / unjam
+     */
+    driverController.leftTrigger.whileTrue(superstructure.intakeFuel());
+    driverController.leftBumper.whileTrue(superstructure.unjam());
+
+    /* OPERATOR: scoring
+    - Right trigger: spin up and fire once flywheel and hood are both in tolerance
+    - Right bumper: spin up only, no feed (pre-spin while driving to a shot)
+    - B: run the indexer backwards to clear a jam at the throat
+    - Y: gentle eject through the shooter
+     */
+    operatorController.rightTrigger.whileTrue(superstructure.shoot());
+    operatorController.rightBumper.whileTrue(shooter.set(ShooterState.kShooting));
+    operatorController.buttonB.whileTrue(indexer.set(IndexerState.kUnjamming));
+    operatorController.buttonY.whileTrue(shooter.set(ShooterState.kEjecting));
+
+    // Rumble the driver when a ball reaches the throat, so they know to stop chasing it.
+    indexer.staged().onTrue(driverController.rumble.rumble(0.5, 0.25));
   }
 
   private void logInit() {
@@ -325,5 +396,46 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  // -------------------------------------------------------------------------
+  // Blank-IO builders. `new AngularIO() {}` is a complete no-op implementation, so these give a
+  // fully functional subsystem that simply never moves. Used by REPLAY (so logs replay
+  // deterministically) and by the REAL branch when a Constants.*HardwareExists flag is false, which
+  // is how the rest of the robot runs on a partially-assembled chassis.
+  // -------------------------------------------------------------------------
+
+  private static Intake blankIntake() {
+    return new Intake(
+        new AngularSubsystem(new AngularIO() {}, IntakeConstants.kPivotSubsystemConfigReal),
+        new AngularSubsystem(new AngularIO() {}, IntakeConstants.kRollerSubsystemConfigReal));
+  }
+
+  private static Indexer blankIndexer() {
+    return buildIndexer(
+        new AngularSubsystem(new AngularIO() {}, IndexerConstants.kSubsystemConfigReal),
+        new CANRangeIO() {});
+  }
+
+  private static Shooter blankShooter() {
+    return new Shooter(
+        new AngularSubsystem(new AngularIO() {}, ShooterConstants.kFlywheelSubsystemConfigReal),
+        new LinearSubsystem(new LinearIO() {}, ShooterConstants.kHoodSubsystemConfigReal));
+  }
+
+  /**
+   * The jam detector derives from the indexer rollers' own logged current, so the rollers must
+   * exist before the sensor can be built — hence one builder shared by all three runtime modes.
+   */
+  private static Indexer buildIndexer(AngularSubsystem rollers, CANRangeIO canRangeIO) {
+    return new Indexer(
+        rollers,
+        new CANRangeSubsystem(canRangeIO, IndexerConstants.kCANRangeSubsystemConfig),
+        new CurrentSensorSubsystem(
+            CurrentSensorSubsystemConfig.fromAngularSubsystem(
+                rollers,
+                IndexerConstants.kJamCurrentThreshold,
+                IndexerConstants.kJamDebounce,
+                "IndexerJam")));
   }
 }

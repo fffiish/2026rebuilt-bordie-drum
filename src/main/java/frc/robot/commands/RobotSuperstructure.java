@@ -2,28 +2,60 @@ package frc.robot.commands;
 
 import static edu.wpi.first.wpilibj2.command.Commands.*;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.DriveConstants;
 import frc.robot.lib.command.CachedTrigger;
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.IndexerState;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeState;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterState;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Cross-subsystem coordination. Individual subsystems own their own state machines; anything that
  * requires two or more of them to agree lives here.
- *
- * <p>TEMPLATE NOTE: reduced to drive-only. This class takes no subsystems today — add them as
- * constructor parameters as you build them, and update the {@code new RobotSuperstructure()} call
- * in {@link frc.robot.RobotContainer}.
  */
 public class RobotSuperstructure {
+  private final Intake intake;
+  private final Indexer indexer;
+  private final Shooter shooter;
 
-  // TODO(template): take your subsystems as constructor parameters, e.g.
-  //   private final Intake intake;
-  //   public RobotSuperstructure(Intake intake) { this.intake = intake; }
-  public RobotSuperstructure() {}
+  public RobotSuperstructure(Intake intake, Indexer indexer, Shooter shooter) {
+    this.intake = intake;
+    this.indexer = indexer;
+    this.shooter = shooter;
+  }
+
+  /**
+   * Deploy the arm and run both the feeder rollers and the indexer, so FUEL is pulled off the floor
+   * and staged at the shooter throat in one motion. Runs until cancelled.
+   */
+  public Command intakeFuel() {
+    return intake.set(IntakeState.kIntaking).alongWith(indexer.set(IndexerState.kIntaking));
+  }
+
+  /**
+   * Spin the flywheel up and extend the hood, then start feeding once <em>both</em> are in
+   * tolerance. Holding the feed off until {@link Shooter#readyToFire()} is what stops the first
+   * ball of a burst from going short.
+   */
+  public Command shoot() {
+    return shooter
+        .set(ShooterState.kShooting)
+        .alongWith(
+            Commands.waitUntil(shooter.readyToFire()).andThen(indexer.set(IndexerState.kFeeding)));
+  }
+
+  /** Reverse everything — clears a jam in the passive hopper. Runs until cancelled. */
+  public Command unjam() {
+    return indexer.set(IndexerState.kUnjamming).alongWith(intake.set(IntakeState.kEjecting));
+  }
 
   /**
    * Registers everything PathPlanner/Choreo autos can reference by name. Called once from {@link
@@ -31,29 +63,22 @@ public class RobotSuperstructure {
    * the deploy directory, so every name an {@code .auto} file mentions must be registered by the
    * time this returns.
    *
-   * <p>Two mechanisms are available:
-   *
-   * <ul>
-   *   <li>{@code NamedCommands.registerCommand(name, command)} — a command the auto runs as a step.
-   *       Wrap it in {@code .asProxy()} when it requires a subsystem the path command does not, so
-   *       the scheduler does not cancel the path.
-   *   <li>{@link #zoneTrigger(String, String)} — a start/stop event pair that stays true for a
-   *       region of the path, for things that should run <em>while</em> driving.
-   * </ul>
+   * <p>Each command is {@code .asProxy()}-wrapped because it requires subsystems the path-following
+   * command does not — without the proxy the scheduler cancels the path.
    */
   public void registerAutoCommands() {
-    // TODO(template): register auto commands, e.g.
-    //   NamedCommands.registerCommand("Shoot", shooter.shoot().asProxy());
-    //   zoneTrigger("IntakeStart", "IntakeStop").whileTrue(intake.set(IntakeState.kIntaking));
+    NamedCommands.registerCommand("Intake", intakeFuel().asProxy());
+    NamedCommands.registerCommand("Shoot", shoot().withTimeout(3.0).asProxy());
+    NamedCommands.registerCommand("StowIntake", intake.setPersistent(IntakeState.kStowed));
+    NamedCommands.registerCommand("SpinUp", shooter.setPersistent(ShooterState.kShooting));
+
+    // Run the intake for a whole region of a path rather than at a single point.
+    zoneTrigger("IntakeStart", "IntakeStop").whileTrue(intakeFuel().asProxy());
   }
 
   /**
    * Scales driver joystick input. Called three times per loop by the default drive command — twice
    * for translation (x and y) and once for rotation — so it must be cheap and side-effect free.
-   *
-   * <p>TEMPLATE NOTE: currently just turbo vs. base speed. The season version also slowed the robot
-   * while shooting and while intaking; add those terms back here once those subsystems exist, by
-   * reading their target state rather than by tracking extra booleans.
    *
    * @param rotation true when scaling the rotation axis (rad/s), false for translation (m/s)
    * @param turbo held to unlock full speed
@@ -68,12 +93,17 @@ public class RobotSuperstructure {
   /**
    * A single command that exercises every mechanism through its range of motion, bound to an auto
    * so it can be run from the driver station during pit checks.
-   *
-   * <p>TEMPLATE NOTE: empty. Add one step per mechanism as you build it — each step should be
-   * short, {@code .withTimeout(...)}-bounded, and {@code .asProxy()}-wrapped.
    */
   public Command fullRobotCheck() {
-    return sequence().asProxy();
+    return sequence(
+            intake.set(IntakeState.kDeployed).withTimeout(1.5),
+            intake.set(IntakeState.kIntaking).withTimeout(1.0),
+            intake.set(IntakeState.kStowed).withTimeout(1.5),
+            indexer.set(IndexerState.kFeeding).withTimeout(1.0),
+            indexer.set(IndexerState.kUnjamming).withTimeout(1.0),
+            shooter.set(ShooterState.kShooting).withTimeout(2.5),
+            shooter.set(ShooterState.kIdle).withTimeout(0.5))
+        .asProxy();
   }
 
   /**

@@ -34,6 +34,9 @@ public final class Constants {
   // skipping over looking for hardware that doesn't exist.
   public static boolean driveHardwareExists = true;
   public static boolean visionHardwareExists = true;
+  public static boolean intakeHardwareExists = true;
+  public static boolean indexerHardwareExists = true;
+  public static boolean shooterHardwareExists = true;
   // TODO(template): add one flag per mechanism subsystem as you build it, and gate its REAL-branch
   // construction in RobotContainer on the flag. Flipping one to false substitutes the blank-IO
   // constructor, which lets you run the rest of the robot on a partially-assembled chassis.
