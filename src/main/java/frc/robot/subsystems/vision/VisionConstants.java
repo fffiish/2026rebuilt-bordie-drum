@@ -19,18 +19,21 @@ public class VisionConstants {
       AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
   // Camera names, must match names configured on coprocessor
-  public static String camera0Name = "limelight-zero";
-  public static String camera1Name = "limelight-one";
+  public static String camera0Name = "limelight-zero"; // LL4, forward
+  public static String camera1Name = "limelight-one"; // LL3, aft
 
   // Robot to camera transforms
   // (Not used by Limelight, configure in web UI instead)
   // Forward, left, up (so just multiply LL right by -1)
+  // TODO(bringup): placeholders. These were a rear-facing symmetric pair on another robot; this
+  // robot has an LL4 forward and an LL3 aft. Measure from robot centre to each lens (metres,
+  // forward/left/up) plus pitch and yaw. Wrong values here make MegaTag fight odometry, which
+  // shows up as the pose jumping and gets misdiagnosed as a vision or network fault.
   public static Transform3d robotToCamera0 =
-      new Transform3d(
-          -0.28, -0.309, 0.223, new Rotation3d(0.0, Math.toRadians(18.6), Math.toRadians(-65)));
+      new Transform3d(0.0, 0.0, 0.2, new Rotation3d(0.0, Math.toRadians(0.0), Math.toRadians(0.0)));
   public static Transform3d robotToCamera1 =
       new Transform3d(
-          -0.28, 0.309, 0.223, new Rotation3d(0.0, Math.toRadians(18.6), Math.toRadians(65)));
+          0.0, 0.0, 0.2, new Rotation3d(0.0, Math.toRadians(0.0), Math.toRadians(180.0)));
 
   // Basic filtering thresholds
   public static LoggedTunableNumber maxAmbiguity =

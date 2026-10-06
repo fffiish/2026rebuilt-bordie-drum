@@ -11,9 +11,9 @@ import frc.robot.lib.subsystem.angular.AngularSubsystem;
  * Pivoting arm carrying the feeder rollers.
  *
  * <p>This is a {@link VirtualSubsystem}: it owns no hardware itself, it owns a target {@link
- * IntakeState} and lets the pivot's and rollers' <em>default commands</em> track it through
- * suppliers. The two {@link AngularSubsystem}s stay separate scheduler resources, so a command that
- * needs only the rollers does not block the pivot.
+ * IntakeState} and lets each mechanism's <em>default command</em> track it through suppliers. The
+ * three {@link AngularSubsystem}s stay separate scheduler resources, so a command that needs only
+ * the rollers does not block the pivot.
  *
  * <p>{@link #set} requires this virtual subsystem, which is what arbitrates between two bindings
  * both wanting a state.
@@ -22,16 +22,21 @@ public class Intake extends VirtualSubsystem {
   private static final IntakeState kDefaultState = IntakeState.kStowed;
 
   private final AngularSubsystem pivot;
-  private final AngularSubsystem rollers;
+  private final AngularSubsystem intakeRollers;
+  private final AngularSubsystem feederRollers;
 
   private IntakeState targetState = kDefaultState;
 
-  public Intake(AngularSubsystem pivot, AngularSubsystem rollers) {
+  public Intake(
+      AngularSubsystem pivot, AngularSubsystem intakeRollers, AngularSubsystem feederRollers) {
     this.pivot = pivot;
-    this.rollers = rollers;
+    this.intakeRollers = intakeRollers;
+    this.feederRollers = feederRollers;
 
     pivot.setDefaultCommand(pivot.holdAtGoal(() -> targetState.getPivotAngle()));
-    rollers.setDefaultCommand(rollers.velocity(() -> targetState.getRollerVelocity()));
+    intakeRollers.setDefaultCommand(
+        intakeRollers.velocity(() -> targetState.getIntakeRollerVelocity()));
+    feederRollers.setDefaultCommand(feederRollers.velocity(() -> targetState.getFeederVelocity()));
   }
 
   /**

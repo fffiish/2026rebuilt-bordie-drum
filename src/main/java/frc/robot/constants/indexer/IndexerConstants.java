@@ -25,7 +25,10 @@ public final class IndexerConstants {
 
   // --------------------------------------------------------------- rollers
 
-  public static final int kMotorId = 19; // TODO(bringup): real CAN id
+  // ASSUMPTION(grouping): the two remaining "Shooter" ids drive the compliant-wheel row at the
+  // bottom of the shooter stack — one motor at each end, as the render shows.
+  public static final int kMasterId = 36; // confirmed: "Shooter #36"
+  public static final int kFollowerId = 22; // confirmed: "Shooter #22"
 
   public static final AngularVelocity kFeeding = RotationsPerSecond.of(45.0); // TODO(bringup)
   public static final AngularVelocity kIntaking = RotationsPerSecond.of(25.0); // TODO(bringup)
@@ -33,7 +36,9 @@ public final class IndexerConstants {
 
   public static final AngularIOSparkFlexConfig kSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
-          .masterId(kMotorId)
+          .masterId(kMasterId)
+          .followerId(kFollowerId)
+          .opposeMaster(true) // TODO(bringup): ends face opposite ways
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
@@ -43,8 +48,8 @@ public final class IndexerConstants {
 
   public static final AngularIOSimConfig kSimConfig =
       AngularIOSimConfig.builder()
-          .motor(DCMotor.getNeoVortex(1)) // NEO Vortex, confirmed from CAD
-          .numMotors(1)
+          .motor(DCMotor.getNeoVortex(2)) // NEO Vortex, confirmed from CAD
+          .numMotors(2)
           .moi(KilogramSquareMeters.of(0.003)) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0)
           .supplyCurrentLimit(Amps.of(40))

@@ -33,7 +33,7 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
 public class SuperstructureVisualizer extends VirtualSubsystem {
   private static final double PADDING =
       22.0; // inches, so mechanisms outside the frame stay visible
-  private static final double FRAME_WIDTH = 27.0; // inches
+  private static final double FRAME_WIDTH = 27.0; // inches TODO(bringup): your frame
 
   private final LoggedMechanism2d mechanism =
       new LoggedMechanism2d(

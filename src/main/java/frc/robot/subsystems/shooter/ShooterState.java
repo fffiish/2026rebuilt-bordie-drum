@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Distance;
 import frc.robot.constants.shooter.ShooterConstants;
 
 /**
@@ -13,27 +12,30 @@ import frc.robot.constants.shooter.ShooterConstants;
  */
 public enum ShooterState {
   /** Everything off, hood stowed. */
-  kIdle(ShooterConstants.kFlywheelIdle, ShooterConstants.kHoodStowed),
+  kIdle(ShooterConstants.kFlywheelIdle, HoodState.kNear),
 
   /** Flywheel at speed, hood at the shooting position. */
-  kShooting(ShooterConstants.kFlywheelShooting, ShooterConstants.kHoodShooting),
+  kShootingNear(ShooterConstants.kFlywheelShooting, HoodState.kNear),
+
+  /** Same flywheel speed, hood pulled forward — the long-range preset. */
+  kShootingFar(ShooterConstants.kFlywheelShootingFar, HoodState.kFar),
 
   /** Gentle forward — dump FUEL without launching it across the field. */
-  kEjecting(ShooterConstants.kFlywheelEjecting, ShooterConstants.kHoodStowed);
+  kEjecting(ShooterConstants.kFlywheelEjecting, HoodState.kNear);
 
   private final AngularVelocity flywheelVelocity;
-  private final Distance hoodLength;
+  private final HoodState hoodState;
 
-  ShooterState(AngularVelocity flywheelVelocity, Distance hoodLength) {
+  ShooterState(AngularVelocity flywheelVelocity, HoodState hoodState) {
     this.flywheelVelocity = flywheelVelocity;
-    this.hoodLength = hoodLength;
+    this.hoodState = hoodState;
   }
 
   public AngularVelocity getFlywheelVelocity() {
     return flywheelVelocity;
   }
 
-  public Distance getHoodLength() {
-    return hoodLength;
+  public HoodState getHoodState() {
+    return hoodState;
   }
 }

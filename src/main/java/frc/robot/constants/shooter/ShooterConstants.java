@@ -8,9 +8,6 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.lib.subsystem.angular.AngularIOSimConfig;
 import frc.robot.lib.subsystem.angular.AngularIOSparkFlexConfig;
 import frc.robot.lib.subsystem.angular.AngularSubsystemConfig;
-import frc.robot.lib.subsystem.linear.LinearIOSimConfig;
-import frc.robot.lib.subsystem.linear.LinearIOSparkFlexConfig;
-import frc.robot.lib.subsystem.linear.LinearSubsystemConfig;
 
 /**
  * Configs for the shooter: a two-motor flywheel plus a linear-actuator hood.
@@ -28,19 +25,26 @@ public final class ShooterConstants {
 
   // -------------------------------------------------------------- flywheel
 
-  public static final int kFlywheelMasterId = 21; // TODO(bringup): real CAN id
-  public static final int kFlywheelFollowerId = 23; // TODO(bringup): real CAN id
+  // Confirmed: all four run in unison on the one 3" drum, so a single leader with three followers.
+  public static final int kFlywheelMasterId = 39; // confirmed: "Shooter #39"
+  public static final int kFlywheelFollowerIdA = 34; // confirmed: "Shooter #24: 34"
+  public static final int kFlywheelFollowerIdB = 26; // confirmed: "Shooter #26"
+  public static final int kFlywheelFollowerIdC = 29; // confirmed: "Shooter #29"
 
   public static final AngularVelocity kFlywheelIdle = RotationsPerSecond.of(0.0);
   public static final AngularVelocity kFlywheelShooting =
-      RotationsPerSecond.of(80.0); // TODO(bringup)
+      RotationsPerSecond.of(80.0); // TODO(bringup): speed for the near hood preset
+  public static final AngularVelocity kFlywheelShootingFar =
+      RotationsPerSecond.of(95.0); // TODO(bringup): speed for the far hood preset
   public static final AngularVelocity kFlywheelEjecting =
       RotationsPerSecond.of(20.0); // TODO(bringup)
 
   public static final AngularIOSparkFlexConfig kFlywheelSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
           .masterId(kFlywheelMasterId)
-          .followerId(kFlywheelFollowerId)
+          .followerId(kFlywheelFollowerIdA)
+          .followerId(kFlywheelFollowerIdB)
+          .followerId(kFlywheelFollowerIdC)
           .opposeMaster(false) // TODO(bringup): true if the two wheels face each other
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
@@ -51,8 +55,8 @@ public final class ShooterConstants {
 
   public static final AngularIOSimConfig kFlywheelSimConfig =
       AngularIOSimConfig.builder()
-          .motor(DCMotor.getNeoVortex(2)) // NEO Vortex, confirmed from CAD
-          .numMotors(2)
+          .motor(DCMotor.getNeoVortex(4)) // NEO Vortex, confirmed from CAD
+          .numMotors(4)
           .moi(KilogramSquareMeters.of(0.012)) // TODO(bringup): real flywheel inertia matters here
           .motorRotationsPerOutputRotations(1.0)
           .supplyCurrentLimit(Amps.of(60))
@@ -77,65 +81,24 @@ public final class ShooterConstants {
 
   // ------------------------------------------------------------------ hood
 
-  public static final int kHoodMotorId = 24; // TODO(bringup): real CAN id
+  /**
+   * Worst-case time for the pair of 12 V actuators to travel between the two hood positions. {@link
+   * frc.robot.subsystems.shooter.Hood} has no position feedback, so this timer is the only thing
+   * standing between "commanded" and "actually there" — measure it on the real mechanism and round
+   * up. Too short and the first shot of a burst leaves before the hood has settled.
+   */
+  public static final Time kHoodTravelTime = Seconds.of(0.5); // TODO(bringup): measure
 
-  /** Fully retracted — the hard stop the actuator homes against. */
-  public static final Distance kHoodRetracted = Inches.of(0.0); // TODO(bringup)
+  /**
+   * Voltage applied to drive the actuators. They stop themselves at the built-in limit switches.
+   */
+  public static final Voltage kHoodDriveVoltage = Volts.of(12.0);
 
-  /** Fully extended. */
-  public static final Distance kHoodExtended = Inches.of(6.0); // TODO(bringup)
+  /** How close to an end point counts as arrived, in normalised travel (0.0-1.0). */
+  public static final double kHoodPositionTolerance = 0.05; // TODO(bringup)
 
-  public static final Distance kHoodStowed = kHoodRetracted;
-  public static final Distance kHoodShooting = Inches.of(3.0); // TODO(bringup)
+  /** Potentiometer voltage at each hard stop — calibrate by driving to the ends and reading. */
+  public static final double kHoodSensorVoltsRetracted = 0.2; // TODO(bringup): measure
 
-  public static final LinearIOSparkFlexConfig kHoodSparkFlexConfig =
-      LinearIOSparkFlexConfig.builder()
-          .masterId(kHoodMotorId)
-          .inverted(false) // TODO(bringup)
-          .motorRotationsPerOutputRotations(25.0) // TODO(bringup): real leadscrew reduction
-          .outputDistancePerOutputRotation(Inches.of(0.25)) // TODO(bringup): leadscrew pitch
-          .smartCurrentLimit(Amps.of(30))
-          .secondaryCurrentLimit(Amps.of(60))
-          .softMinLength(kHoodRetracted)
-          .softMaxLength(kHoodExtended)
-          .resetLength(kHoodRetracted)
-          .cruiseVelocity(InchesPerSecond.of(4.0)) // TODO(bringup)
-          .acceleration(InchesPerSecond.per(Second).of(12.0)) // TODO(bringup)
-          .build();
-
-  public static final LinearIOSimConfig kHoodSimConfig =
-      LinearIOSimConfig.builder()
-          .motor(DCMotor.getNeoVortex(1)) // NEO Vortex, confirmed from CAD
-          .numMotors(1)
-          .carriageMass(Pounds.of(4.0)) // TODO(bringup)
-          .motorRotationsPerOutputRotations(25.0)
-          .outputDistancePerOutputRotation(Inches.of(0.25))
-          .physicalMinLength(kHoodRetracted)
-          .physicalMaxLength(kHoodExtended)
-          .resetLength(kHoodRetracted)
-          .supplyCurrentLimit(Amps.of(30))
-          .statorCurrentLimit(Amps.of(60))
-          .kP(30.0) // TODO(bringup): sim-only starting gain
-          .cruiseVelocity(InchesPerSecond.of(4.0))
-          .acceleration(InchesPerSecond.per(Second).of(12.0))
-          .build();
-
-  public static final LinearSubsystemConfig kHoodSubsystemConfigReal =
-      LinearSubsystemConfig.builder()
-          .logKey("ShooterHood")
-          .bus(RobotConstants.kRioBus)
-          .positionTolerance(Inches.of(0.15))
-          .cruiseVelocity(InchesPerSecond.of(4.0))
-          .acceleration(InchesPerSecond.per(Second).of(12.0))
-          .build(); // TODO(bringup): tune kP/kD/kG
-
-  public static final LinearSubsystemConfig kHoodSubsystemConfigSim =
-      LinearSubsystemConfig.builder()
-          .logKey("ShooterHood")
-          .bus(RobotConstants.kRioBus)
-          .positionTolerance(Inches.of(0.15))
-          .kP(30.0)
-          .cruiseVelocity(InchesPerSecond.of(4.0))
-          .acceleration(InchesPerSecond.per(Second).of(12.0))
-          .build();
+  public static final double kHoodSensorVoltsExtended = 4.8; // TODO(bringup): measure
 }

@@ -24,7 +24,7 @@ public final class IntakeConstants {
 
   // ---------------------------------------------------------------- pivot
 
-  public static final int kPivotMotorId = 16; // TODO(bringup): real CAN id
+  public static final int kPivotMotorId = 21; // confirmed: "Intake pivot"
 
   /** Stowed, inside the frame perimeter. */
   public static final Angle kPivotStowed = Degrees.of(95.0); // TODO(bringup)
@@ -90,22 +90,22 @@ public final class IntakeConstants {
           .acceleration(RotationsPerSecondPerSecond.of(2.0))
           .build();
 
-  // -------------------------------------------------------------- rollers
+  // ------------------------------------------------- feeder rollers (on the arm)
 
-  /** Two motors on the arm, mechanically linked, so one subsystem with a follower. */
-  public static final int kRollerMasterId = 28; // confirmed: "Feeder #28"
+  /** The Feeder assembly: two motors on the arm that lift FUEL from the intake into the hopper. */
+  public static final int kFeederMasterId = 28; // confirmed: "Feeder #28"
 
-  public static final int kRollerFollowerId = 35; // confirmed: "Feeder #35"
+  public static final int kFeederFollowerId = 35; // confirmed: "Feeder #35"
 
-  public static final AngularVelocity kRollerIntaking =
+  public static final AngularVelocity kFeederIntaking =
       RotationsPerSecond.of(50.0); // TODO(bringup)
-  public static final AngularVelocity kRollerEjecting =
+  public static final AngularVelocity kFeederEjecting =
       RotationsPerSecond.of(-40.0); // TODO(bringup)
 
-  public static final AngularIOSparkFlexConfig kRollerSparkFlexConfig =
+  public static final AngularIOSparkFlexConfig kFeederSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
-          .masterId(kRollerMasterId)
-          .followerId(kRollerFollowerId)
+          .masterId(kFeederMasterId)
+          .followerId(kFeederFollowerId)
           .opposeMaster(false) // TODO(bringup): true if the second motor faces the other way
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
@@ -114,7 +114,7 @@ public final class IntakeConstants {
           .secondaryCurrentLimit(Amps.of(80))
           .build();
 
-  public static final AngularIOSimConfig kRollerSimConfig =
+  public static final AngularIOSimConfig kFeederSimConfig =
       AngularIOSimConfig.builder()
           .motor(DCMotor.getNeoVortex(2)) // NEO Vortex, confirmed from CAD
           .numMotors(2)
@@ -125,14 +125,64 @@ public final class IntakeConstants {
           .kV(0.12) // TODO(bringup)
           .build();
 
-  public static final AngularSubsystemConfig kRollerSubsystemConfigReal =
+  public static final AngularSubsystemConfig kFeederSubsystemConfigReal =
       AngularSubsystemConfig.builder()
-          .logKey("IntakeRollers")
+          .logKey("Feeder")
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
           .build(); // TODO(bringup): tune kS/kV/kP against the real rollers
 
-  public static final AngularSubsystemConfig kRollerSubsystemConfigSim =
+  public static final AngularSubsystemConfig kFeederSubsystemConfigSim =
+      AngularSubsystemConfig.builder()
+          .logKey("Feeder")
+          .bus(RobotConstants.kRioBus)
+          .velocityTolerance(RotationsPerSecond.of(5.0))
+          .kV(0.12)
+          .build();
+
+  // ---------------------------------------------------- intake rollers (floor pickup)
+
+  /** The Intake assembly's own roller pair, left and right, driven in unison. */
+  public static final int kIntakeRollerMasterId = 2; // confirmed: "Intake left"
+
+  public static final int kIntakeRollerFollowerId = 37; // confirmed: "Intake right"
+
+  public static final AngularVelocity kIntakeRollerIntaking =
+      RotationsPerSecond.of(50.0); // TODO(bringup)
+  public static final AngularVelocity kIntakeRollerEjecting =
+      RotationsPerSecond.of(-40.0); // TODO(bringup)
+
+  public static final AngularIOSparkFlexConfig kIntakeRollerSparkFlexConfig =
+      AngularIOSparkFlexConfig.builder()
+          .masterId(kIntakeRollerMasterId)
+          .followerId(kIntakeRollerFollowerId)
+          .opposeMaster(true) // TODO(bringup): left and right face opposite ways
+          .inverted(false) // TODO(bringup)
+          .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
+          .outputAnglePerOutputRotation(Rotations.of(1.0))
+          .smartCurrentLimit(Amps.of(40))
+          .secondaryCurrentLimit(Amps.of(80))
+          .build();
+
+  public static final AngularIOSimConfig kIntakeRollerSimConfig =
+      AngularIOSimConfig.builder()
+          .motor(DCMotor.getNeoVortex(2)) // NEO Vortex, confirmed from CAD
+          .numMotors(2)
+          .moi(KilogramSquareMeters.of(0.004)) // TODO(bringup)
+          .motorRotationsPerOutputRotations(1.0)
+          .supplyCurrentLimit(Amps.of(40))
+          .statorCurrentLimit(Amps.of(80))
+          .kV(0.12) // TODO(bringup)
+          .build();
+
+  public static final AngularSubsystemConfig kIntakeRollerSubsystemConfigReal =
+      AngularSubsystemConfig.builder()
+          .logKey("IntakeRollers")
+          .bus(RobotConstants.kRioBus)
+          .velocityTolerance(RotationsPerSecond.of(5.0))
+          .build(); // TODO(bringup): tune kS/kV/kP
+
+  public static final AngularSubsystemConfig kIntakeRollerSubsystemConfigSim =
       AngularSubsystemConfig.builder()
           .logKey("IntakeRollers")
           .bus(RobotConstants.kRioBus)

@@ -47,13 +47,16 @@ public class RobotSuperstructure {
    */
   public Command shoot() {
     return shooter
-        .set(ShooterState.kShooting)
+        .set(ShooterState.kShootingNear)
         .alongWith(
             Commands.waitUntil(shooter.readyToFire()).andThen(indexer.set(IndexerState.kFeeding)));
   }
 
-  /** Reverse everything — clears a jam in the passive hopper. Runs until cancelled. */
-  public Command unjam() {
+  /**
+   * Reverse the intake and the indexer — spits FUEL back out, and doubles as jam clearing since the
+   * hopper is passive and the indexer is the only thing that can break up a pile.
+   */
+  public Command outtake() {
     return indexer.set(IndexerState.kUnjamming).alongWith(intake.set(IntakeState.kEjecting));
   }
 
@@ -70,7 +73,7 @@ public class RobotSuperstructure {
     NamedCommands.registerCommand("Intake", intakeFuel().asProxy());
     NamedCommands.registerCommand("Shoot", shoot().withTimeout(3.0).asProxy());
     NamedCommands.registerCommand("StowIntake", intake.setPersistent(IntakeState.kStowed));
-    NamedCommands.registerCommand("SpinUp", shooter.setPersistent(ShooterState.kShooting));
+    NamedCommands.registerCommand("SpinUp", shooter.setPersistent(ShooterState.kShootingNear));
 
     // Run the intake for a whole region of a path rather than at a single point.
     zoneTrigger("IntakeStart", "IntakeStop").whileTrue(intakeFuel().asProxy());
@@ -85,9 +88,9 @@ public class RobotSuperstructure {
    */
   public double getDriveMultiplier(boolean rotation, Trigger turbo) {
     if (turbo.getAsBoolean()) {
-      return rotation ? DriveConstants.MAX_SPEED_W : DriveConstants.MAX_SPEED.get();
+      return rotation ? DriveConstants.maxSpeedW() : DriveConstants.MAX_SPEED.get();
     }
-    return rotation ? DriveConstants.TRANSFER_SPEED_W : DriveConstants.TRANSFER_SPEED.get();
+    return rotation ? DriveConstants.transferSpeedW() : DriveConstants.TRANSFER_SPEED.get();
   }
 
   /**
@@ -101,7 +104,7 @@ public class RobotSuperstructure {
             intake.set(IntakeState.kStowed).withTimeout(1.5),
             indexer.set(IndexerState.kFeeding).withTimeout(1.0),
             indexer.set(IndexerState.kUnjamming).withTimeout(1.0),
-            shooter.set(ShooterState.kShooting).withTimeout(2.5),
+            shooter.set(ShooterState.kShootingNear).withTimeout(2.5),
             shooter.set(ShooterState.kIdle).withTimeout(0.5))
         .asProxy();
   }

@@ -36,10 +36,6 @@ import frc.robot.lib.subsystem.angular.AngularIO;
 import frc.robot.lib.subsystem.angular.AngularIOSim;
 import frc.robot.lib.subsystem.angular.AngularIOSparkFlex;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
-import frc.robot.lib.subsystem.linear.LinearIO;
-import frc.robot.lib.subsystem.linear.LinearIOSim;
-import frc.robot.lib.subsystem.linear.LinearIOSparkFlex;
-import frc.robot.lib.subsystem.linear.LinearSubsystem;
 import frc.robot.lib.subsystem.sensor.canrange.CANRangeIO;
 import frc.robot.lib.subsystem.sensor.canrange.CANRangeIOCANRange;
 import frc.robot.lib.subsystem.sensor.canrange.CANRangeSubsystem;
@@ -48,15 +44,15 @@ import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystemConfig
 import frc.robot.subsystems.SuperstructureVisualizer;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
-import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.indexer.IndexerState;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Hood;
+import frc.robot.subsystems.shooter.HoodIO;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.ShooterState;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
@@ -142,11 +138,11 @@ public class RobotContainer {
         if (Constants.driveHardwareExists) {
           drive =
               new Drive(
-                  new GyroIOPigeon2(),
-                  new ModuleIOTalonFX(TunerConstants.FrontLeft),
-                  new ModuleIOTalonFX(TunerConstants.FrontRight),
-                  new ModuleIOTalonFX(TunerConstants.BackLeft),
-                  new ModuleIOTalonFX(TunerConstants.BackRight));
+                  new GyroIONavX(),
+                  new ModuleIOSpark(TunerConstants.FrontLeft),
+                  new ModuleIOSpark(TunerConstants.FrontRight),
+                  new ModuleIOSpark(TunerConstants.BackLeft),
+                  new ModuleIOSpark(TunerConstants.BackRight));
         } else {
           drive =
               new Drive(
@@ -175,8 +171,11 @@ public class RobotContainer {
                       new AngularIOSparkFlex(IntakeConstants.kPivotSparkFlexConfig),
                       IntakeConstants.kPivotSubsystemConfigReal),
                   new AngularSubsystem(
-                      new AngularIOSparkFlex(IntakeConstants.kRollerSparkFlexConfig),
-                      IntakeConstants.kRollerSubsystemConfigReal));
+                      new AngularIOSparkFlex(IntakeConstants.kIntakeRollerSparkFlexConfig),
+                      IntakeConstants.kIntakeRollerSubsystemConfigReal),
+                  new AngularSubsystem(
+                      new AngularIOSparkFlex(IntakeConstants.kFeederSparkFlexConfig),
+                      IntakeConstants.kFeederSubsystemConfigReal));
         } else {
           intake = blankIntake();
         }
@@ -198,9 +197,7 @@ public class RobotContainer {
                   new AngularSubsystem(
                       new AngularIOSparkFlex(ShooterConstants.kFlywheelSparkFlexConfig),
                       ShooterConstants.kFlywheelSubsystemConfigReal),
-                  new LinearSubsystem(
-                      new LinearIOSparkFlex(ShooterConstants.kHoodSparkFlexConfig),
-                      ShooterConstants.kHoodSubsystemConfigReal));
+                  new Hood(new HoodIO() {})); // TODO(bringup): real HoodIO once wiring is set
         } else {
           shooter = blankShooter();
         }
@@ -228,8 +225,12 @@ public class RobotContainer {
                     new AngularIOSim(IntakeConstants.kPivotSimConfig, currentDrawCalculatorSim),
                     IntakeConstants.kPivotSubsystemConfigSim),
                 new AngularSubsystem(
-                    new AngularIOSim(IntakeConstants.kRollerSimConfig, currentDrawCalculatorSim),
-                    IntakeConstants.kRollerSubsystemConfigSim));
+                    new AngularIOSim(
+                        IntakeConstants.kIntakeRollerSimConfig, currentDrawCalculatorSim),
+                    IntakeConstants.kIntakeRollerSubsystemConfigSim),
+                new AngularSubsystem(
+                    new AngularIOSim(IntakeConstants.kFeederSimConfig, currentDrawCalculatorSim),
+                    IntakeConstants.kFeederSubsystemConfigSim));
 
         indexer =
             buildIndexer(
@@ -243,9 +244,7 @@ public class RobotContainer {
                 new AngularSubsystem(
                     new AngularIOSim(ShooterConstants.kFlywheelSimConfig, currentDrawCalculatorSim),
                     ShooterConstants.kFlywheelSubsystemConfigSim),
-                new LinearSubsystem(
-                    new LinearIOSim(ShooterConstants.kHoodSimConfig, currentDrawCalculatorSim),
-                    ShooterConstants.kHoodSubsystemConfigSim));
+                new Hood(new HoodIO() {}));
         break;
 
       default:
@@ -316,7 +315,7 @@ public class RobotContainer {
     - Left joystick: translate
     - Right joystick: turn
     - Hold X (real only): stop and move modules to X pattern to resist push
-    - Hold right trigger: turbo (see RobotSuperstructure#getDriveMultiplier)
+    - Hold left bumper: turbo (see RobotSuperstructure#getDriveMultiplier)
     - Hold A: dynamically align heading & X position with the trench, you control forward speed
      */
     drive.setDefaultCommand(
@@ -324,13 +323,13 @@ public class RobotContainer {
             drive,
             () ->
                 driverController.getLeftStickY()
-                    * superstructure.getDriveMultiplier(false, driverController.rightTrigger),
+                    * superstructure.getDriveMultiplier(false, driverController.leftBumper),
             () ->
                 -driverController.getLeftStickX()
-                    * superstructure.getDriveMultiplier(false, driverController.rightTrigger),
+                    * superstructure.getDriveMultiplier(false, driverController.leftBumper),
             () ->
                 -driverController.getRightStickX()
-                    * superstructure.getDriveMultiplier(true, driverController.rightTrigger)));
+                    * superstructure.getDriveMultiplier(true, driverController.leftBumper)));
 
     if (!sim) {
       driverController.buttonX.whileTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -341,26 +340,18 @@ public class RobotContainer {
             drive,
             () ->
                 driverController.getLeftStickY()
-                    * superstructure.getDriveMultiplier(false, driverController.rightTrigger),
+                    * superstructure.getDriveMultiplier(false, driverController.leftBumper),
             drive::getPose));
 
-    /* DRIVER: intake
-    - Left trigger: deploy and intake FUEL (arm + indexer together)
-    - Left bumper: eject / unjam
+    /* DRIVER (single-controller scheme)
+    - Left stick: translate            - Right stick: rotate
+    - Left trigger: intake             - Right trigger: spin up and shoot
+    - Right bumper: outtake            - Left bumper: turbo
+    - A: trench align                  - X (real robot only): X-lock the wheels
      */
     driverController.leftTrigger.whileTrue(superstructure.intakeFuel());
-    driverController.leftBumper.whileTrue(superstructure.unjam());
-
-    /* OPERATOR: scoring
-    - Right trigger: spin up and fire once flywheel and hood are both in tolerance
-    - Right bumper: spin up only, no feed (pre-spin while driving to a shot)
-    - B: run the indexer backwards to clear a jam at the throat
-    - Y: gentle eject through the shooter
-     */
-    operatorController.rightTrigger.whileTrue(superstructure.shoot());
-    operatorController.rightBumper.whileTrue(shooter.set(ShooterState.kShooting));
-    operatorController.buttonB.whileTrue(indexer.set(IndexerState.kUnjamming));
-    operatorController.buttonY.whileTrue(shooter.set(ShooterState.kEjecting));
+    driverController.rightTrigger.whileTrue(superstructure.shoot());
+    driverController.rightBumper.whileTrue(superstructure.outtake());
 
     // Rumble the driver when a ball reaches the throat, so they know to stop chasing it.
     indexer.staged().onTrue(driverController.rumble.rumble(0.5, 0.25));
@@ -408,7 +399,8 @@ public class RobotContainer {
   private static Intake blankIntake() {
     return new Intake(
         new AngularSubsystem(new AngularIO() {}, IntakeConstants.kPivotSubsystemConfigReal),
-        new AngularSubsystem(new AngularIO() {}, IntakeConstants.kRollerSubsystemConfigReal));
+        new AngularSubsystem(new AngularIO() {}, IntakeConstants.kIntakeRollerSubsystemConfigReal),
+        new AngularSubsystem(new AngularIO() {}, IntakeConstants.kFeederSubsystemConfigReal));
   }
 
   private static Indexer blankIndexer() {
@@ -420,7 +412,7 @@ public class RobotContainer {
   private static Shooter blankShooter() {
     return new Shooter(
         new AngularSubsystem(new AngularIO() {}, ShooterConstants.kFlywheelSubsystemConfigReal),
-        new LinearSubsystem(new LinearIO() {}, ShooterConstants.kHoodSubsystemConfigReal));
+        new Hood(new HoodIO() {}));
   }
 
   /**

@@ -1,33 +1,32 @@
 package frc.robot.subsystems.shooter;
 
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.lib.subsystem.VirtualSubsystem;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
-import frc.robot.lib.subsystem.linear.LinearSubsystem;
 
 /**
  * Two-motor flywheel plus a linear-actuator hood.
  *
- * <p>The hood is a {@link LinearSubsystem} tracked in inches of extension, not degrees of launch
- * angle — see {@link frc.robot.constants.shooter.ShooterConstants}.
+ * <p>The hood is a two-position actuator pair, not a continuously variable surface, so range within
+ * a hood position comes from flywheel RPM.
  */
 public class Shooter extends VirtualSubsystem {
   private static final ShooterState kDefaultState = ShooterState.kIdle;
 
   private final AngularSubsystem flywheel;
-  private final LinearSubsystem hood;
+  private final Hood hood;
 
   private ShooterState targetState = kDefaultState;
 
-  public Shooter(AngularSubsystem flywheel, LinearSubsystem hood) {
+  public Shooter(AngularSubsystem flywheel, Hood hood) {
     this.flywheel = flywheel;
     this.hood = hood;
 
     flywheel.setDefaultCommand(flywheel.velocity(() -> targetState.getFlywheelVelocity()));
-    hood.setDefaultCommand(hood.holdAtGoal(() -> targetState.getHoodLength()));
+    // The hood is a two-position actuator with no feedback, so it is pushed rather than tracked.
+    hood.setDefaultCommand(hood.run(() -> hood.setState(targetState.getHoodState())));
   }
 
   /** Holds {@code state} while scheduled, then falls back to idle. Bind with {@code whileTrue}. */
@@ -53,9 +52,12 @@ public class Shooter extends VirtualSubsystem {
     return flywheel.atAngle();
   }
 
-  /** Hood has reached its commanded extension. */
+  /**
+   * Hood is believed to have reached its commanded position. Timer-based, not measured — see {@link
+   * Hood}.
+   */
   public Trigger hoodAtTarget() {
-    return hood.atLength();
+    return hood.atPosition();
   }
 
   /** Both the flywheel and the hood are where the current state asks them to be. */
@@ -63,11 +65,7 @@ public class Shooter extends VirtualSubsystem {
     return atSpeed().and(hoodAtTarget());
   }
 
-  public Distance getMeasuredHoodLength() {
-    return hood.getLength();
-  }
-
-  public Distance getTargetHoodLength() {
-    return targetState.getHoodLength();
+  public HoodState getHoodState() {
+    return hood.getTargetState();
   }
 }

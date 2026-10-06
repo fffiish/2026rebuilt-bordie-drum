@@ -67,8 +67,10 @@ public class Drive extends SubsystemBase {
               Math.hypot(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)));
 
   // PathPlanner config constants
-  private static final double ROBOT_MASS_KG = 51.2559;
-  private static final double ROBOT_MOI = 5.8;
+  // TODO(bringup): placeholders. These feed PathPlanner's RobotConfig, so every auto path is
+  // planned against them. Weigh the robot with bumpers and battery; take MOI from the CAD.
+  private static final double ROBOT_MASS_KG = 55.0;
+  private static final double ROBOT_MOI = 6.0;
   private static final double WHEEL_COF = 1.2;
   private static final RobotConfig PP_CONFIG =
       new RobotConfig(
@@ -78,8 +80,7 @@ public class Drive extends SubsystemBase {
               TunerConstants.FrontLeft.WheelRadius,
               TunerConstants.kSpeedAt12Volts.in(MetersPerSecond),
               WHEEL_COF,
-              DCMotor.getKrakenX60Foc(1)
-                  .withReduction(TunerConstants.FrontLeft.DriveMotorGearRatio),
+              DCMotor.getNeoVortex(1).withReduction(TunerConstants.FrontLeft.DriveMotorGearRatio),
               TunerConstants.FrontLeft.SlipCurrent,
               1),
           getModuleTranslations());

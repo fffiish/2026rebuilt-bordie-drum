@@ -12,30 +12,45 @@ import frc.robot.constants.intake.IntakeConstants;
  */
 public enum IntakeState {
   /** Folded inside the frame perimeter, rollers off. Starting configuration. */
-  kStowed(IntakeConstants.kPivotStowed, RotationsPerSecond.of(0.0)),
+  kStowed(IntakeConstants.kPivotStowed, RotationsPerSecond.of(0.0), RotationsPerSecond.of(0.0)),
 
   /** Arm down, rollers off — for driving up to a ball before committing. */
-  kDeployed(IntakeConstants.kPivotDeployed, RotationsPerSecond.of(0.0)),
+  kDeployed(IntakeConstants.kPivotDeployed, RotationsPerSecond.of(0.0), RotationsPerSecond.of(0.0)),
 
   /** Arm down, rollers pulling FUEL in. */
-  kIntaking(IntakeConstants.kPivotDeployed, IntakeConstants.kRollerIntaking),
+  kIntaking(
+      IntakeConstants.kPivotDeployed,
+      IntakeConstants.kIntakeRollerIntaking,
+      IntakeConstants.kFeederIntaking),
 
   /** Arm down, rollers reversed — spit out a jam or a wrong ball. */
-  kEjecting(IntakeConstants.kPivotDeployed, IntakeConstants.kRollerEjecting);
+  kEjecting(
+      IntakeConstants.kPivotDeployed,
+      IntakeConstants.kIntakeRollerEjecting,
+      IntakeConstants.kFeederEjecting);
 
   private final Angle pivotAngle;
-  private final AngularVelocity rollerVelocity;
+  private final AngularVelocity intakeRollerVelocity;
+  private final AngularVelocity feederVelocity;
 
-  IntakeState(Angle pivotAngle, AngularVelocity rollerVelocity) {
+  IntakeState(
+      Angle pivotAngle, AngularVelocity intakeRollerVelocity, AngularVelocity feederVelocity) {
     this.pivotAngle = pivotAngle;
-    this.rollerVelocity = rollerVelocity;
+    this.intakeRollerVelocity = intakeRollerVelocity;
+    this.feederVelocity = feederVelocity;
   }
 
   public Angle getPivotAngle() {
     return pivotAngle;
   }
 
-  public AngularVelocity getRollerVelocity() {
-    return rollerVelocity;
+  /** The floor-pickup rollers on the Intake assembly (CAN 2 / 37). */
+  public AngularVelocity getIntakeRollerVelocity() {
+    return intakeRollerVelocity;
+  }
+
+  /** The Feeder assembly on the arm that lifts FUEL into the hopper (CAN 28 / 35). */
+  public AngularVelocity getFeederVelocity() {
+    return feederVelocity;
   }
 }
