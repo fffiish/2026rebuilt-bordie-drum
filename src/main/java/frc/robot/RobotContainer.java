@@ -52,6 +52,7 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Hood;
 import frc.robot.subsystems.shooter.HoodIO;
+import frc.robot.subsystems.shooter.HoodIORelay;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
@@ -197,7 +198,7 @@ public class RobotContainer {
                   new AngularSubsystem(
                       new AngularIOSparkFlex(ShooterConstants.kFlywheelSparkFlexConfig),
                       ShooterConstants.kFlywheelSubsystemConfigReal),
-                  new Hood(new HoodIO() {})); // TODO(bringup): real HoodIO once wiring is set
+                  new Hood(new HoodIORelay())); // swap to HoodIOPWM if wired to a PWM controller
         } else {
           shooter = blankShooter();
         }
@@ -267,13 +268,21 @@ public class RobotContainer {
     superstructure = new RobotSuperstructure(intake, indexer, shooter);
     superstructure.registerAutoCommands();
 
-    // TODO(template): as subsystems appear, pass their getMeasuredState/getTargetState suppliers
-    // into these two visualizers.
+    // Overlay these two in AdvantageScope: the gap between them is the tracking error.
     measuredSuperstructureState =
         new SuperstructureVisualizer(
-            drive::getPose, "Measured", RobotConstants.kMeasuredStateColor);
+            drive::getPose,
+            "Measured",
+            RobotConstants.kMeasuredStateColor,
+            intake::getMeasuredPivotAngle,
+            shooter::getHoodMeasuredTravel);
     targetSuperstructureState =
-        new SuperstructureVisualizer(drive::getPose, "Target", RobotConstants.kTargetStateColor);
+        new SuperstructureVisualizer(
+            drive::getPose,
+            "Target",
+            RobotConstants.kTargetStateColor,
+            intake::getTargetPivotAngle,
+            shooter::getHoodTargetTravel);
 
     // TODO(template): register any subsystem that implements AllianceUpdatedObserver, e.g.
     // allianceChecker.registerObservers(shooter, intake);

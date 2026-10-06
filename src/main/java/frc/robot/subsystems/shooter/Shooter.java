@@ -68,4 +68,14 @@ public class Shooter extends VirtualSubsystem {
   public HoodState getHoodState() {
     return hood.getTargetState();
   }
+
+  /** Measured hood travel, 0.0 retracted to 1.0 extended. Zero if the potentiometer is absent. */
+  public double getHoodMeasuredTravel() {
+    return hood.getPositionNormalized();
+  }
+
+  /** Where the current state wants the hood: 0.0 retracted, 1.0 extended. */
+  public double getHoodTargetTravel() {
+    return targetState.getHoodState().isExtended() ? 1.0 : 0.0;
+  }
 }

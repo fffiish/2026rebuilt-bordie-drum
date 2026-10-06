@@ -15,11 +15,9 @@ import org.littletonrobotics.junction.Logger;
  * That class exists for closed-loop position control against an encoder; a bare 12 V actuator has
  * no encoder and only two useful states, so a PID loop would have nothing to close around.
  *
- * <p><b>"At position" is a timer, not a measurement.</b> With no feedback, the only thing the code
- * knows is how long ago it commanded a change. {@link #atPosition()} reports true once {@link
- * ShooterConstants#kHoodTravelTime} has elapsed since the last change — so the constant must be the
- * <em>worst-case</em> travel time, measured on the real mechanism, not the typical one. Add limit
- * switches to {@link HoodIO} if you want this to be real.
+ * <p>The PA-14P's potentiometer makes {@link #atPosition()} a real measurement. The timer path
+ * survives only as a fallback for a disconnected sensor, so {@link
+ * ShooterConstants#kHoodTravelTime} still wants to be a worst-case number.
  */
 public class Hood extends RegisteredSubsystem {
   private final HoodIO io;
@@ -40,6 +38,7 @@ public class Hood extends RegisteredSubsystem {
     Logger.processInputs("Hood", inputs);
     Logger.recordOutput("Hood/TargetState", targetState.toString());
     Logger.recordOutput("Hood/AtPosition", isAtPosition());
+    Logger.recordOutput("Hood/UsingSensor", inputs.connected);
     Logger.recordOutput("Hood/UsingSensor", inputs.connected);
   }
 
@@ -63,10 +62,32 @@ public class Hood extends RegisteredSubsystem {
     return targetState;
   }
 
-  /** Estimated, not measured — see the class note. */
+  /**
+   * True once the hood has reached the position its state asks for.
+   *
+   * <p>Prefers the potentiometer: compares measured travel against the target end point within
+   * {@link ShooterConstants#kHoodPositionTolerance}. If the sensor reads disconnected it falls back
+   * to {@link ShooterConstants#kHoodTravelTime} elapsing, so a dead potentiometer costs accuracy
+   * rather than the use of the mechanism.
+   */
   public boolean isAtPosition() {
+    if (inputs.connected) {
+      double target = targetState.isExtended() ? 1.0 : 0.0;
+      return Math.abs(inputs.positionNormalized - target)
+          <= ShooterConstants.kHoodPositionTolerance;
+    }
     return sinceLastChange.hasElapsed(
         ShooterConstants.kHoodTravelTime.in(edu.wpi.first.units.Units.Seconds));
+  }
+
+  /** Measured travel, 0.0 retracted to 1.0 extended. Meaningless if the sensor is disconnected. */
+  public double getPositionNormalized() {
+    return inputs.positionNormalized;
+  }
+
+  /** False when the potentiometer is not reporting — atPosition() is then a timer, not a fact. */
+  public boolean isSensorConnected() {
+    return inputs.connected;
   }
 
   public Trigger atPosition() {

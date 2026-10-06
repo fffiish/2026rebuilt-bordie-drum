@@ -97,6 +97,30 @@ public final class ShooterConstants {
   /** How close to an end point counts as arrived, in normalised travel (0.0-1.0). */
   public static final double kHoodPositionTolerance = 0.05; // TODO(bringup)
 
+  // Both actuators are driven from PWM motor controllers on the roboRIO. The RIO's PWM header is
+  // signal only, so each channel drives a controller (REV Spark, Victor SP, Talon SR) whose output
+  // terminals carry 12 V to the actuator.
+  // Two wirings are implemented; RobotContainer picks one.
+  //   HoodIORelay — Spike or equivalent on the roboRIO RELAY header ("on/off", polarity only)
+  //   HoodIOPWM   — a PWM motor controller on the PWM header
+  public static final int kHoodLeftRelayChannel = 0; // TODO(bringup): real channel
+
+  public static final int kHoodRightRelayChannel = 1; // TODO(bringup): real channel
+
+  public static final int kHoodLeftPwmChannel = 0; // TODO(bringup): only if using HoodIOPWM
+  public static final int kHoodRightPwmChannel = 1; // TODO(bringup): only if using HoodIOPWM
+
+  /** PA-14P potentiometer wipers, on roboRIO analog inputs. */
+  public static final int kHoodLeftAnalogChannel = 0; // TODO(bringup): real channel
+
+  public static final int kHoodRightAnalogChannel = 1; // TODO(bringup): real channel
+
+  /**
+   * How far the two sides may disagree, in normalised travel, before the hood is treated as racked.
+   * Both actuators drive one surface, so a persistent split means one side is binding or stalled.
+   */
+  public static final double kHoodSideDisagreement = 0.15; // TODO(bringup)
+
   /** Potentiometer voltage at each hard stop — calibrate by driving to the ends and reading. */
   public static final double kHoodSensorVoltsRetracted = 0.2; // TODO(bringup): measure
 
