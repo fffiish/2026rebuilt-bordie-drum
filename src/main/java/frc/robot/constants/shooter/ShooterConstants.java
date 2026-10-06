@@ -100,15 +100,20 @@ public final class ShooterConstants {
   // Both actuators are driven from PWM motor controllers on the roboRIO. The RIO's PWM header is
   // signal only, so each channel drives a controller (REV Spark, Victor SP, Talon SR) whose output
   // terminals carry 12 V to the actuator.
-  // Two wirings are implemented; RobotContainer picks one.
-  //   HoodIORelay — Spike or equivalent on the roboRIO RELAY header ("on/off", polarity only)
-  //   HoodIOPWM   — a PWM motor controller on the PWM header
-  public static final int kHoodLeftRelayChannel = 0; // TODO(bringup): real channel
+  // Three wirings are implemented; RobotContainer picks one.
+  //   HoodIOSparkMax (in use) — SPARK MAX on CAN, brushed mode
+  //   HoodIOPWM               — a PWM motor controller on the PWM header
+  //   HoodIORelay             — Spike or equivalent on the RELAY header
+  /** SPARK MAX driving the actuators. Brushed: a PA-14 is a 2-wire DC motor, not a NEO. */
+  public static final int kHoodSparkMaxId = 3;
 
-  public static final int kHoodRightRelayChannel = 1; // TODO(bringup): real channel
+  /** Brushed DC actuators stall at their internal end-stops, so keep this conservative. */
+  public static final Current kHoodCurrentLimit = Amps.of(20); // TODO(bringup)
 
-  public static final int kHoodLeftPwmChannel = 0; // TODO(bringup): only if using HoodIOPWM
-  public static final int kHoodRightPwmChannel = 1; // TODO(bringup): only if using HoodIOPWM
+  public static final int kHoodLeftPwmChannel = 0; // only if using HoodIOPWM
+  public static final int kHoodRightPwmChannel = 1; // only if using HoodIOPWM
+  public static final int kHoodLeftRelayChannel = 0; // only if using HoodIORelay
+  public static final int kHoodRightRelayChannel = 1; // only if using HoodIORelay
 
   /** PA-14P potentiometer wipers, on roboRIO analog inputs. */
   public static final int kHoodLeftAnalogChannel = 0; // TODO(bringup): real channel

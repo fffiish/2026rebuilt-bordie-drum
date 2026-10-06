@@ -15,10 +15,13 @@ import frc.robot.constants.shooter.ShooterConstants;
  * driving them into a stop is safe and no software cutoff is needed. Output is full-scale in one
  * direction or the other; there is no closed loop, because there are only two positions to reach.
  *
- * <p>The controller type is the one thing likely to change: {@link PWMSparkMax} is a stand-in for
- * whatever PWM controller the actuators land on. Every WPILib PWM controller shares the {@link
- * PWMMotorController} interface, so swapping to {@code VictorSP} or {@code Talon} is a one-line
- * change in {@link #HoodIOPWM()}.
+ * <p>{@link PWMSparkMax} is WPILib's class for a SPARK MAX driven over a PWM cable rather than CAN,
+ * which is the wiring here. Every WPILib PWM controller shares the {@link PWMMotorController}
+ * interface, so swapping to another is a one-line change in {@link #HoodIOPWM()}.
+ *
+ * <p>PWM mode gives up what CAN mode would provide: no current reporting, no current limiting, and
+ * no device-presence check. For a two-position actuator with built-in end-stops that is an
+ * acceptable trade, but it is why {@code currentAmps} below is always zero.
  *
  * <p><b>Both sides are read separately on purpose.</b> Two actuators drive one hood surface, so if
  * one binds or stalls the surface racks. Averaging the two potentiometers would hide exactly that,

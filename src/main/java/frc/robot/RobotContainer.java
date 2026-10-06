@@ -52,7 +52,7 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Hood;
 import frc.robot.subsystems.shooter.HoodIO;
-import frc.robot.subsystems.shooter.HoodIORelay;
+import frc.robot.subsystems.shooter.HoodIOSparkMax;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
@@ -198,7 +198,7 @@ public class RobotContainer {
                   new AngularSubsystem(
                       new AngularIOSparkFlex(ShooterConstants.kFlywheelSparkFlexConfig),
                       ShooterConstants.kFlywheelSubsystemConfigReal),
-                  new Hood(new HoodIORelay())); // swap to HoodIOPWM if wired to a PWM controller
+                  new Hood(new HoodIOSparkMax()));
         } else {
           shooter = blankShooter();
         }
