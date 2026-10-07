@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter;
 
+import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,6 +27,9 @@ public class Hood extends RegisteredSubsystem {
   private HoodState targetState = HoodState.kNear;
   private final Timer sinceLastChange = new Timer();
 
+  private final Alert controllerDisconnectedAlert =
+      new Alert("Hood motor controller disconnected!", Alert.AlertType.kError);
+
   public Hood(HoodIO io) {
     this.io = io;
     sinceLastChange.start();
@@ -39,7 +43,9 @@ public class Hood extends RegisteredSubsystem {
     Logger.recordOutput("Hood/TargetState", targetState.toString());
     Logger.recordOutput("Hood/AtPosition", isAtPosition());
     Logger.recordOutput("Hood/UsingSensor", inputs.connected);
+    controllerDisconnectedAlert.set(!inputs.controllerConnected);
     Logger.recordOutput("Hood/UsingSensor", inputs.connected);
+    controllerDisconnectedAlert.set(!inputs.controllerConnected);
   }
 
   /**

@@ -9,10 +9,10 @@ import org.littletonrobotics.junction.AutoLog;
  * travel — they cut themselves off at the stops, so no software current limit or timed cutoff is
  * needed. Drive them and let them finish.
  *
- * <p>The P variant carries a potentiometer, so {@link HoodIOInputs#positionNormalized} is a real
- * measurement rather than an assumption. {@link Hood} prefers it and falls back to a timer only if
- * the sensor reads disconnected, which means a failed potentiometer degrades the robot to the
- * previous behaviour instead of freezing the hood.
+ * <p>The actuators fitted are plain two-wire PA-14s, so there is no position feedback and {@link
+ * Hood} times the travel. The feedback path is still implemented: fit PA-14P units, wire their
+ * potentiometers to analog inputs, and set {@code connected} true, and {@link Hood} starts
+ * measuring instead of guessing without any other change.
  */
 public interface HoodIO {
   @AutoLog
@@ -29,8 +29,15 @@ public interface HoodIO {
     public double appliedVolts = 0.0;
     public double currentAmps = 0.0;
 
-    /** False when the potentiometer looks unplugged — Hood falls back to timing. */
+    /**
+     * True only when a position sensor is present and trustworthy. The actuators fitted are plain
+     * two-wire PA-14s with no potentiometer, so this is always false and {@link Hood} times the
+     * travel instead. Fitting PA-14P units later makes it true with no other change.
+     */
     public boolean connected = false;
+
+    /** True when the motor controller itself is responding — unrelated to position feedback. */
+    public boolean controllerConnected = false;
   }
 
   default void updateInputs(HoodIOInputs inputs) {}

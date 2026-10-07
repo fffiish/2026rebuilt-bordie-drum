@@ -7,8 +7,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.constants.shooter.ShooterConstants;
 
 /**
@@ -24,17 +22,13 @@ import frc.robot.constants.shooter.ShooterConstants;
  * reporting, and a device-presence check. {@link HoodIOPWM} and {@link HoodIORelay} remain for the
  * other wirings but give up all three.
  *
- * <p>Both actuators are driven from this one controller. Their potentiometers are still read
- * separately, because two actuators moving one hood surface can rack if one binds, and averaging
- * the sensors would hide precisely that.
+ * <p>Both actuators are driven from this one controller. They are plain two-wire PA-14s with no
+ * potentiometer, so there is nothing to read back — {@link Hood} times the travel, which makes
+ * {@link ShooterConstants#kHoodTravelTime} load-bearing rather than a fallback. Measure it
+ * worst-case.
  */
 public class HoodIOSparkMax implements HoodIO {
-  /** Below this the analog input is almost certainly unplugged rather than reading a real wiper. */
-  private static final double kDisconnectedVolts = 0.05;
-
   private final SparkMax actuators;
-  private final AnalogInput leftPot;
-  private final AnalogInput rightPot;
 
   private boolean extendCommanded = false;
 
@@ -52,36 +46,17 @@ public class HoodIOSparkMax implements HoodIO {
         SparkBase.ResetMode.kResetSafeParameters,
         SparkBase.PersistMode.kNoPersistParameters);
 
-    leftPot = new AnalogInput(ShooterConstants.kHoodLeftAnalogChannel);
-    rightPot = new AnalogInput(ShooterConstants.kHoodRightAnalogChannel);
-
     setExtended(false);
-  }
-
-  /** Maps a raw wiper voltage onto 0.0 retracted - 1.0 extended. */
-  private static double normalize(double volts) {
-    double span =
-        ShooterConstants.kHoodSensorVoltsExtended - ShooterConstants.kHoodSensorVoltsRetracted;
-    if (Math.abs(span) < 1e-6) {
-      return 0.0;
-    }
-    return MathUtil.clamp((volts - ShooterConstants.kHoodSensorVoltsRetracted) / span, 0.0, 1.0);
   }
 
   @Override
   public void updateInputs(HoodIOInputs inputs) {
-    double leftVolts = leftPot.getVoltage();
-    double rightVolts = rightPot.getVoltage();
+    // No position sensor on a two-wire PA-14, so Hood times the travel.
+    inputs.connected = false;
+    inputs.positionNormalized = 0.0;
+    inputs.sensorVolts = 0.0;
 
-    double left = normalize(leftVolts);
-    double right = normalize(rightVolts);
-
-    boolean bothPresent = leftVolts > kDisconnectedVolts && rightVolts > kDisconnectedVolts;
-    boolean agree = Math.abs(left - right) <= ShooterConstants.kHoodSideDisagreement;
-
-    inputs.connected = bothPresent && agree;
-    inputs.positionNormalized = (left + right) / 2.0;
-    inputs.sensorVolts = (leftVolts + rightVolts) / 2.0;
+    inputs.controllerConnected = actuators.getFirmwareVersion() != 0;
     inputs.extendCommanded = extendCommanded;
     inputs.appliedVolts = actuators.getAppliedOutput() * actuators.getBusVoltage();
     inputs.currentAmps = actuators.getOutputCurrent();

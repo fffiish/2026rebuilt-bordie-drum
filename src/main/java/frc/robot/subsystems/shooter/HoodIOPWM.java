@@ -74,6 +74,7 @@ public class HoodIOPWM implements HoodIO {
     inputs.connected = bothPresent && agree;
     inputs.positionNormalized = (left + right) / 2.0;
     inputs.sensorVolts = (leftVolts + rightVolts) / 2.0;
+    inputs.controllerConnected = true; // A PWM controller cannot be detected; assume present.
     inputs.extendCommanded = extendCommanded;
     inputs.appliedVolts = leftActuator.get() * RobotController.getBatteryVoltage();
     // PWM controllers report no current; the PDH would have to be queried for that.

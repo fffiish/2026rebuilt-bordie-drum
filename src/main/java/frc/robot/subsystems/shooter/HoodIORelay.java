@@ -68,6 +68,7 @@ public class HoodIORelay implements HoodIO {
     inputs.connected = bothPresent && agree;
     inputs.positionNormalized = (left + right) / 2.0;
     inputs.sensorVolts = (leftVolts + rightVolts) / 2.0;
+    inputs.controllerConnected = true; // A relay cannot be detected; assume present.
     inputs.extendCommanded = extendCommanded;
     // A relay reports neither applied voltage nor current.
     inputs.appliedVolts = 0.0;

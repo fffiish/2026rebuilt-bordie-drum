@@ -51,17 +51,17 @@ public class SuperstructureVisualizer extends VirtualSubsystem {
   // ---------------------------------------------------------------------------------------------
 
   /** Intake arm pivot axis. */
-  private static final double ARM_PIVOT_BEHIND_FRONT = 2.0; // TODO(bringup): measure
+  private static final double ARM_PIVOT_BEHIND_FRONT = 2.65; // measured in CAD
 
-  private static final double ARM_PIVOT_ABOVE_FLOOR = 10.0; // TODO(bringup): measure
+  private static final double ARM_PIVOT_ABOVE_FLOOR = 7.25; // measured in CAD
 
   /** Pivot axis to the far end of the intake rollers. */
-  private static final double ARM_LENGTH = 14.0; // TODO(bringup): measure
+  private static final double ARM_LENGTH = 14.0; // pivot shaft to roller shaft
 
   /** Hood pivot axis. */
-  private static final double HOOD_PIVOT_BEHIND_FRONT = 23.0; // TODO(bringup): measure
+  private static final double HOOD_PIVOT_BEHIND_FRONT = 19.94; // measured in CAD (19 15/16")
 
-  private static final double HOOD_PIVOT_ABOVE_FLOOR = 30.0; // TODO(bringup): measure
+  private static final double HOOD_PIVOT_ABOVE_FLOOR = 25.25; // measured in CAD
 
   private static final double HOOD_LENGTH = 10.0;
 
@@ -69,13 +69,38 @@ public class SuperstructureVisualizer extends VirtualSubsystem {
   private static final double FRAME_RAIL_ABOVE_FLOOR = 2.0;
 
   /**
-   * A ligament's angle is measured counter-clockwise from "pointing right". The arm's own zero is
-   * deployed-at-the-floor, so this offset turns mechanism degrees into drawing degrees.
+   * How high the intake rollers sit above the floor when the arm is deployed. This arm does
+   * <em>not</em> reach the ground — it hovers at the height that lets the rollers grab a 5.91 in
+   * FUEL ball sitting on the floor.
    */
-  private static final double ARM_DRAW_OFFSET_DEG = 180.0;
+  private static final double ARM_ROLLER_HEIGHT_DEPLOYED = 4.0; // TODO(bringup): measure
 
-  private static final double HOOD_NEAR_DEG = 20.0; // TODO(bringup)
-  private static final double HOOD_FAR_DEG = 45.0; // TODO(bringup)
+  /**
+   * Turns mechanism degrees into drawing degrees. A ligament's angle is measured counter-clockwise
+   * from "pointing right", and the arm's own zero means deployed, so the offset is 180 degrees
+   * (pointing forward) plus however far the arm tilts down to put the rollers at pickup height.
+   * Deriving it from the measurements means correcting any of them keeps the picture honest.
+   */
+  private static final double ARM_DRAW_OFFSET_DEG =
+      180.0
+          + Math.toDegrees(
+              Math.asin(
+                  MathUtil.clamp(
+                      (ARM_PIVOT_ABOVE_FLOOR - ARM_ROLLER_HEIGHT_DEPLOYED) / ARM_LENGTH,
+                      -1.0,
+                      1.0)));
+
+  /**
+   * Hood angle with the actuators extended — its resting, outward position. Absolute value still
+   * unmeasured; a protractor against the hood surface once it is mounted gives it.
+   */
+  private static final double HOOD_FAR_DEG = 20.0; // TODO(bringup): measure absolute angle
+
+  /** Pulling the actuators in tilts the hood this much further inward. Confirmed by mech. */
+  private static final double HOOD_TRAVEL_DEG = 6.0;
+
+  /** Hood angle with the actuators pulled in. */
+  private static final double HOOD_NEAR_DEG = HOOD_FAR_DEG - HOOD_TRAVEL_DEG;
 
   private final LoggedMechanism2d mechanism =
       new LoggedMechanism2d(

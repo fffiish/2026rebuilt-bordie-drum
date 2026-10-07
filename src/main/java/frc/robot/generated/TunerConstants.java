@@ -107,7 +107,7 @@ public class TunerConstants {
   // Front Left
   private static final int kFrontLeftDriveMotorId = 32;
   private static final int kFrontLeftSteerMotorId = 6;
-  private static final int kFrontLeftEncoderId = 10; // TODO(bringup): placeholder, id unknown
+  private static final int kFrontLeftEncoderId = 20;
   private static final Angle kFrontLeftEncoderOffset =
       Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
   private static final boolean kFrontLeftSteerMotorInverted = false;
@@ -119,7 +119,7 @@ public class TunerConstants {
   // Front Right
   private static final int kFrontRightDriveMotorId = 33;
   private static final int kFrontRightSteerMotorId = 5;
-  private static final int kFrontRightEncoderId = 11; // TODO(bringup): placeholder, id unknown
+  private static final int kFrontRightEncoderId = 17;
   private static final Angle kFrontRightEncoderOffset =
       Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
   private static final boolean kFrontRightSteerMotorInverted = false;
@@ -131,7 +131,7 @@ public class TunerConstants {
   // Back Left
   private static final int kBackLeftDriveMotorId = 7;
   private static final int kBackLeftSteerMotorId = 52;
-  private static final int kBackLeftEncoderId = 12; // TODO(bringup): placeholder, id unknown
+  private static final int kBackLeftEncoderId = 8;
   private static final Angle kBackLeftEncoderOffset =
       Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
   private static final boolean kBackLeftSteerMotorInverted = false;
@@ -143,7 +143,7 @@ public class TunerConstants {
   // Back Right
   private static final int kBackRightDriveMotorId = 1;
   private static final int kBackRightSteerMotorId = 25;
-  private static final int kBackRightEncoderId = 13; // TODO(bringup): placeholder, id unknown
+  private static final int kBackRightEncoderId = 4;
   private static final Angle kBackRightEncoderOffset =
       Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
   private static final boolean kBackRightSteerMotorInverted = false;
