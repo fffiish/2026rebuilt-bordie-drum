@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj.Timer;
  * are plain data, so {@code TunerConstants} stays useful as the single place module layout is
  * described even though nothing here talks to a TalonFX.
  *
- * <p>Two differences from {@link ModuleIOTalonFX} that matter:
+ * <p>Two differences from the TalonFX module IO this replaces that matter:
  *
  * <ol>
  *   <li><b>No fused absolute encoder.</b> A TalonFX can fuse a remote CANcoder in firmware ({@code

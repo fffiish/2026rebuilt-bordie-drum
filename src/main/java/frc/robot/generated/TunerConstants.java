@@ -109,7 +109,7 @@ public class TunerConstants {
   private static final int kFrontLeftSteerMotorId = 6;
   private static final int kFrontLeftEncoderId = 20;
   private static final Angle kFrontLeftEncoderOffset =
-      Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
+      Rotations.of(0.451172); // measured: wheels forward, magnet offset 0
   private static final boolean kFrontLeftSteerMotorInverted = false;
   private static final boolean kFrontLeftEncoderInverted = false;
 
@@ -121,7 +121,7 @@ public class TunerConstants {
   private static final int kFrontRightSteerMotorId = 5;
   private static final int kFrontRightEncoderId = 17;
   private static final Angle kFrontRightEncoderOffset =
-      Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
+      Rotations.of(-0.319092); // measured: wheels forward, magnet offset 0
   private static final boolean kFrontRightSteerMotorInverted = false;
   private static final boolean kFrontRightEncoderInverted = false;
 
@@ -133,7 +133,7 @@ public class TunerConstants {
   private static final int kBackLeftSteerMotorId = 52;
   private static final int kBackLeftEncoderId = 8;
   private static final Angle kBackLeftEncoderOffset =
-      Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
+      Rotations.of(0.079102); // measured: wheels forward, magnet offset 0
   private static final boolean kBackLeftSteerMotorInverted = false;
   private static final boolean kBackLeftEncoderInverted = false;
 
@@ -145,7 +145,7 @@ public class TunerConstants {
   private static final int kBackRightSteerMotorId = 25;
   private static final int kBackRightEncoderId = 4;
   private static final Angle kBackRightEncoderOffset =
-      Rotations.of(0.0); // TODO(bringup): zero this module in Phoenix Tuner
+      Rotations.of(-0.063721); // measured: wheels forward, magnet offset 0
   private static final boolean kBackRightSteerMotorInverted = false;
   private static final boolean kBackRightEncoderInverted = false;
 

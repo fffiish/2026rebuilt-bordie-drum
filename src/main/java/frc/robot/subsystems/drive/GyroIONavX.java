@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.Timer;
 /**
  * IO implementation for a navX2.
  *
- * <p>Replaces {@link GyroIOPigeon2}, which cannot work on this robot: a Pigeon 2 is a CAN device
- * read through Phoenix, and the navX hangs off the roboRIO's MXP port instead.
+ * <p>Replaces GyroIOPigeon2, which cannot work on this robot: a Pigeon 2 is a CAN device read
+ * through Phoenix, and the navX hangs off the roboRIO's MXP port instead.
  *
  * <p>Two consequences follow from that, both shared with {@link ModuleIOSpark}:
  *
