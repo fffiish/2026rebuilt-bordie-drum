@@ -66,10 +66,17 @@ public class TunerConstants {
   // This may need to be tuned to your individual robot
   // TODO(bringup): all four of these came from another robot. Verify against your MK4i
   // configuration and the CAD before trusting any auto path or odometry reading.
+  // TODO(bringup): MK4i coupling is usually 50/14 = 3.5714; 3.8571 is inherited. Lower impact
+  // than the two above — it only compensates drive position while the module steers.
   private static final double kCoupleRatio = 3.857142857142857;
 
+  // TODO(bringup): 6.0268 matches no standard MK4i option (L1 8.14 / L2 6.75 / L3 6.12, or the
+  // 16T-pinion L1+ 7.14 / L2+ 5.92 / L3+ 5.37). Set this to whichever your modules actually have.
   private static final double kDriveGearRatio = 6.026785714285714;
-  private static final double kSteerGearRatio = 26.09090909090909;
+  // MK4i steer is 150/7 on every variant — it is not one of the configurable options.
+  // The previous 26.0909 came from the inherited config and is 22% too high, which made the
+  // steer loop believe it had arrived after ~74 degrees of a commanded 90.
+  private static final double kSteerGearRatio = 150.0 / 7.0;
   private static final Distance kWheelRadius =
       Inches.of(1.968); // TODO(bringup): confirm with Wheel Radius Characterization
 

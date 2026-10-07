@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.lib.LoggedTunableNumber;
 
 /**
  * Swerve module IO for NEO Vortex drive and steer motors on SPARK Flex controllers, with a CTRE
@@ -44,6 +45,26 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class ModuleIOSpark implements ModuleIO {
   private static final ClosedLoopSlot kSlot = ClosedLoopSlot.kSlot0;
+
+  // Live-tunable so the modules can be tuned at the robot without a redeploy. Shared statically:
+  // all four modules are mechanically identical and want the same gains.
+  //
+  // Starting points are deliberately low. The steer loop previously ran kP = 1.0 with no damping,
+  // which oscillates: in radians, a 1 rad error commands full output, so a few degrees of error is
+  // already a hard shove through a 21.4:1 reduction. Raise kP until the module tracks crisply,
+  // then back off before it buzzes; add kD only if it overshoots at a kP you otherwise want.
+  private static final LoggedTunableNumber turnKp =
+      new LoggedTunableNumber("Drive/Module/TurnKp", 0.3);
+  private static final LoggedTunableNumber turnKd =
+      new LoggedTunableNumber("Drive/Module/TurnKd", 0.0);
+
+  // Velocity control on pure P oscillates by nature: with no feedforward, P has to generate the
+  // entire output from error, so it overshoots and reverses. kV is what Drive Simple FF
+  // Characterization measures; set it first and kP only trims what is left.
+  private static final LoggedTunableNumber driveKp =
+      new LoggedTunableNumber("Drive/Module/DriveKp", 0.0);
+  private static final LoggedTunableNumber driveKv =
+      new LoggedTunableNumber("Drive/Module/DriveKv", 0.0);
 
   private final SparkFlex driveSpark;
   private final SparkFlex turnSpark;
@@ -110,9 +131,16 @@ public class ModuleIOSpark implements ModuleIO {
     config.encoder.positionConversionFactor(radiansPerMotorRotation);
     config.encoder.velocityConversionFactor(radiansPerMotorRotation / 60.0);
 
-    // TODO(bringup): tune against the real drivetrain; feedforward comes from characterization.
-    config.closedLoop.pid(0.1, 0.0, 0.0, kSlot);
-    config.closedLoop.velocityFF(0.0, kSlot);
+    // A SPARK derives velocity from the hall sensors over a measurement window and then averages
+    // several windows. The defaults (~32 ms x 8) hand the control loop a number 50-100 ms stale,
+    // and a velocity loop closed around a measurement that old oscillates with growing amplitude.
+    // 10 ms x 2 cuts the lag to roughly 20 ms, which a 50 Hz loop can cope with. Position control
+    // is unaffected by this, which is why steering behaves while drive does not.
+    config.encoder.uvwMeasurementPeriod(10);
+    config.encoder.uvwAverageDepth(2);
+
+    config.closedLoop.pid(driveKp.get(), 0.0, 0.0, kSlot);
+    config.closedLoop.velocityFF(driveKv.get(), kSlot);
     return config;
   }
 
@@ -130,13 +158,35 @@ public class ModuleIOSpark implements ModuleIO {
     // Steering is continuous: let the controller take the short way round rather than unwinding.
     config.closedLoop.positionWrappingEnabled(true);
     config.closedLoop.positionWrappingInputRange(-Math.PI, Math.PI);
-    // TODO(bringup): tune against the real modules.
-    config.closedLoop.pid(1.0, 0.0, 0.0, kSlot);
+    config.closedLoop.pid(turnKp.get(), 0.0, turnKd.get(), kSlot);
     return config;
+  }
+
+  /** Pushes new gains to the controllers when a dashboard value changes. */
+  private void updateTunables() {
+    LoggedTunableNumber.ifChanged(
+        hashCode(),
+        () ->
+            driveSpark.configureAsync(
+                buildDriveConfig(),
+                SparkBase.ResetMode.kNoResetSafeParameters,
+                SparkBase.PersistMode.kNoPersistParameters),
+        driveKp,
+        driveKv);
+    LoggedTunableNumber.ifChanged(
+        hashCode() + 1,
+        () ->
+            turnSpark.configureAsync(
+                buildTurnConfig(),
+                SparkBase.ResetMode.kNoResetSafeParameters,
+                SparkBase.PersistMode.kNoPersistParameters),
+        turnKp,
+        turnKd);
   }
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
+    updateTunables();
     inputs.driveConnected = driveSpark.getFirmwareVersion() != 0;
     inputs.drivePositionRad = driveEncoder.getPosition();
     inputs.driveVelocityRadPerSec = driveEncoder.getVelocity();
