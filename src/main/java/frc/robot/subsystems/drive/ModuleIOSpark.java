@@ -139,8 +139,8 @@ public class ModuleIOSpark implements ModuleIO {
     config.encoder.uvwMeasurementPeriod(10);
     config.encoder.uvwAverageDepth(2);
 
-    config.closedLoop.pid(driveKp.get(), 0.0, 0.0, kSlot);
-    config.closedLoop.velocityFF(driveKv.get(), kSlot);
+    config.closedLoop.pid(0.005, 0.0, 0.0, kSlot);
+    config.closedLoop.velocityFF(0.112, kSlot);
     return config;
   }
 
@@ -158,7 +158,7 @@ public class ModuleIOSpark implements ModuleIO {
     // Steering is continuous: let the controller take the short way round rather than unwinding.
     config.closedLoop.positionWrappingEnabled(true);
     config.closedLoop.positionWrappingInputRange(-Math.PI, Math.PI);
-    config.closedLoop.pid(turnKp.get(), 0.0, turnKd.get(), kSlot);
+    config.closedLoop.pid(0.5, 0.0, turnKd.get(), kSlot);
     return config;
   }
 
