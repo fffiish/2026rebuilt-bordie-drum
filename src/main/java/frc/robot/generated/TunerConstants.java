@@ -72,11 +72,11 @@ public class TunerConstants {
 
   // TODO(bringup): 6.0268 matches no standard MK4i option (L1 8.14 / L2 6.75 / L3 6.12, or the
   // 16T-pinion L1+ 7.14 / L2+ 5.92 / L3+ 5.37). Set this to whichever your modules actually have.
-  private static final double kDriveGearRatio = 6.026785714285714;
+  private static final double kDriveGearRatio = 6.75;
   // MK4i steer is 150/7 on every variant — it is not one of the configurable options.
   // The previous 26.0909 came from the inherited config and is 22% too high, which made the
   // steer loop believe it had arrived after ~74 degrees of a commanded 90.
-  private static final double kSteerGearRatio = 150.0 / 7.0;
+  private static final double kSteerGearRatio = 21.4285714;
   private static final Distance kWheelRadius =
       Inches.of(1.968); // TODO(bringup): confirm with Wheel Radius Characterization
 
@@ -116,8 +116,8 @@ public class TunerConstants {
   private static final int kFrontLeftSteerMotorId = 6;
   private static final int kFrontLeftEncoderId = 20;
   private static final Angle kFrontLeftEncoderOffset =
-      Rotations.of(0.451172); // measured: wheels forward, magnet offset 0
-  private static final boolean kFrontLeftSteerMotorInverted = false;
+      Rotations.of(0); // measured: wheels forward, magnet offset 0
+  private static final boolean kFrontLeftSteerMotorInverted = true;
   private static final boolean kFrontLeftEncoderInverted = false;
 
   private static final Distance kFrontLeftXPos = Inches.of(11);
@@ -128,8 +128,8 @@ public class TunerConstants {
   private static final int kFrontRightSteerMotorId = 5;
   private static final int kFrontRightEncoderId = 17;
   private static final Angle kFrontRightEncoderOffset =
-      Rotations.of(-0.319092); // measured: wheels forward, magnet offset 0
-  private static final boolean kFrontRightSteerMotorInverted = false;
+      Rotations.of(0); // measured: wheels forward, magnet offset 0
+  private static final boolean kFrontRightSteerMotorInverted = true;
   private static final boolean kFrontRightEncoderInverted = false;
 
   private static final Distance kFrontRightXPos = Inches.of(11);
@@ -140,8 +140,8 @@ public class TunerConstants {
   private static final int kBackLeftSteerMotorId = 52;
   private static final int kBackLeftEncoderId = 8;
   private static final Angle kBackLeftEncoderOffset =
-      Rotations.of(0.079102); // measured: wheels forward, magnet offset 0
-  private static final boolean kBackLeftSteerMotorInverted = false;
+      Rotations.of(0.0); // measured: wheels forward, magnet offset 0
+  private static final boolean kBackLeftSteerMotorInverted = true;
   private static final boolean kBackLeftEncoderInverted = false;
 
   private static final Distance kBackLeftXPos = Inches.of(-11);
@@ -152,8 +152,8 @@ public class TunerConstants {
   private static final int kBackRightSteerMotorId = 25;
   private static final int kBackRightEncoderId = 4;
   private static final Angle kBackRightEncoderOffset =
-      Rotations.of(-0.063721); // measured: wheels forward, magnet offset 0
-  private static final boolean kBackRightSteerMotorInverted = false;
+      Rotations.of(0.0); // measured: wheels forward, magnet offset 0
+  private static final boolean kBackRightSteerMotorInverted = true;
   private static final boolean kBackRightEncoderInverted = false;
 
   private static final Distance kBackRightXPos = Inches.of(-11);

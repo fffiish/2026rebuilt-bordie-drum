@@ -6,7 +6,7 @@ public class DriveConstants {
 
   // p gain for the drive x and y controllers (side to side and forward/back)
   public static LoggedTunableNumber TRANSLATION_KP =
-      new LoggedTunableNumber("Drive/TranslationKp", 3.0);
+      new LoggedTunableNumber("Drive/TranslationKp", 0.0);
   public static LoggedTunableNumber TRANSLATION_KD =
       new LoggedTunableNumber("Drive/TranslationKd", 0.0);
   public static LoggedTunableNumber PP_ANGLE_KP = new LoggedTunableNumber("Drive/PPAngleKp", 1.5);
