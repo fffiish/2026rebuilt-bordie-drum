@@ -68,6 +68,8 @@ public class Hood extends RegisteredSubsystem {
     return targetState;
   }
 
+  public void stopImmediately() { io.stop(); }
+
   /**
    * True once the hood has reached the position its state asks for.
    *

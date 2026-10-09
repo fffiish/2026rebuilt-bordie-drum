@@ -43,6 +43,11 @@ public class Shooter extends VirtualSubsystem {
     return targetState;
   }
 
+  public void stopImmediately() {
+    flywheel.stopImmediately();
+    hood.stopImmediately();
+  }
+
   /**
    * Flywheel is within its velocity tolerance of the commanded speed. {@code atAngle()} is
    * mode-aware — in velocity mode it compares goal velocity to measured velocity — so this is the

@@ -17,12 +17,15 @@ import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 /** IO implementation for real Limelight hardware. */
 public class VisionIOLimelight implements VisionIO {
@@ -58,25 +61,33 @@ public class VisionIOLimelight implements VisionIO {
 
   @Override
   public void updateInputs(VisionIOInputs inputs) {
+    double start = Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
     // Update connection status based on whether an update has been seen in the last
     // 250ms
     inputs.connected =
-        ((RobotController.getFPGATime() - latencySubscriber.getLastChange()) / 1000) < 250;
+        latencySubscriber.getLastChange() != 0
+            && ((RobotController.getFPGATime() - latencySubscriber.getLastChange()) / 1000) < 250;
 
     // Update target observation
     inputs.latestTargetObservation =
         new TargetObservation(
             Rotation2d.fromDegrees(txSubscriber.get()), Rotation2d.fromDegrees(tySubscriber.get()));
 
-    // Update orientation for MegaTag 2
+    double afterSubscribers =
+        Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
+    double yawDegrees = rotationSupplier.get().getDegrees();
+    double afterRotation = Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
+    // This publishes to a local NT topic; it does not wait for the Limelight to respond.
     orientationPublisher.accept(
-        new double[] {rotationSupplier.get().getDegrees(), 0.0, 0.0, 0.0, 0.0, 0.0});
+        new double[] {yawDegrees, 0.0, 0.0, 0.0, 0.0, 0.0});
+    double afterOrientation =
+        Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
 
     // Read new pose observations from NetworkTables
     Set<Integer> tagIds = new HashSet<>();
     List<PoseObservation> poseObservations = new ArrayList<>();
     for (var rawSample : megatag1Subscriber.readQueue()) {
-      if (rawSample.value.length == 0) continue;
+      if (rawSample.value.length < 11) continue;
       for (int i = 11; i < rawSample.value.length; i += 7) {
         tagIds.add((int) rawSample.value[i]);
       }
@@ -102,7 +113,7 @@ public class VisionIOLimelight implements VisionIO {
               PoseObservationType.MEGATAG_1));
     }
     for (var rawSample : megatag2Subscriber.readQueue()) {
-      if (rawSample.value.length == 0) continue;
+      if (rawSample.value.length < 11) continue;
       for (int i = 11; i < rawSample.value.length; i += 7) {
         tagIds.add((int) rawSample.value[i]);
       }
@@ -138,6 +149,14 @@ public class VisionIOLimelight implements VisionIO {
     int i = 0;
     for (int id : tagIds) {
       inputs.tagIds[i++] = id;
+    }
+    if (Constants.kEnableLoopTimingLogs) {
+      String key = "Timing/Vision/" + name;
+      Logger.recordOutput(key + "/SubscriberReadsMS", (afterSubscribers - start) * 1000.0);
+      Logger.recordOutput(key + "/RotationSupplierMS", (afterRotation - afterSubscribers) * 1000.0);
+      Logger.recordOutput(key + "/OrientationPublishMS", (afterOrientation - afterRotation) * 1000.0);
+      Logger.recordOutput(key + "/PoseDecodeMS", (Timer.getFPGATimestamp() - afterOrientation) * 1000.0);
+      Logger.recordOutput(key + "/ObservationCount", inputs.poseObservations.length);
     }
   }
 

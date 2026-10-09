@@ -244,6 +244,12 @@ public class AngularSubsystem extends RegisteredSubsystem {
     return runOnce(io::stop);
   }
 
+  /** Immediate stop for the isolated drivetrain Test path; requires no scheduler. */
+  public void stopImmediately() {
+    outputMode = kOpenLoop;
+    io.stop();
+  }
+
   public Command holdAtCall() {
     return parallel(
         sequence(runOnce(() -> io.setAngle(getAngle())), idle()), setOutputMode(kHoldAtCall));

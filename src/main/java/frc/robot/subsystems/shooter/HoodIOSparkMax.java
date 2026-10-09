@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.constants.shooter.ShooterConstants;
+import frc.robot.lib.subsystem.SparkConnectionMonitor;
 
 /**
  * Hood IO for a SPARK MAX on CAN driving the pair of PA-14P actuators, with their potentiometers on
@@ -29,6 +30,7 @@ import frc.robot.constants.shooter.ShooterConstants;
  */
 public class HoodIOSparkMax implements HoodIO {
   private final SparkMax actuators;
+  private final SparkConnectionMonitor controllerConnection;
 
   private boolean extendCommanded = false;
 
@@ -45,6 +47,7 @@ public class HoodIOSparkMax implements HoodIO {
         config,
         SparkBase.ResetMode.kResetSafeParameters,
         SparkBase.PersistMode.kNoPersistParameters);
+    controllerConnection = new SparkConnectionMonitor(actuators);
 
     setExtended(false);
   }
@@ -56,10 +59,16 @@ public class HoodIOSparkMax implements HoodIO {
     inputs.positionNormalized = 0.0;
     inputs.sensorVolts = 0.0;
 
-    inputs.controllerConnected = actuators.getFirmwareVersion() != 0;
+    controllerConnection.beginCycle();
     inputs.extendCommanded = extendCommanded;
-    inputs.appliedVolts = actuators.getAppliedOutput() * actuators.getBusVoltage();
+    double dutyCycle = actuators.getAppliedOutput();
+    controllerConnection.checkLastError();
+    double busVoltage = actuators.getBusVoltage();
+    controllerConnection.checkLastError();
+    inputs.appliedVolts = dutyCycle * busVoltage;
     inputs.currentAmps = actuators.getOutputCurrent();
+    controllerConnection.checkLastError();
+    inputs.controllerConnected = controllerConnection.isConnected();
   }
 
   @Override

@@ -18,6 +18,7 @@ import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystem;
  * #jammed()}.
  */
 public class Indexer extends VirtualSubsystem {
+  public void stopImmediately() { rollers.stopImmediately(); }
   private static final IndexerState kDefaultState = IndexerState.kIdle;
 
   private final AngularSubsystem rollers;

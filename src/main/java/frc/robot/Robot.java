@@ -9,6 +9,8 @@ package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.lib.command.CachedTrigger;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
@@ -33,6 +35,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+  private double previousLoopTime = Double.NaN;
+  private boolean wasTestMode;
 
   public Robot() {
     // Record metadata
@@ -92,6 +96,17 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
+    double now = Timer.getFPGATimestamp();
+    double periodMs = Double.isFinite(previousLoopTime) ? (now - previousLoopTime) * 1000 : 20;
+    previousLoopTime = now;
+    Logger.recordOutput("LoopTiming/PeriodMS", periodMs);
+    if (DriverStation.isTest()) {
+      if (!wasTestMode) CommandScheduler.getInstance().cancelAll();
+      wasTestMode = true;
+      robotContainer.diagnosticPeriodic(now, periodMs);
+      return;
+    }
+    wasTestMode = false;
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.
@@ -105,6 +120,7 @@ public class Robot extends LoggedRobot {
       LinearSubsystem.recordAndResetTiming();
     }
     robotContainer.periodic();
+    robotContainer.diagnosticPeriodic(now, periodMs);
   }
 
   /** This function is called once when the robot is disabled. */

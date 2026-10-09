@@ -43,6 +43,7 @@ import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystem;
 import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystemConfig;
 import frc.robot.subsystems.SuperstructureVisualizer;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.DriveDiagnostics;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
@@ -92,6 +93,7 @@ public class RobotContainer {
   private final Field2d field = new Field2d();
 
   private final Drive drive;
+  private final DriveDiagnostics driveDiagnostics;
   private final Vision vision;
 
   private final Intake intake;
@@ -265,6 +267,8 @@ public class RobotContainer {
         break;
     }
 
+    driveDiagnostics = new DriveDiagnostics(drive);
+    stopOtherMechanisms();
     superstructure = new RobotSuperstructure(intake, indexer, shooter);
     superstructure.registerAutoCommands();
 
@@ -387,6 +391,24 @@ public class RobotContainer {
 
     autoAlert.set(autoChooser.get() == null);
     controllerOneAlert.set(!DriverStation.isJoystickConnected(0));
+  }
+
+  public void stopOtherMechanisms() {
+    intake.stopImmediately();
+    indexer.stopImmediately();
+    shooter.stopImmediately();
+  }
+
+  /** Normal scheduler and bindings are not polled anywhere in this path. */
+  public void diagnosticPeriodic(double now, double loopPeriodMs) {
+    if (DriverStation.isTest()) {
+      stopOtherMechanisms();
+      drive.periodic();
+      Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", true);
+    } else {
+      Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", false);
+    }
+    driveDiagnostics.periodic(edu.wpi.first.wpilibj.Timer.getFPGATimestamp(), loopPeriodMs);
   }
 
   /**

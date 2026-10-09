@@ -17,6 +17,7 @@ import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.lib.subsystem.DeviceConnectedStatus;
+import frc.robot.lib.subsystem.SparkConnectionMonitor;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,8 @@ public class AngularIOSparkFlex implements AngularIO {
   private final List<SparkFlex> followers;
   private final RelativeEncoder encoder;
   private final SparkClosedLoopController controller;
+  private final SparkConnectionMonitor masterConnection;
+  private final List<SparkConnectionMonitor> followerConnections;
 
   private final AngularIOSparkFlexConfig deviceConfig;
 
@@ -91,6 +94,8 @@ public class AngularIOSparkFlex implements AngularIO {
     configurationsNotAppliedAlert.set(!ok);
 
     encoder.setPosition(toOutputRotations(config.getResetAngle()));
+    masterConnection = new SparkConnectionMonitor(master);
+    followerConnections = followers.stream().map(SparkConnectionMonitor::new).toList();
     lastVelocityTimestamp = Timer.getFPGATimestamp();
   }
 
@@ -182,8 +187,11 @@ public class AngularIOSparkFlex implements AngularIO {
 
   @Override
   public void updateInputs(AngularIOInputs inputs) {
+    masterConnection.beginCycle();
     double outputRotations = encoder.getPosition();
+    masterConnection.checkLastError();
     double outputRotationsPerSec = encoder.getVelocity();
+    masterConnection.checkLastError();
 
     inputs.angle = Radians.of(outputRotations * anglePerRotation());
     inputs.velocity = RadiansPerSecond.of(outputRotationsPerSec * anglePerRotation());
@@ -198,8 +206,11 @@ public class AngularIOSparkFlex implements AngularIO {
     inputs.acceleration = RadiansPerSecondPerSecond.of(accelerationRadPerSecSq);
 
     double dutyCycle = master.getAppliedOutput();
+    masterConnection.checkLastError();
     double outputCurrent = master.getOutputCurrent();
+    masterConnection.checkLastError();
     inputs.appliedVolts = Volts.of(dutyCycle * master.getBusVoltage());
+    masterConnection.checkLastError();
     inputs.statorCurrent = Amps.of(outputCurrent);
     // Estimated: a SPARK reports no separate supply current.
     inputs.supplyCurrent = Amps.of(outputCurrent * Math.abs(dutyCycle));
@@ -207,18 +218,16 @@ public class AngularIOSparkFlex implements AngularIO {
     int deviceCount = followers.size() + 1;
     inputs.motorTemperatures = new double[deviceCount];
     inputs.motorTemperatures[0] = master.getMotorTemperature();
+    masterConnection.checkLastError();
     for (int i = 0; i < followers.size(); i++) {
+      followerConnections.get(i).beginCycle();
       inputs.motorTemperatures[i + 1] = followers.get(i).getMotorTemperature();
+      followerConnections.get(i).checkLastError();
     }
 
     if (inputs.deviceConnectedStatuses.length != deviceCount) {
       inputs.deviceConnectedStatuses = new DeviceConnectedStatus[deviceCount];
     }
-    setConnected(inputs, 0, master, deviceConfig.getMasterId());
-    for (int i = 0; i < followers.size(); i++) {
-      setConnected(inputs, i + 1, followers.get(i), deviceConfig.getFollowerIds().get(i));
-    }
-
     inputs.neutralMode = deviceConfig.getNeutralMode();
     inputs.IOOutputMode = this.outputMode;
     inputs.goalPos = this.goalPos.orElse(Radians.of(0.0));
@@ -227,19 +236,28 @@ public class AngularIOSparkFlex implements AngularIO {
     if (this.outputMode == kVelocity) {
       inputs.referenceVel =
           RadiansPerSecond.of(controller.getMAXMotionSetpointVelocity() * anglePerRotation());
+      masterConnection.checkLastError();
       inputs.referencePos = Radians.of(0.0);
     } else {
       inputs.referencePos =
           Radians.of(controller.getMAXMotionSetpointPosition() * anglePerRotation());
+      masterConnection.checkLastError();
       inputs.referenceVel =
           RadiansPerSecond.of(controller.getMAXMotionSetpointVelocity() * anglePerRotation());
+      masterConnection.checkLastError();
+    }
+    setConnected(inputs, 0, masterConnection.isConnected(), deviceConfig.getMasterId());
+    for (int i = 0; i < followers.size(); i++) {
+      setConnected(
+          inputs,
+          i + 1,
+          followerConnections.get(i).isConnected(),
+          deviceConfig.getFollowerIds().get(i));
     }
   }
 
-  /** A disconnected SPARK reports firmware version 0, which is the cheap liveness check. */
   private static void setConnected(
-      AngularIOInputs inputs, int index, SparkFlex spark, int deviceId) {
-    boolean connected = spark.getFirmwareVersion() != 0;
+      AngularIOInputs inputs, int index, boolean connected, int deviceId) {
     if (inputs.deviceConnectedStatuses[index] == null) {
       inputs.deviceConnectedStatuses[index] = new DeviceConnectedStatus(connected, deviceId);
     } else {

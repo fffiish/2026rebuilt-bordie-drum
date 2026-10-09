@@ -56,6 +56,12 @@ public class Intake extends VirtualSubsystem {
     return targetState;
   }
 
+  public void stopImmediately() {
+    pivot.stopImmediately();
+    intakeRollers.stopImmediately();
+    feederRollers.stopImmediately();
+  }
+
   /** True once the arm has reached the angle its state asks for. */
   public Trigger atTarget() {
     return pivot.atAngle();
