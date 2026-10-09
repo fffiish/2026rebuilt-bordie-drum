@@ -71,12 +71,16 @@ These live in `constants/<mechanism>/`. Copy the shape from the drive constants 
 can be in, and exposes `set(State)` as a **command factory**. Bindings then read as intent:
 
 ```java
-driverController.leftTrigger.whileTrue(intake.set(IntakeState.kIntaking));
+driverController.leftTrigger.whileTrue(intake.setRollers(IntakeRollerState.kIntaking));
 ```
 
 Not `intake.setRollerVoltage(6.0)`. The subsystem decides what `kIntaking` means; the binding just
 says what the driver wants. This is the pattern the template exists to teach — if you find yourself
 writing motor commands in `RobotContainer`, back up.
+
+The intake uses separate `IntakePivotState` and `IntakeRollerState` commands so intake rollers and
+shooting arm motion can run together. See [intake and shooter bring-up](docs/intake-shooter-bringup.md)
+for the merged driver controls and hardware settings.
 
 **Two subsystem tiers.** `RegisteredSubsystem` is a real WPILib subsystem — it can be *required* by
 commands, so only one command can own it at a time. `VirtualSubsystem` gets a `periodic()` every loop

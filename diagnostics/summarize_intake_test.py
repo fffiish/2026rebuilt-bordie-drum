@@ -4,7 +4,7 @@ p = Path(sys.argv[1])
 d = json.loads(p.read_text())
 h = d['history']
 prefix = '/AdvantageKit/'
-states = h.get(prefix+'RealOutputs/Intake/TargetState', [])
+states = h.get(prefix+'RealOutputs/Intake/TargetRollerState', h.get(prefix+'RealOutputs/Intake/TargetState', []))
 result = {'capture_utc':d['capture_utc'], 'duration_sec':round(d['duration_sec'],2), 'holds':[]}
 for a, b in zip(states, states[1:]):
     if a[2] != 'kIntaking': continue

@@ -290,6 +290,11 @@ public class AngularSubsystem extends RegisteredSubsystem {
     return Commands.runOnce(() -> io.resetAngle(angle.get()));
   }
 
+  /** Changes the current limit at runtime. Requires nothing, so it can run beside a motion. */
+  public Command setCurrentLimit(Current limit) {
+    return Commands.runOnce(() -> io.setCurrentLimit(limit));
+  }
+
   public Command setNeutralModeBrake() {
     return setNeutralMode(NeutralModeValue.Brake);
   }

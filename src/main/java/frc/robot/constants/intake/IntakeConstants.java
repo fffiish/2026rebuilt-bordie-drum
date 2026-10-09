@@ -30,8 +30,44 @@ public final class IntakeConstants {
   /** Stowed, inside the frame perimeter. */
   public static final Angle kPivotStowed = Degrees.of(118.0); // operator-confirmed stowed hard stop
 
-  /** Deployed, rollers on the floor. */
+  /** Deployed — the arm's normal resting position once auto has put it down. */
   public static final Angle kPivotDeployed = Degrees.of(0.0); // TODO(bringup)
+
+  /** Raised out of the way while shooting, 90 degrees up from deployed. */
+  public static final Angle kPivotRaised = kPivotDeployed.plus(Degrees.of(90.0));
+
+  // ----- agitation: a slow up/down shuffle during a shot, to settle FUEL toward the indexer -----
+
+  /** Top of the agitation stroke. Deliberately small — this is a shake, not a lift. */
+  public static final Angle kPivotAgitateHigh =
+      kPivotDeployed.plus(Degrees.of(20.0)); // TODO(bringup)
+
+  /** Bottom of the agitation stroke. */
+  public static final Angle kPivotAgitateLow = kPivotDeployed;
+
+  /** How long the arm dwells at each end of a stroke. "Slowly" per the driver's request. */
+  public static final Time kAgitateDwell = Seconds.of(0.35); // TODO(bringup)
+
+  /** Number of complete up-down cycles before the arm raises to shoot. */
+  public static final int kAgitateCycles = 3; // TODO(bringup)
+
+  // ----- current limits -----
+
+  /**
+   * Breaking the hopper and intake free on the first deploy of a match costs more current than
+   * ordinary motion. The pivot starts here and drops to {@link #kPivotCurrentLimit} once deployed,
+   * so the higher draw lasts seconds rather than the whole match.
+   */
+  public static final Current kPivotDeployCurrentLimit = Amps.of(80);
+
+  /** Normal running limit, applied after the initial deploy. */
+  public static final Current kPivotCurrentLimit = Amps.of(60);
+
+  /** Give up waiting for the arm to arrive after this long and drop to the normal limit anyway. */
+  public static final Time kPivotDeployTimeout = Seconds.of(2.0); // TODO(bringup)
+
+  /** How close counts as "arrived" when sequencing arm moves. */
+  public static final Angle kPivotArrivalTolerance = Degrees.of(5.0); // TODO(bringup)
 
   public static final AngularIOSparkFlexConfig kPivotSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
@@ -39,7 +75,7 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup): verify direction
           .motorRotationsPerOutputRotations(60.0) // operator-confirmed reduction
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(80))
+          .smartCurrentLimit(kPivotCurrentLimit)
           .secondaryCurrentLimit(Amps.of(120))
           .softMinAngle(kPivotDeployed)
           .softMaxAngle(kPivotStowed)

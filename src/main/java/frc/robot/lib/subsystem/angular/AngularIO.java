@@ -93,5 +93,8 @@ public interface AngularIO {
 
   default void setNeutralMode(NeutralModeValue neutralMode) {}
 
+  /** Change the runtime current limit (SPARK motor phase current). No-op where unsupported. */
+  default void setCurrentLimit(Current limit) {}
+
   default void setLogKey(String logKey) {}
 }
