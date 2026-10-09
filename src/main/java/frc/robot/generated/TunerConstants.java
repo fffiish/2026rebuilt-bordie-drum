@@ -145,6 +145,8 @@ public class TunerConstants {
   private static final int kBackLeftEncoderId = 10;
   private static final Angle kBackLeftEncoderOffset =
       Rotations.of(0.001436121331); // straight-position capture, 2026-10-09 UTC
+  // This robot's back-left drive motor needs the opposite of the left-side default.
+  private static final boolean kBackLeftDriveMotorInverted = true;
   private static final boolean kBackLeftSteerMotorInverted = true;
   private static final boolean kBackLeftEncoderInverted = false;
 
@@ -199,7 +201,7 @@ public class TunerConstants {
               kBackLeftEncoderOffset,
               kBackLeftXPos,
               kBackLeftYPos,
-              kInvertLeftSide,
+              kBackLeftDriveMotorInverted,
               kBackLeftSteerMotorInverted,
               kBackLeftEncoderInverted);
   public static final SwerveModuleConstants<

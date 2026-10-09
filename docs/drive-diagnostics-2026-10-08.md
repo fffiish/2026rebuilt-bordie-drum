@@ -52,7 +52,7 @@ one run. Release A after each run. Changing selections during a run cancels it.
 2. `STEER_POSITIVE` and `STEER_NEGATIVE`: each module individually after feedback passes.
    Step 5°, settle within 1 s, hold within ±1° for 5 s, then return and repeat the hold.
    Growing error or repeated significant reversals abort. Tune only from these traces.
-3. `DRIVE_OPEN`: each voltage individually on each module, then all four; at most 2 s.
+3. `DRIVE_OPEN`: continuous voltage hold on one or all four modules, steering unpowered; hard stop at 20 s.
    Steering remains unpowered. Compare speed, acceleration, current, and direction.
 4. `DRIVE_CLOSED`: all four only after both steering checks pass on every module;
    ramp to target over 1 s and stop within 3 s. Hold the captured headings. Require

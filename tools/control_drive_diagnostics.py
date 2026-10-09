@@ -281,7 +281,7 @@ def run(client, args):
         # The robot consumes new nonces even when ineligible. Set activation and
         # heartbeat first; only the final new nonce can request movement.
         client.publish(DASH + "StartNonce", nonce)
-        while time.monotonic() - started < 14:
+        while time.monotonic() - started < 24:
             client.pump()
             client.require_test()
             now = time.monotonic()
@@ -305,7 +305,7 @@ def run(client, args):
                 return
             if not seen_active and now - started > 2:
                 raise ControlError("Robot did not acknowledge/start diagnostic: " + str(client.get(OUT + "Status")))
-        raise ControlError("Session exceeded14-second hard timeout")
+        raise ControlError("Session exceeded24-second hard timeout")
     finally:
         # Best effort on network failure; independent robot watchdog must stop it.
         try:

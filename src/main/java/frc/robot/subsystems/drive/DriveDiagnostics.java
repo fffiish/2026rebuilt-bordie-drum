@@ -309,7 +309,7 @@ public final class DriveDiagnostics {
     heartbeatSec = Timer.getFPGATimestamp();
     hardDeadlineSec = startSec + switch (stage) {
       case FEEDBACK -> 0.145;
-      case DRIVE_OPEN -> 1.995;
+      case DRIVE_OPEN -> 19.995;
       case DRIVE_CLOSED -> 2.995;
       case STEER_POSITIVE, STEER_NEGATIVE -> 11.995;
       default -> 0;
@@ -327,7 +327,7 @@ public final class DriveDiagnostics {
     if (deadlineReached) {
       elapsed = switch (stage) {
         case FEEDBACK -> 0.150;
-        case DRIVE_OPEN -> 2.0;
+        case DRIVE_OPEN -> 20.0;
         case DRIVE_CLOSED -> 3.0;
         case STEER_POSITIVE, STEER_NEGATIVE -> 12.0;
         default -> elapsed;
@@ -400,9 +400,9 @@ public final class DriveDiagnostics {
     if (!driveTravelAndDirectionHealthy()) {
       return;
     }
-    if (elapsed >= 2) {
+    if (elapsed >= 20.0) {
       reportSpeeds(false);
-      finish(true, "Bounded drive-voltage pulse completed; review recorded speeds/current");
+      finish(true, "Bounded 20-second drive-voltage hold completed; review recorded speeds/current");
       return;
     }
     for (int i = 0; i < modules.length; i++) {
