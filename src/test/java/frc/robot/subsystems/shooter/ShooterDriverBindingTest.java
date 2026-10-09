@@ -16,8 +16,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.RobotSuperstructure;
-import frc.robot.constants.indexer.IndexerConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.constants.shooter.ShooterConstants;
+import frc.robot.lib.subsystem.DeviceConnectedStatus;
 import frc.robot.lib.subsystem.angular.AngularIO;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
 import frc.robot.lib.subsystem.angular.AngularSubsystemConfig;
@@ -34,6 +35,8 @@ class ShooterDriverBindingTest {
   private static final class RecordingIO implements AngularIO {
     double requestedRps;
     double measuredRps;
+    double[] motorMeasuredRps = {};
+    boolean allConnected = true;
     double requestedAngleRadians;
     int stops;
 
@@ -57,6 +60,10 @@ class ShooterDriverBindingTest {
     public void updateInputs(AngularIOInputs inputs) {
       inputs.velocity = RotationsPerSecond.of(measuredRps);
       inputs.goalVel = RotationsPerSecond.of(requestedRps);
+      inputs.motorVelocitiesRadiansPerSecond =
+          java.util.Arrays.stream(motorMeasuredRps).map(value -> value * 2.0 * Math.PI).toArray();
+      inputs.deviceConnectedStatuses =
+          new DeviceConnectedStatus[] {new DeviceConnectedStatus(allConnected, 39)};
     }
   }
 
@@ -68,6 +75,7 @@ class ShooterDriverBindingTest {
     final RecordingIO pivotIO = new RecordingIO();
     final RecordingIO pickupIO = new RecordingIO();
     final RecordingIO feederIO = new RecordingIO();
+    boolean hoodConnected = true;
     final AngularSubsystem pivot;
     final AngularSubsystem pickup;
     final AngularSubsystem feeder;
@@ -94,7 +102,8 @@ class ShooterDriverBindingTest {
               flywheelIO,
               AngularSubsystemConfig.builder()
                   .logKey("ShooterBindingFlywheel")
-                  .velocityTolerance(RotationsPerSecond.of(2))
+                  .bus(RobotConstants.kRioBus)
+                  .velocityTolerance(RotationsPerSecond.of(0.5))
                   .build());
       indexerRollers =
           new AngularSubsystem(
@@ -104,8 +113,8 @@ class ShooterDriverBindingTest {
               new HoodIO() {
                 @Override
                 public void updateInputs(HoodIOInputs inputs) {
-                  inputs.connected = true;
-                  inputs.controllerConnected = true;
+                  inputs.connected = hoodConnected;
+                  inputs.controllerConnected = hoodConnected;
                   inputs.positionNormalized = 0;
                 }
               });
@@ -142,7 +151,7 @@ class ShooterDriverBindingTest {
         LiveWindow.setEnabled(false);
         scheduler.enable();
       }
-      // The flywheel idles at a nonzero speed, so the stale ready condition is "measured == idle".
+      // Establish idle readiness before the first shooting request.
       flywheelIO.measuredRps = ShooterConstants.kFlywheelIdle.in(RotationsPerSecond);
       axis(0);
       assertTrue(testMode ? DriverStation.isTestEnabled() : DriverStation.isTeleopEnabled());
@@ -187,24 +196,23 @@ class ShooterDriverBindingTest {
       robot.axis(0.8);
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
       assertEquals(
-          80, robot.shooter.getTargetState().getFlywheelVelocity().in(RotationsPerSecond), 1e-9);
-      assertEquals(80, robot.flywheelIO.requestedRps, 1e-9);
-      assertEquals(
-          IndexerState.kIdle,
-          robot.indexer.getTargetState(),
-          "Idle-ready must not feed after the target becomes 80 rps");
+          30, robot.shooter.getTargetState().getFlywheelVelocity().in(RotationsPerSecond), 1e-9);
+      assertEquals(30, robot.flywheelIO.requestedRps, 1e-9);
+      assertFalse(robot.shooter.atSpeed().getAsBoolean(), "Flywheel is still stopped");
+      assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
       assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
-      robot.flywheelIO.measuredRps = 77.9;
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+      assertEquals(0, robot.pickupIO.requestedRps, 1e-9);
+      robot.flywheelIO.measuredRps = 29.49;
       robot.tick();
-      assertEquals(
-          IndexerState.kIdle,
-          robot.indexer.getTargetState(),
-          "Flywheel outside the configured 2 rps tolerance must not feed");
+      assertFalse(robot.shooter.atSpeed().getAsBoolean());
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = ShooterConstants.kFlywheelShooting.in(RotationsPerSecond);
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
-      assertEquals(
-          IndexerConstants.kFeeding.in(RotationsPerSecond), robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(32, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(15, robot.feederIO.requestedRps, 1e-9);
       robot.xboxSim.setRightTriggerAxis(0);
       robot.advanceTicks(1);
       assertEquals(ShooterState.kIdle, robot.shooter.getTargetState());
@@ -214,17 +222,116 @@ class ShooterDriverBindingTest {
           robot.flywheelIO.requestedRps,
           1e-9);
       assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+      assertEquals(0, robot.pickupIO.requestedRps, 1e-9);
     }
   }
 
   @Test
-  void xboxRightTriggerSpinsWaitsFeedsAndReleasesInTeleop() {
+  void xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTeleop() {
     verifyRightTrigger(false);
   }
 
   @Test
-  void xboxRightTriggerSpinsWaitsFeedsAndReleasesInTest() {
+  void xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTest() {
     verifyRightTrigger(true);
+  }
+
+  @Test
+  void rightTriggerStartsBottomRollersAndFeederEvenWhenHoodIsNotReady() {
+    try (var robot = new Fixture(false)) {
+      robot.hoodConnected = false;
+      robot.axis(0.8);
+      assertFalse(robot.shooter.hoodAtTarget().getAsBoolean());
+      assertFalse(robot.shooter.readyToFire().getAsBoolean());
+      assertEquals(30, robot.flywheelIO.requestedRps, 1e-9);
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+      robot.flywheelIO.measuredRps = 30;
+      robot.tick();
+      assertFalse(robot.shooter.hoodAtTarget().getAsBoolean());
+      assertEquals(32, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(15, robot.feederIO.requestedRps, 1e-9);
+      robot.axis(0);
+      assertEquals(0, robot.flywheelIO.requestedRps, 1e-9);
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+    }
+  }
+
+  @Test
+  void aStoppedOrDisconnectedFollowerKeepsTheShotWaiting() {
+    try (var robot = new Fixture(false)) {
+      robot.flywheelIO.measuredRps = 30;
+      robot.flywheelIO.motorMeasuredRps = new double[] {30, 30, 0, 30};
+      robot.axis(0.8);
+      assertFalse(robot.shooter.atSpeed().getAsBoolean());
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+      robot.flywheelIO.motorMeasuredRps = new double[] {30, 30, 30, 30};
+      robot.flywheelIO.allConnected = false;
+      robot.tick();
+      assertFalse(robot.shooter.atSpeed().getAsBoolean());
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      robot.flywheelIO.allConnected = true;
+      robot.tick();
+      assertTrue(robot.shooter.atSpeed().getAsBoolean());
+      assertEquals(32, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(15, robot.feederIO.requestedRps, 1e-9);
+    }
+  }
+
+  @Test
+  void flywheelEncoderPolarityDoesNotBlockFeedingAtTargetSpeed() {
+    for (double followerSign : new double[] {1, -1}) {
+      try (var robot = new Fixture(false)) {
+        // The actual run reached target with positive raw RPM on all four encoders, even
+        // though 26/29 are configured as opposed followers. Either encoder sign is valid.
+        robot.flywheelIO.measuredRps = 30.072;
+        robot.flywheelIO.motorMeasuredRps =
+            new double[] {30.072, 30.064, followerSign * 30.087, followerSign * 30.055};
+        robot.axis(0.8);
+        assertTrue(robot.shooter.atSpeed().getAsBoolean());
+        assertEquals(32, robot.indexerIO.requestedRps, 1e-9);
+        assertEquals(15, robot.feederIO.requestedRps, 1e-9);
+        robot.axis(0);
+        assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+        assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+      }
+    }
+  }
+
+  @Test
+  void backwardsLeaderOrUnderSpeedFollowerKeepsFeedingOff() {
+    try (var robot = new Fixture(false)) {
+      robot.flywheelIO.measuredRps = -30;
+      robot.flywheelIO.motorMeasuredRps = new double[] {-30, -30, 30, 30};
+      robot.axis(0.8);
+      assertFalse(robot.shooter.atSpeed().getAsBoolean());
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+      robot.flywheelIO.measuredRps = 30;
+      robot.flywheelIO.motorMeasuredRps = new double[] {30, 30, -29.49, -30};
+      robot.tick();
+      assertFalse(robot.shooter.atSpeed().getAsBoolean());
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+    }
+  }
+
+  @Test
+  void releasingDuringSpinUpCancelsThePendingShot() {
+    try (var robot = new Fixture(false)) {
+      robot.axis(0.8);
+      robot.axis(0);
+      robot.flywheelIO.measuredRps = 30;
+      robot.tick();
+      assertEquals(ShooterState.kIdle, robot.shooter.getTargetState());
+      assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
+      assertEquals(0, robot.flywheelIO.requestedRps, 1e-9);
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+    }
   }
 
   @Test
@@ -235,11 +342,13 @@ class ShooterDriverBindingTest {
       robot.axis(0.9);
       assertEquals(IntakeRollerState.kIntaking, robot.intake.getRollerState());
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
-      assertEquals(80, robot.flywheelIO.requestedRps, 1e-9);
-      assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
-      robot.flywheelIO.measuredRps = 80;
+      assertEquals(30, robot.flywheelIO.requestedRps, 1e-9);
+      assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
+      robot.flywheelIO.measuredRps = 30;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
+      assertEquals(32, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(15, robot.feederIO.requestedRps, 1e-9);
       assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
       List<IntakePivotState> states = new ArrayList<>();
       states.add(robot.intake.getPivotState());
@@ -277,12 +386,17 @@ class ShooterDriverBindingTest {
   }
 
   @Test
-  void shootingWithoutDeploymentStartsArmAndFlywheelWithoutWaiting() {
+  void shootingWithoutDeploymentSpinsFlywheelAndWaitsBeforeMovingArm() {
     try (var robot = new Fixture(true)) {
       assertFalse(robot.intake.isDeployed());
       robot.axis(0.9);
+      assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
+      assertEquals(30, robot.flywheelIO.requestedRps, 1e-9);
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+      robot.flywheelIO.measuredRps = 30;
+      robot.tick();
       assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
-      assertEquals(80, robot.flywheelIO.requestedRps, 1e-9);
       robot.axis(0);
       assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
     }

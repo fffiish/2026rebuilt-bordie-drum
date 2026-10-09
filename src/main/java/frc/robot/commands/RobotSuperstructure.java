@@ -71,10 +71,9 @@ public class RobotSuperstructure {
    * it is pressed:
    *
    * <ul>
-   *   <li><b>Shooting.</b> The flywheel spins up and the indexer feeds as soon as the flywheel and
-   *       hood are ready. Nothing waits on the arm.
-   *   <li><b>The arm.</b> Shuffles slowly up and down a few times to shake FUEL toward the indexer
-   *       while it feeds, then raises 90 degrees and holds.
+   *   <li><b>Spin-up.</b> The flywheel immediately targets 30 rps.
+   *   <li><b>The shot.</b> Once flywheel speed is within tolerance, the bottom rollers and feeder
+   *       start together. The arm shuffles to shake FUEL toward the indexer, then raises and holds.
    * </ul>
    *
    * <p>Releasing the trigger cancels both, and because the arm's resting position is down, it
@@ -84,8 +83,14 @@ public class RobotSuperstructure {
     return shooter
         .set(ShooterState.kShootingNear)
         .alongWith(
-            Commands.waitUntil(shooter.readyToFire()).andThen(indexer.set(IndexerState.kFeeding)))
-        .alongWith(Commands.sequence(agitateArm(), intake.setPivot(IntakePivotState.kRaised)));
+            Commands.waitUntil(shooter.atSpeed())
+                .andThen(
+                    indexer
+                        .set(IndexerState.kFeeding)
+                        .alongWith(
+                            intake.feedShooter(),
+                            Commands.sequence(
+                                agitateArm(), intake.setPivot(IntakePivotState.kRaised)))));
   }
 
   /**

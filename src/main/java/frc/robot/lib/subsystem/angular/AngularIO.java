@@ -30,6 +30,13 @@ public interface AngularIO {
     public NeutralModeValue neutralMode = NeutralModeValue.Brake;
 
     public double[] motorTemperatures = {};
+
+    /**
+     * Per-motor mechanism velocities. Follower encoder signs may differ by mounting; empty when
+     * only group speed exists.
+     */
+    public double[] motorVelocitiesRadiansPerSecond = {};
+
     public DeviceConnectedStatus[] deviceConnectedStatuses = {};
 
     public Angle goalPos = Radians.of(0.0);

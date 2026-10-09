@@ -143,8 +143,7 @@ public final class IntakeConstants {
 
   public static final int kFeederFollowerId = 35; // confirmed: "Feeder #35"
 
-  public static final AngularVelocity kFeederIntaking =
-      RotationsPerSecond.of(50.0); // TODO(bringup)
+  public static final AngularVelocity kFeederIntaking = RotationsPerSecond.of(15.0);
   public static final AngularVelocity kFeederEjecting =
       RotationsPerSecond.of(-40.0); // TODO(bringup)
 
@@ -152,12 +151,14 @@ public final class IntakeConstants {
       AngularIOSparkFlexConfig.builder()
           .masterId(kFeederMasterId)
           .followerId(kFeederFollowerId)
-          .opposeMaster(false) // TODO(bringup): true if the second motor faces the other way
+          .opposeMaster(true) // Confirmed: CAN 35 must turn opposite CAN 28 to drive together.
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(40))
-          .secondaryCurrentLimit(Amps.of(80))
+          .smartCurrentLimit(Amps.of(60))
+          .secondaryCurrentLimit(Amps.of(60))
+          .logFollowerTelemetry(true)
+          .kP(0.01 / 12.0)
           .kV(0.12 / (2.0 * Math.PI)) // 0.12 V per rps, expressed as V per rad/s
           .build();
 
@@ -167,10 +168,10 @@ public final class IntakeConstants {
           .numMotors(2)
           .moi(KilogramSquareMeters.of(0.004)) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0)
-          .supplyCurrentLimit(Amps.of(40))
-          .statorCurrentLimit(Amps.of(80))
+          .supplyCurrentLimit(Amps.of(60))
+          .statorCurrentLimit(Amps.of(60))
           .kV(0.12) // TODO(bringup)
-          // Sim-only starting profile: 10 seconds to the unverified 50 rps goal.
+          // Sim-only starting profile: three seconds to the 15 rps forward goal.
           .acceleration(RotationsPerSecondPerSecond.of(5.0))
           .build();
 
@@ -179,7 +180,8 @@ public final class IntakeConstants {
           .logKey("Feeder")
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
-          .kV(0.12 / (2.0 * Math.PI)) // 6 V feedforward at the 50 rps target
+          .kP(0.01 / 12.0)
+          .kV(0.12 / (2.0 * Math.PI)) // 1.8 V feedforward at the 15 rps target
           .build(); // TODO(bringup): tune kS/kV/kP against the real rollers
 
   public static final AngularSubsystemConfig kFeederSubsystemConfigSim =

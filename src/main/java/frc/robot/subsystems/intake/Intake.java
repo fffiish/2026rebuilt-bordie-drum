@@ -1,8 +1,10 @@
 package frc.robot.subsystems.intake;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -36,6 +38,8 @@ public class Intake extends VirtualSubsystem {
   private IntakePivotState restingPivot = IntakePivotState.kStowed;
   private IntakePivotState heldPivot = null;
   private IntakeRollerState heldRollers = null;
+  private AngularVelocity heldFeederVelocity = null;
+  private final VirtualSubsystem feederOwner = new VirtualSubsystem();
 
   public Intake(
       AngularSubsystem pivot, AngularSubsystem intakeRollers, AngularSubsystem feederRollers) {
@@ -47,7 +51,22 @@ public class Intake extends VirtualSubsystem {
     intakeRollers.setDefaultCommand(
         intakeRollers.velocity(() -> getRollerState().getIntakeRollerVelocity()));
     feederRollers.setDefaultCommand(
-        feederRollers.velocity(() -> getRollerState().getFeederVelocity()));
+        feederRollers.velocity(
+            () ->
+                heldFeederVelocity != null
+                    ? heldFeederVelocity
+                    : getRollerState().getFeederVelocity()));
+  }
+
+  /** Feed during a shot without starting the independent floor pickup rollers. */
+  public Command feedShooter() {
+    return Commands.startEnd(
+        () -> heldFeederVelocity = IntakeConstants.kFeederIntaking,
+        () -> {
+          heldFeederVelocity = null;
+          feederRollers.stopImmediately();
+        },
+        feederOwner);
   }
 
   /** The arm position currently in force: whatever is being held, else the resting position. */
@@ -90,6 +109,10 @@ public class Intake extends VirtualSubsystem {
     Logger.recordOutput("Intake/TargetState", getPivotState().name());
     Logger.recordOutput("Intake/TargetPivotState", getPivotState().name());
     Logger.recordOutput("Intake/TargetRollerState", getRollerState().name());
+    Logger.recordOutput(
+        "Intake/FeederTargetRps",
+        (heldFeederVelocity != null ? heldFeederVelocity : getRollerState().getFeederVelocity())
+            .in(RotationsPerSecond));
     Logger.recordOutput("Intake/TargetPivotDegrees", getTargetPivotAngle().in(Degrees));
   }
 

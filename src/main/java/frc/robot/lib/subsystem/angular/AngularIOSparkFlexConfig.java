@@ -37,6 +37,11 @@ import lombok.Singular;
 @Getter
 public class AngularIOSparkFlexConfig {
   private final int masterId;
+
+  /** Motor-shaft speed cap, independent of profile tunables and output gearing. */
+  @Builder.Default
+  private final AngularVelocity maximumMotorVelocity = RPM.of(Double.POSITIVE_INFINITY);
+
   @Singular private final List<Integer> followerIds;
 
   /** Optional per-motor cached telemetry; enable only for mechanisms being investigated. */

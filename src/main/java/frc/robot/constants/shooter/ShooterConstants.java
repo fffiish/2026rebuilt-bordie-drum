@@ -32,10 +32,9 @@ public final class ShooterConstants {
   public static final int kFlywheelFollowerIdC = 29; // confirmed: "Shooter #29"
 
   public static final AngularVelocity kFlywheelIdle = RotationsPerSecond.of(0.0);
-  public static final AngularVelocity kFlywheelShooting =
-      RotationsPerSecond.of(80.0); // TODO(bringup): speed for the near hood preset
-  public static final AngularVelocity kFlywheelShootingFar =
-      RotationsPerSecond.of(95.0); // TODO(bringup): speed for the far hood preset
+  public static final AngularVelocity kFlywheelMaximumSpeed = RotationsPerSecond.of(30.0);
+  public static final AngularVelocity kFlywheelShooting = kFlywheelMaximumSpeed;
+  public static final AngularVelocity kFlywheelShootingFar = kFlywheelMaximumSpeed;
   public static final AngularVelocity kFlywheelEjecting =
       RotationsPerSecond.of(20.0); // TODO(bringup)
 
@@ -60,6 +59,7 @@ public final class ShooterConstants {
           .outputAnglePerOutputRotation(Rotations.of(1.0))
           .smartCurrentLimit(Amps.of(40)) // per motor
           .secondaryCurrentLimit(Amps.of(60))
+          .maximumMotorVelocity(kFlywheelMaximumSpeed)
           .encoderMeasurementPeriodMs(10)
           .encoderAverageDepth(2)
           .logFollowerTelemetry(true)
@@ -81,8 +81,9 @@ public final class ShooterConstants {
   public static final AngularSubsystemConfig kFlywheelSubsystemConfigReal =
       AngularSubsystemConfig.builder()
           .logKey("ShooterFlywheel")
+          .maximumVelocity(kFlywheelMaximumSpeed)
           .bus(RobotConstants.kRioBus)
-          .velocityTolerance(RotationsPerSecond.of(2.0)) // gates "ready to fire"
+          .velocityTolerance(RotationsPerSecond.of(0.5)) // gates feeding near the 30 rps target
           .kP(kFlywheelKP)
           .kV(kFlywheelKV)
           .build();
@@ -90,8 +91,9 @@ public final class ShooterConstants {
   public static final AngularSubsystemConfig kFlywheelSubsystemConfigSim =
       AngularSubsystemConfig.builder()
           .logKey("ShooterFlywheel")
+          .maximumVelocity(kFlywheelMaximumSpeed)
           .bus(RobotConstants.kRioBus)
-          .velocityTolerance(RotationsPerSecond.of(2.0))
+          .velocityTolerance(RotationsPerSecond.of(0.5))
           .kV(0.11)
           .build();
 

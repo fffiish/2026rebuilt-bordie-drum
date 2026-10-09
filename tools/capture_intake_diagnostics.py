@@ -13,6 +13,9 @@ import websocket
 
 
 PREFIXES = [
+    "/AdvantageKit/RealOutputs/AngularControllers/",
+    "/AdvantageKit/RealOutputs/Shooter/",
+    "/AdvantageKit/RealOutputs/Intake/",
     "/AdvantageKit/AngularSubsystems/",
     "/AdvantageKit/RealOutputs/AngularSubsystems/",
     "/AdvantageKit/RealOutputs/IntakeDiagnostics/",

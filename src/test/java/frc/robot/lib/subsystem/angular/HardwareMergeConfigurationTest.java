@@ -28,7 +28,7 @@ class HardwareMergeConfigurationTest {
   @Test
   void mergedAgitationStaysWithinCalibratedPivotTravel() {
     assertEquals(0.0, IntakeConstants.kPivotAgitateLow.in(Degrees), 1e-12);
-    assertEquals(20.0, IntakeConstants.kPivotAgitateHigh.in(Degrees), 1e-12);
+    assertEquals(30.0, IntakeConstants.kPivotAgitateHigh.in(Degrees), 1e-12);
     assertEquals(90.0, IntakeConstants.kPivotRaised.in(Degrees), 1e-12);
     assertTrue(IntakeConstants.kPivotRaised.lt(IntakeConstants.kPivotStowed));
     assertEquals(3, IntakeConstants.kAgitateCycles);

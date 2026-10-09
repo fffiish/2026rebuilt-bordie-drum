@@ -225,7 +225,8 @@ public class AngularSubsystem extends RegisteredSubsystem {
   public Command velocity(AngularVelocity angVel) {
     // Only set angle once, run until canceled.
     return parallel(
-        sequence(runOnce(() -> io.setVelocity(angVel)), idle()), setOutputMode(kVelocity));
+        sequence(runOnce(() -> io.setVelocity(config.limitVelocity(angVel))), idle()),
+        setOutputMode(kVelocity));
   }
 
   public Command angle(Supplier<Angle> angle) {
@@ -241,7 +242,8 @@ public class AngularSubsystem extends RegisteredSubsystem {
 
   public Command velocity(Supplier<AngularVelocity> angVel) {
     // Set angle every loop, run until canceled.
-    return parallel(run(() -> io.setVelocity(angVel.get())), setOutputMode(kVelocity));
+    return parallel(
+        run(() -> io.setVelocity(config.limitVelocity(angVel.get()))), setOutputMode(kVelocity));
   }
 
   public Command openLoop(Voltage voltage) {
@@ -350,6 +352,23 @@ public class AngularSubsystem extends RegisteredSubsystem {
   public boolean areAllDevicesConnected() {
     return Arrays.stream(inputs.deviceConnectedStatuses)
         .allMatch(DeviceConnectedStatus::isConnected);
+  }
+
+  public boolean areAllMotorsAtVelocity(AngularVelocity target, AngularVelocity tolerance) {
+    double desired = target.in(RadiansPerSecond);
+    double allowed = tolerance.in(RadiansPerSecond);
+    return areAllDevicesConnected()
+        && Double.isFinite(desired)
+        && Double.isFinite(allowed)
+        && allowed >= 0
+        && Math.abs(inputs.velocity.in(RadiansPerSecond) - desired) <= allowed
+        // The leader establishes commanded direction. Mirrored follower encoder polarity does
+        // not establish mechanism direction, so compare follower speed magnitudes.
+        && Arrays.stream(inputs.motorVelocitiesRadiansPerSecond)
+            .allMatch(
+                value ->
+                    Double.isFinite(value)
+                        && Math.abs(Math.abs(value) - Math.abs(desired)) <= allowed);
   }
 
   /** Test mode bypasses the scheduler. Refresh actual IO without running any default command. */

@@ -85,6 +85,11 @@ public class AngularIOSparkFlex implements AngularIO {
 
   public AngularIOSparkFlex(AngularIOSparkFlexConfig config) {
     this.deviceConfig = config;
+    if (Double.isFinite(config.getMaximumMotorVelocity().in(RPM))) {
+      Logger.recordOutput(
+          "AngularControllers/" + config.getMasterId() + "/MaximumMotorRPM",
+          config.getMaximumMotorVelocity().in(RPM));
+    }
 
     master = new SparkFlex(config.getMasterId(), MotorType.kBrushless);
     followers =
@@ -96,6 +101,7 @@ public class AngularIOSparkFlex implements AngularIO {
     controller = master.getClosedLoopController();
 
     boolean ok = applyConfig(master, buildMasterConfig());
+    ok &= verifyCurrentLimits(master);
     for (int i = 0; i < followers.size(); i++) {
       SparkFlex follower = followers.get(i);
       SparkFlexConfig followerConfig = new SparkFlexConfig();
@@ -104,6 +110,9 @@ public class AngularIOSparkFlex implements AngularIO {
           .follow(config.getMasterId(), config.isFollowerOpposed(config.getFollowerIds().get(i)));
       if (config.getSmartCurrentLimit() != null) {
         followerConfig.smartCurrentLimit((int) config.getSmartCurrentLimit().in(Amps));
+      }
+      if (config.getSecondaryCurrentLimit() != null) {
+        followerConfig.secondaryCurrentLimit(config.getSecondaryCurrentLimit().in(Amps));
       }
       followerConfig.signals.motorTemperatureAlwaysOn(true).motorTemperaturePeriodMs(100);
       followerConfig
@@ -114,6 +123,7 @@ public class AngularIOSparkFlex implements AngularIO {
           .warningsPeriodMs(20);
       configureFollowerTelemetry(followerConfig);
       ok &= applyConfig(follower, followerConfig);
+      ok &= verifyCurrentLimits(follower);
     }
     configurationsNotAppliedAlert.set(!ok);
     startupConfigurationHealthy = ok;
@@ -287,6 +297,11 @@ public class AngularIOSparkFlex implements AngularIO {
     inputs.supplyCurrent = Amps.of(outputCurrent * Math.abs(dutyCycle));
 
     int deviceCount = followers.size() + 1;
+    inputs.motorVelocitiesRadiansPerSecond =
+        deviceConfig.isLogFollowerTelemetry() ? new double[deviceCount] : new double[0];
+    if (deviceConfig.isLogFollowerTelemetry()) {
+      inputs.motorVelocitiesRadiansPerSecond[0] = inputs.velocity.in(RadiansPerSecond);
+    }
     inputs.motorTemperatures = new double[deviceCount];
     inputs.motorTemperatures[0] = master.getMotorTemperature();
     masterConnection.checkLastError(inputs.motorTemperatures[0]);
@@ -306,11 +321,15 @@ public class AngularIOSparkFlex implements AngularIO {
       inputs.motorTemperatures[i + 1] = followers.get(i).getMotorTemperature();
       followerConnections.get(i).checkLastError(inputs.motorTemperatures[i + 1]);
       if (deviceConfig.isLogFollowerTelemetry()) {
-        logFollowerTelemetry(
-            followers.get(i),
-            followerConnections.get(i),
-            deviceConfig.getFollowerIds().get(i),
-            inputs.motorTemperatures[i + 1]);
+        double followerRPM =
+            logFollowerTelemetry(
+                followers.get(i),
+                followerConnections.get(i),
+                deviceConfig.getFollowerIds().get(i),
+                inputs.motorTemperatures[i + 1]);
+        inputs.motorVelocitiesRadiansPerSecond[i + 1] =
+            followerVelocityRadiansPerSecond(
+                deviceConfig, deviceConfig.getFollowerIds().get(i), followerRPM);
       }
     }
 
@@ -377,7 +396,15 @@ public class AngularIOSparkFlex implements AngularIO {
         .outputCurrentPeriodMs(20);
   }
 
-  private void logFollowerTelemetry(
+  static double followerVelocityRadiansPerSecond(
+      AngularIOSparkFlexConfig config, int id, double rpm) {
+    return rpm
+        / 60.0
+        / config.getMotorRotationsPerOutputRotations()
+        * config.getOutputAnglePerOutputRotation().in(Radians);
+  }
+
+  private double logFollowerTelemetry(
       SparkFlex spark, SparkConnectionMonitor connection, int id, double temperature) {
     RelativeEncoder followerEncoder = spark.getEncoder();
     double motorRotations = followerEncoder.getPosition();
@@ -391,6 +418,7 @@ public class AngularIOSparkFlex implements AngularIO {
     double bus = spark.getBusVoltage();
     connection.checkLastError(bus);
     logMotorTelemetry(id, motorRotations, motorRPM, current, duty, bus, temperature);
+    return motorRPM;
   }
 
   private void logMotorTelemetry(
@@ -476,6 +504,7 @@ public class AngularIOSparkFlex implements AngularIO {
 
   @Override
   public void setVelocity(AngularVelocity angVel) {
+    angVel = limitMotorVelocity(deviceConfig, angVel);
     if (!configurationState.ready()) {
       stop();
       return;
@@ -496,6 +525,17 @@ public class AngularIOSparkFlex implements AngularIO {
     goalPos = Optional.empty();
     goalVel = Optional.of(angVel);
     outputMode = kVelocity;
+  }
+
+  static AngularVelocity limitMotorVelocity(
+      AngularIOSparkFlexConfig config, AngularVelocity requested) {
+    double value = requested.in(RadiansPerSecond);
+    double maximum =
+        config.getMaximumMotorVelocity().in(RotationsPerSecond)
+            / config.getMotorRotationsPerOutputRotations()
+            * config.getOutputAnglePerOutputRotation().in(Radians);
+    if (!Double.isFinite(value)) return RadiansPerSecond.of(0);
+    return RadiansPerSecond.of(Math.max(-maximum, Math.min(maximum, value)));
   }
 
   /** MAXMotion velocity requires positive acceleration; an unspecified profile uses plain PID. */
@@ -646,8 +686,39 @@ public class AngularIOSparkFlex implements AngularIO {
         && Math.abs(actual - expected) <= Math.max(1e-5, Math.abs(expected) * 1e-5);
   }
 
-  private boolean verifyConfiguration() {
+  private boolean verifyCurrentLimits(SparkFlex spark) {
     boolean ok = true;
+    String key = "AngularControllers/" + spark.getDeviceId() + "/";
+    if (spark != master) {
+      int leader = spark.configAccessor.getFollowerModeLeaderId();
+      ok &= spark.getLastError() == REVLibError.kOk && leader == deviceConfig.getMasterId();
+      boolean opposed = spark.configAccessor.getFollowerModeInverted();
+      ok &=
+          spark.getLastError() == REVLibError.kOk
+              && opposed == deviceConfig.isFollowerOpposed(spark.getDeviceId());
+      Logger.recordOutput(key + "ReadbackFollowerLeaderCANID", leader);
+      Logger.recordOutput(key + "ReadbackFollowerOpposed", opposed);
+    }
+    if (deviceConfig.getSmartCurrentLimit() != null) {
+      int actual = spark.configAccessor.getSmartCurrentLimit();
+      ok &=
+          spark.getLastError() == REVLibError.kOk
+              && actual == (int) deviceConfig.getSmartCurrentLimit().in(Amps);
+      Logger.recordOutput(key + "ReadbackSmartCurrentLimitAmps", actual);
+    }
+    if (deviceConfig.getSecondaryCurrentLimit() != null) {
+      double actual = spark.configAccessor.getSecondaryCurrentLimit();
+      ok &=
+          spark.getLastError() == REVLibError.kOk
+              && Math.abs(actual - deviceConfig.getSecondaryCurrentLimit().in(Amps)) < 0.01;
+      Logger.recordOutput(key + "ReadbackSecondaryCurrentLimitAmps", actual);
+    }
+    Logger.recordOutput(key + "CurrentLimitsVerified", ok);
+    return ok;
+  }
+
+  private boolean verifyConfiguration() {
+    boolean ok = verifyCurrentLimits(master);
     double scale = anglePerRotation();
     double actual = master.configAccessor.closedLoop.getP(kSlot);
     ok &= matches(actual, deviceConfig.getKP() * scale);
@@ -745,6 +816,9 @@ public class AngularIOSparkFlex implements AngularIO {
               if (deviceConfig.getSmartCurrentLimit() != null)
                 followerConfig.smartCurrentLimit(
                     (int) deviceConfig.getSmartCurrentLimit().in(Amps));
+              if (deviceConfig.getSecondaryCurrentLimit() != null)
+                followerConfig.secondaryCurrentLimit(
+                    deviceConfig.getSecondaryCurrentLimit().in(Amps));
               followerConfig
                   .signals
                   .motorTemperatureAlwaysOn(true)
@@ -764,6 +838,7 @@ public class AngularIOSparkFlex implements AngularIO {
                             SparkBase.ResetMode.kNoResetSafeParameters,
                             SparkBase.PersistMode.kNoPersistParameters)
                         == REVLibError.kOk;
+                ok &= verifyCurrentLimits(follower);
               } finally {
                 follower.setCANTimeout(0);
                 follower.setCANMaxRetries(0);

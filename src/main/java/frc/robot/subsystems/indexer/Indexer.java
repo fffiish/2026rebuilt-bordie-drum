@@ -41,7 +41,13 @@ public class Indexer extends VirtualSubsystem {
 
   /** Holds {@code state} while scheduled, then falls back to idle. Bind with {@code whileTrue}. */
   public Command set(IndexerState state) {
-    return Commands.startEnd(() -> targetState = state, () -> targetState = kDefaultState, this);
+    return Commands.startEnd(
+        () -> targetState = state,
+        () -> {
+          targetState = kDefaultState;
+          rollers.stopImmediately();
+        },
+        this);
   }
 
   /** Latches {@code state} and finishes immediately. For auto sequences. */

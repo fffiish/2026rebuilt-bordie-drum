@@ -1,7 +1,5 @@
 package frc.robot.subsystems.shooter;
 
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -52,16 +50,13 @@ public class Shooter extends VirtualSubsystem {
     hood.stopImmediately();
   }
 
-  /** Compare measured speed with the current state, including the first trigger-press cycle. */
+  /** Require all connected flywheel motors to reach the current state's target speed. */
   public Trigger atSpeed() {
     return new Trigger(
         () ->
-            Math.abs(
-                    flywheel.getVelocity().in(RadiansPerSecond)
-                        - targetState.getFlywheelVelocity().in(RadiansPerSecond))
-                <= ShooterConstants.kFlywheelSubsystemConfigReal
-                    .getVelocityTolerance()
-                    .in(RadiansPerSecond));
+            flywheel.areAllMotorsAtVelocity(
+                targetState.getFlywheelVelocity(),
+                ShooterConstants.kFlywheelSubsystemConfigReal.getVelocityTolerance()));
   }
 
   @Override
