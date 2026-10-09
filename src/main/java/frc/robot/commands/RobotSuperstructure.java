@@ -45,22 +45,25 @@ public class RobotSuperstructure {
   }
 
   /**
-   * The full shot, held for as long as the trigger is:
+   * The full shot, held for as long as the trigger is. Two things run side by side from the moment
+   * it is pressed:
    *
-   * <ol>
-   *   <li>Spin the flywheel up — started immediately, so it runs while the arm agitates.
-   *   <li>Shuffle the arm slowly up and down a few times to settle FUEL toward the indexer.
-   *   <li>Raise the arm 90 degrees and hold it there.
-   *   <li>Feed once the flywheel is at speed, the hood is set, and the arm has actually arrived.
-   * </ol>
+   * <ul>
+   *   <li><b>Shooting.</b> The flywheel spins up and the indexer feeds as soon as the flywheel is
+   *       at speed. Nothing waits on the arm.
+   *   <li><b>The arm.</b> Shuffles slowly up and down a few times to shake FUEL toward the indexer
+   *       while it feeds, then raises 90 degrees and holds.
+   * </ul>
    *
-   * <p>Releasing the trigger cancels the whole thing, and because the arm's resting position is
-   * down, it redeploys on its own — no explicit "lower the arm" step needed.
+   * <p>Releasing the trigger cancels both, and because the arm's resting position is down, it
+   * redeploys on its own.
    */
   public Command shoot() {
     return shooter
         .set(ShooterState.kShootingNear)
-        .alongWith(Commands.sequence(agitateArm(), raiseArmAndFeed()));
+        .alongWith(
+            Commands.waitUntil(shooter.readyToFire()).andThen(indexer.set(IndexerState.kFeeding)))
+        .alongWith(Commands.sequence(agitateArm(), intake.setPivot(IntakePivotState.kRaised)));
   }
 
   /**
@@ -76,16 +79,6 @@ public class RobotSuperstructure {
       strokes[2 * i + 1] = intake.setPivot(IntakePivotState.kAgitateLow).withTimeout(dwell);
     }
     return Commands.sequence(strokes);
-  }
-
-  /** Raise and hold the arm, and start feeding only once everything is actually in position. */
-  private Command raiseArmAndFeed() {
-    return intake
-        .setPivot(IntakePivotState.kRaised)
-        .alongWith(
-            Commands.waitUntil(
-                    shooter.readyToFire().and(intake.pivotNear(IntakePivotState.kRaised)))
-                .andThen(indexer.set(IndexerState.kFeeding)));
   }
 
   /** Puts the arm down once per match. Safe to call more than once. */
@@ -114,9 +107,7 @@ public class RobotSuperstructure {
    */
   public void registerAutoCommands() {
     NamedCommands.registerCommand("Intake", intakeFuel().asProxy());
-    // Agitation alone is kAgitateCycles x 2 x kAgitateDwell (2.1 s at the defaults), so the auto
-    // shot needs room beyond that to raise the arm and actually feed. Revisit if those change.
-    NamedCommands.registerCommand("Shoot", shoot().withTimeout(5.0).asProxy());
+    NamedCommands.registerCommand("Shoot", shoot().withTimeout(3.0).asProxy());
     NamedCommands.registerCommand("DeployIntake", deployIntake().asProxy());
     NamedCommands.registerCommand("SpinUp", shooter.setPersistent(ShooterState.kShootingNear));
 
