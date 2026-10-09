@@ -10,7 +10,9 @@ package frc.robot;
 import static frc.robot.subsystems.vision.VisionConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -359,7 +361,25 @@ public class RobotContainer {
     - Right bumper: outtake rollers    - Left bumper: turbo
     The arm deploys at the start of auto and stays down; only a shot raises it.
     - A: trench align                  - X (real robot only): X-lock the wheels
+    - Start: reset field heading (point robot downfield first)
      */
+    // Field-centric driving needs a way to say "this way is forward". Point the robot straight
+    // downfield, away from your driver station, and press Start. On red, downfield is the
+    // opposite field direction, so the heading is set to 180 degrees rather than 0.
+    driverController.rightMidButton.onTrue(
+        Commands.runOnce(
+                () -> {
+                  boolean isRed =
+                      DriverStation.getAlliance().isPresent()
+                          && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+                  drive.setPose(
+                      new Pose2d(
+                          drive.getPose().getTranslation(),
+                          isRed ? Rotation2d.kPi : Rotation2d.kZero));
+                },
+                drive)
+            .ignoringDisable(true));
+
     driverController.leftTrigger.whileTrue(superstructure.intakeFuel()); // rollers only
     driverController.rightTrigger.whileTrue(superstructure.shoot()); // agitate, raise, feed
     driverController.rightBumper.whileTrue(superstructure.outtake()); // rollers only
