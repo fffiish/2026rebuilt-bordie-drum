@@ -108,6 +108,10 @@ public class ModuleIOSpark implements ModuleIO {
     configure(driveSpark, buildDriveConfig());
     configure(turnSpark, buildTurnConfig());
 
+    // Record the gains just applied so the first updateInputs doesn't see them as "changed" and
+    // fire a second, asynchronous configure at the SPARK after we have already seeded it.
+    primeTunables();
+
     // At boot the CANcoder may not have published a reading yet, and a failed read still hands
     // back 0, which would seed every module to -offset. Block briefly for a real sample; if none
     // arrives, updateInputs keeps retrying until one does.
@@ -202,8 +206,13 @@ public class ModuleIOSpark implements ModuleIO {
     // Steering is continuous: let the controller take the short way round rather than unwinding.
     config.closedLoop.positionWrappingEnabled(true);
     config.closedLoop.positionWrappingInputRange(-Math.PI, Math.PI);
-    config.closedLoop.pid(0.5, 0.0, turnKd.get(), kSlot);
+    config.closedLoop.pid(0.5, 0.0, turnKd.get(), kSlot)
     return config;
+  }
+
+  private void primeTunables() {
+    LoggedTunableNumber.ifChanged(hashCode(), () -> {}, driveKp, driveKv);
+    LoggedTunableNumber.ifChanged(hashCode() + 1, () -> {}, turnKp, turnKd);
   }
 
   /** Pushes new gains to the controllers when a dashboard value changes. */
