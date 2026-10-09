@@ -133,6 +133,26 @@ public class Intake extends VirtualSubsystem {
         pivot.setCurrentLimit(IntakeConstants.kPivotCurrentLimit));
   }
 
+  /**
+   * Declares that the arm is <em>down right now</em>, for a robot that was powered on with the arm
+   * out instead of folded.
+   *
+   * <p>The arm has no absolute encoder, only the motor's relative one, so it cannot tell where it
+   * is at power-on. It assumes folded and zeroes there. If it was actually down, every later
+   * command aims from the wrong starting point and drives the arm toward the floor. This re-zeroes
+   * the encoder to the deployed angle and makes deployed the resting position, so the arm stays
+   * where it is and agitation, raising and redeploying all work from the right reference.
+   *
+   * <p>Runs while disabled, so it can be pressed before enabling. Press it once, only when the arm
+   * really is down.
+   */
+  public Command markArmDeployed() {
+    return Commands.sequence(
+            Commands.runOnce(() -> restingPivot = IntakePivotState.kDeployed),
+            pivot.resetAngle(IntakeConstants.kPivotDeployed))
+        .ignoringDisable(true);
+  }
+
   /** {@link #deploy()}, but only if it has not already happened this match. */
   public Command deployOnce() {
     return Commands.either(Commands.none(), deploy(), this::isDeployed);

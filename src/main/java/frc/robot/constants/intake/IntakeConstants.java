@@ -40,7 +40,7 @@ public final class IntakeConstants {
 
   /** Top of the agitation stroke. Deliberately small — this is a shake, not a lift. */
   public static final Angle kPivotAgitateHigh =
-      kPivotDeployed.plus(Degrees.of(20.0)); // TODO(bringup)
+      kPivotDeployed.plus(Degrees.of(30.0)); // raised from 20 at the driver's request
 
   /** Bottom of the agitation stroke. */
   public static final Angle kPivotAgitateLow = kPivotDeployed;

@@ -354,6 +354,10 @@ public class RobotContainer {
     // limit once it arrives. This is the deploy path while testing; auto deploys it on its own.
     driverController.buttonX.onTrue(intake.deploy());
 
+    // The robot assumes the arm is folded at power-on. If it was powered on with the arm down
+    // instead, press Back once (enabled or not) so the code knows. Do this before pressing X.
+    driverController.leftMidButton.onTrue(intake.markArmDeployed());
+
     driverController.buttonA.whileTrue(
         DriveCommands.joystickDriveThroughTrench(
             drive,
