@@ -206,7 +206,7 @@ public class ModuleIOSpark implements ModuleIO {
     // Steering is continuous: let the controller take the short way round rather than unwinding.
     config.closedLoop.positionWrappingEnabled(true);
     config.closedLoop.positionWrappingInputRange(-Math.PI, Math.PI);
-    config.closedLoop.pid(0.5, 0.0, turnKd.get(), kSlot)
+    config.closedLoop.pid(0.5, 0.0, turnKd.get(), kSlot);
     return config;
   }
 

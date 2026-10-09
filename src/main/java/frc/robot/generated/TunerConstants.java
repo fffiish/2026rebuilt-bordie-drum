@@ -129,6 +129,8 @@ public class TunerConstants {
   private static final int kFrontRightEncoderId = 17;
   private static final Angle kFrontRightEncoderOffset =
       Rotations.of(0); // measured: wheels forward, magnet offset 0
+  // This robot's front-right drive motor needs the opposite direction from the side default.
+  private static final boolean kFrontRightDriveMotorInverted = false;
   private static final boolean kFrontRightSteerMotorInverted = true;
   private static final boolean kFrontRightEncoderInverted = false;
 
@@ -182,7 +184,7 @@ public class TunerConstants {
               kFrontRightEncoderOffset,
               kFrontRightXPos,
               kFrontRightYPos,
-              kInvertRightSide,
+              kFrontRightDriveMotorInverted,
               kFrontRightSteerMotorInverted,
               kFrontRightEncoderInverted);
   public static final SwerveModuleConstants<
