@@ -1,0 +1,22 @@
+{
+  "run_nonce": 1,
+  "mode": "FEEDBACK",
+  "requested_voltage": -0.25,
+  "requested_duration_sec": 0.15,
+  "requested_current_ceiling_amps": 10,
+  "passed": false,
+  "reason": "Pivot current limit exceeded",
+  "start_degrees": 117.99999833106995,
+  "final_degrees": 117.86941766738893,
+  "minimum_degrees": 117.86104917526245,
+  "delta_degrees": -0.13058066368102272,
+  "peak_current_amps": 10.256410598754883,
+  "minimum_applied_volts": -0.2499063193837614,
+  "active_duration_sec_from_nt_timestamps": 0.0800429999999892,
+  "last_recorded_volts": 0.0,
+  "last_recorded_velocity_rad_per_sec": 0.0,
+  "physical_direction_confirmed": false,
+  "separate_stop_verified": true,
+  "deployed_jar_sha256": "c1fced8078f44ea616730c1a41a100848937b916fdd38ad446d807ac52f4aae3",
+  "source_recording": "C:\\Users\\otgra\\OneDrive\\Documents\\ChatGPT\\FRC-Bordie\\diagnostics\\intake-feedback-20261009-01.json"
+}

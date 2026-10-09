@@ -1,0 +1,30 @@
+{
+  "robotPeriodic": {
+    "n": 135,
+    "min_ms": 329.522,
+    "median_ms": 343.12,
+    "mean_ms": 342.97044444444447,
+    "max_ms": 358.57099999999997
+  },
+  "Hood.periodic": {
+    "n": 136,
+    "min_ms": 142.66799999999998,
+    "median_ms": 148.8915,
+    "mean_ms": 149.2210588235294,
+    "max_ms": 159.456
+  },
+  "Drive.periodic": {
+    "n": 136,
+    "min_ms": 11.370999999999999,
+    "median_ms": 16.1105,
+    "mean_ms": 16.471433823529413,
+    "max_ms": 40.81
+  },
+  "AngularSubsystem.periodic": {
+    "n": 135,
+    "min_ms": 4.879,
+    "median_ms": 8.959999999999999,
+    "mean_ms": 8.721688888888888,
+    "max_ms": 13.523
+  }
+}
