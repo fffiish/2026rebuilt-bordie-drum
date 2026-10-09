@@ -1,0 +1,24 @@
+{
+  "capture_utc": "2026-10-09T08:53:08.549548+00:00",
+  "duration_sec": 0.0,
+  "topics": [
+    {
+      "id": 1,
+      "name": "/AdvantageKit/AngularSubsystems/IntakePivot/AppliedVolts",
+      "type": "double"
+    }
+  ],
+  "latest": {
+    "/AdvantageKit/AngularSubsystems/IntakePivot/AppliedVolts": -0.7
+  },
+  "history": {
+    "/AdvantageKit/AngularSubsystems/IntakePivot/AppliedVolts": [
+      [
+        0.0,
+        100,
+        -0.7
+      ]
+    ]
+  },
+  "interrupted": true
+}
