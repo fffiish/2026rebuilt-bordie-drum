@@ -80,9 +80,6 @@ public class TunerConstants {
   private static final Distance kWheelRadius =
       Inches.of(1.968); // TODO(bringup): confirm with Wheel Radius Characterization
 
-  private static final boolean kInvertLeftSide = false;
-  private static final boolean kInvertRightSide = true;
-
   private static final int kPigeonId = 15; // TODO(bringup): no gyro appears in the CAD — confirm
 
   // These are only used for simulation
@@ -145,8 +142,9 @@ public class TunerConstants {
   private static final int kBackLeftEncoderId = 10;
   private static final Angle kBackLeftEncoderOffset =
       Rotations.of(0.001436121331); // straight-position capture, 2026-10-09 UTC
-  // This robot's back-left drive motor needs the opposite of the left-side default.
-  private static final boolean kBackLeftDriveMotorInverted = true;
+  // Positive drive follows the calibrated heading. Do not compensate for a 180-degree steering
+  // target here: swerve optimization already reverses speed when it chooses that target.
+  private static final boolean kBackLeftDriveMotorInverted = false;
   private static final boolean kBackLeftSteerMotorInverted = true;
   private static final boolean kBackLeftEncoderInverted = false;
 
@@ -159,6 +157,7 @@ public class TunerConstants {
   private static final int kBackRightEncoderId = 4;
   private static final Angle kBackRightEncoderOffset =
       Rotations.of(0.000976562500); // straight-position capture, 2026-10-09 UTC
+  private static final boolean kBackRightDriveMotorInverted = true;
   private static final boolean kBackRightSteerMotorInverted = true;
   private static final boolean kBackRightEncoderInverted = false;
 
@@ -214,7 +213,7 @@ public class TunerConstants {
                   kBackRightEncoderOffset,
                   kBackRightXPos,
                   kBackRightYPos,
-                  kInvertRightSide,
+                  kBackRightDriveMotorInverted,
                   kBackRightSteerMotorInverted,
                   kBackRightEncoderInverted)
               .withSlipCurrent(kBackRightSlipCurrent);

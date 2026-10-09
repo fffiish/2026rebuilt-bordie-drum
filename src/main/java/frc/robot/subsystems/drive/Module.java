@@ -76,11 +76,16 @@ public class Module {
 
   /** Runs the module with the specified setpoint state. Mutates the state to optimize it. */
   public void runSetpoint(SwerveModuleState state) {
+    double requestedSpeedForDirection = state.speedMetersPerSecond;
     Logger.recordOutput("Drive/Module" + index + "/RequestedSpeed", state.speedMetersPerSecond);
     Logger.recordOutput("Drive/Module" + index + "/RequestedAngle", state.angle);
     // Optimize velocity setpoint
     state.optimize(getAngle());
     state.cosineScale(inputs.turnPosition);
+    Logger.recordOutput("Drive/Module" + index + "/DriveDirectionReversedByOptimization",
+        state.speedMetersPerSecond != 0.0
+            && Math.signum(state.speedMetersPerSecond)
+                != Math.signum(requestedSpeedForDirection));
     Logger.recordOutput("Drive/Module" + index + "/OptimizedSpeed", state.speedMetersPerSecond);
     Logger.recordOutput("Drive/Module" + index + "/SteeringTarget", state.angle);
     Logger.recordOutput("Drive/Module" + index + "/SteeringErrorRad",

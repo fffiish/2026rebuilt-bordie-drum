@@ -52,10 +52,10 @@ public class ModuleIOSpark implements ModuleIO {
   // Live-tunable so the modules can be tuned at the robot without a redeploy. Shared statically:
   // all four modules are mechanically identical and want the same gains.
   //
-  // Begin diagnosis at a reduced steering P. Oscillation must be diagnosed using fixed targets,
-  // sensor traces and loop timing before selecting any further gains.
+  // Operator-selected steering gains: P = 1.0, I = 0, D = 0. Steering position units are
+  // radians, with continuous wrapping configured below from -pi to pi.
   private static final LoggedTunableNumber turnKp =
-      new LoggedTunableNumber("Drive/Module/TurnKp", 0.1);
+      new LoggedTunableNumber("Drive/Module/TurnKp", 1.0);
   private static final LoggedTunableNumber turnKd =
       new LoggedTunableNumber("Drive/Module/TurnKd", 0.0);
 
@@ -67,6 +67,7 @@ public class ModuleIOSpark implements ModuleIO {
 
   private final SparkFlex driveSpark;
   private final SparkFlex turnSpark;
+  private static SparkFlex startupTransport;
   private final RelativeEncoder driveEncoder;
   private final RelativeEncoder turnEncoder;
   private final SparkClosedLoopController driveController;
@@ -157,8 +158,8 @@ public class ModuleIOSpark implements ModuleIO {
           constants) {
     this.constants = constants;
 
-    driveSpark = new SparkFlex(constants.DriveMotorId, MotorType.kBrushless);
-    turnSpark = new SparkFlex(constants.SteerMotorId, MotorType.kBrushless);
+    driveSpark = createSparkForStartup(constants.DriveMotorId);
+    turnSpark = createSparkForStartup(constants.SteerMotorId);
     driveEncoder = driveSpark.getEncoder();
     turnEncoder = turnSpark.getEncoder();
     driveController = driveSpark.getClosedLoopController();
@@ -175,9 +176,11 @@ public class ModuleIOSpark implements ModuleIO {
     try {
       driveSpark.setCANTimeout(100);
       driveConfigurationHealthy =
-          DriverStation.isDisabled() && validGains() && configure(driveSpark, buildDriveConfig());
+          DriverStation.isDisabled() && validGains()
+              && configure(driveSpark, buildDriveConfig(), constants.DriveMotorInverted);
       turnConfigurationHealthy =
-          DriverStation.isDisabled() && validGains() && configure(turnSpark, buildTurnConfig());
+          DriverStation.isDisabled() && validGains()
+              && configure(turnSpark, buildTurnConfig(), constants.SteerMotorInverted);
       driveConfigurationHealthy &= verifyDriveConfiguration();
       turnConfigurationHealthy &= verifyTurnConfiguration();
       baseConfigurationHealthy = driveConfigurationHealthy && turnConfigurationHealthy;
@@ -194,12 +197,17 @@ public class ModuleIOSpark implements ModuleIO {
     }
   }
 
-  private static boolean configure(SparkFlex spark, SparkBaseConfig config) {
+  private static boolean configure(SparkFlex spark, SparkBaseConfig config, boolean inverted) {
+    boolean previousInverted = spark.configAccessor.getInverted();
+    boolean persistPolarity = spark.getLastError() != REVLibError.kOk || previousInverted != inverted;
     spark.clearFaults();
+    // Persist a polarity correction once. Ordinary startup and live PID writes avoid rewriting
+    // controller flash; live tuning below explicitly reasserts the same module polarity.
     return spark.configure(
             config,
             SparkBase.ResetMode.kResetSafeParameters,
-            SparkBase.PersistMode.kNoPersistParameters)
+            persistPolarity ? SparkBase.PersistMode.kPersistParameters
+                : SparkBase.PersistMode.kNoPersistParameters)
         == REVLibError.kOk;
   }
 
@@ -282,11 +290,8 @@ public class ModuleIOSpark implements ModuleIO {
     config.signals.appliedOutputAlwaysOn(true).appliedOutputPeriodMs(20);
     config.signals.busVoltageAlwaysOn(true).busVoltagePeriodMs(20);
     config.signals.outputCurrentAlwaysOn(true).outputCurrentPeriodMs(20);
-    config.closedLoop.pid(driveKp.get(), 0.0, 0.0, kSlot);
-    // REV 2026 feedforward uses volts per configured velocity unit (wheel radians/second).
-    config.closedLoop.feedForward.kV(driveKv.get(), kSlot);
-    config.closedLoop.outputRange(
-        diagnosticLimits ? -0.15 : -1.0, diagnosticLimits ? 0.15 : 1.0, kSlot);
+    config.apply(buildDriveTuningConfig(
+        constants.DriveMotorInverted, driveKp.get(), driveKv.get(), diagnosticLimits));
     return config;
   }
 
@@ -309,9 +314,44 @@ public class ModuleIOSpark implements ModuleIO {
     config.signals.appliedOutputAlwaysOn(true).appliedOutputPeriodMs(20);
     config.signals.busVoltageAlwaysOn(true).busVoltagePeriodMs(20);
     config.signals.outputCurrentAlwaysOn(true).outputCurrentPeriodMs(20);
-    config.closedLoop.pid(turnKp.get(), 0.0, turnKd.get(), kSlot);
-    config.closedLoop.outputRange(
-        diagnosticLimits ? -0.1 : -1.0, diagnosticLimits ? 0.1 : 1.0, kSlot);
+    config.apply(buildTurnTuningConfig(
+        constants.SteerMotorInverted, turnKp.get(), turnKd.get(), diagnosticLimits));
+    return config;
+  }
+
+  private static SparkFlex createSparkForStartup(int canId) {
+    // REV transport settings are global. The preceding module restores a nonblocking timeout;
+    // restore acknowledged requests before the next constructor asks for model/firmware data.
+    if (startupTransport != null) {
+      startupTransport.setCANTimeout(100);
+      startupTransport.setCANMaxRetries(2);
+    }
+    SparkFlex spark = new SparkFlex(canId, MotorType.kBrushless);
+    spark.setCANTimeout(100);
+    spark.setCANMaxRetries(2);
+    startupTransport = spark;
+    return spark;
+  }
+
+  // Every PID/output-range write reasserts the module's fixed polarity. PID tuning must never
+  // infer inversion from observed wheel spin: the optimizer can reverse speed at a half-turn.
+  static SparkFlexConfig buildDriveTuningConfig(
+      boolean inverted, double kp, double kv, boolean limits) {
+    SparkFlexConfig config = new SparkFlexConfig();
+    config.inverted(inverted);
+    config.closedLoop.pid(kp, 0.0, 0.0, kSlot);
+    // REV 2026 feedforward uses volts per configured velocity unit (wheel radians/second).
+    config.closedLoop.feedForward.kV(kv, kSlot);
+    config.closedLoop.outputRange(limits ? -0.15 : -1.0, limits ? 0.15 : 1.0, kSlot);
+    return config;
+  }
+
+  static SparkFlexConfig buildTurnTuningConfig(
+      boolean inverted, double kp, double kd, boolean limits) {
+    SparkFlexConfig config = new SparkFlexConfig();
+    config.inverted(inverted);
+    config.closedLoop.pid(kp, 0.0, kd, kSlot);
+    config.closedLoop.outputRange(limits ? -0.1 : -1.0, limits ? 0.1 : 1.0, kSlot);
     return config;
   }
 
@@ -358,15 +398,10 @@ public class ModuleIOSpark implements ModuleIO {
     diagnosticLimitsApplied = false;
     try {
       driveSpark.setCANTimeout(20);
-      SparkFlexConfig driveConfig = new SparkFlexConfig();
-      driveConfig.closedLoop.pid(driveKp.get(), 0, 0, kSlot);
-      driveConfig.closedLoop.feedForward.kV(driveKv.get(), kSlot);
-      driveConfig.closedLoop.outputRange(
-          diagnosticLimits ? -.15 : -1, diagnosticLimits ? .15 : 1, kSlot);
-      SparkFlexConfig turnConfig = new SparkFlexConfig();
-      turnConfig.closedLoop.pid(turnKp.get(), 0, turnKd.get(), kSlot);
-      turnConfig.closedLoop.outputRange(
-          diagnosticLimits ? -.10 : -1, diagnosticLimits ? .10 : 1, kSlot);
+      SparkFlexConfig driveConfig = buildDriveTuningConfig(
+          constants.DriveMotorInverted, driveKp.get(), driveKv.get(), diagnosticLimits);
+      SparkFlexConfig turnConfig = buildTurnTuningConfig(
+          constants.SteerMotorInverted, turnKp.get(), turnKd.get(), diagnosticLimits);
       driveConfigurationHealthy =
           driveSpark.configure(
                   driveConfig,

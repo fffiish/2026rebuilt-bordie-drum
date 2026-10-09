@@ -95,3 +95,54 @@ steering outputs read zero; the Driver Station itself still reported enabled Tes
 The initial PID defaults are in place and read back from the controllers, but final gains,
 physical polarity, speed equality over the operating range, and elimination of steering
 oscillation remain unverified.
+
+## Back-left drive correction after joystick driving
+
+The operator subsequently reported reversed back-left rolling direction during forward driving
+and rotation. The earlier back-left override in commit `2891647` is superseded: drive CAN 7 now
+uses explicit inversion `false`. Module drive polarity is FL/CAN32 `true`, FR/CAN33 `false`,
+BL/CAN7 `false`, BR/CAN1 `true`. Each module has its own flag; side-wide defaults are removed.
+Steering inversions, all four calibrated encoder offsets, and drive PID/feedforward are unchanged.
+The previously selected steering P 1.0, I 0, D 0 is retained.
+
+The pre-deployment capture at `2026-10-09T06:37:35.827634+00:00` showed back-left steering
+at -89.46 degrees while the other modules were at approximately +90 degrees. CAN 7 still read
+inversion `true`, with healthy configuration and zero outputs. This establishes that the previous
+software override remained applied; it was not lost during tuning. Steering angles 180 degrees
+apart legitimately produce opposite optimized speed signs. A drive-only voltage hold with those
+headings cannot validate chassis rolling direction by comparing wheel spin alone.
+
+Startup polarity corrections now persist to controller flash when readback differs (or cannot
+be read); ordinary startup with matching polarity avoids rewriting flash. Live PID/output-range writes
+explicitly reassert each module's configured inversion without resetting encoder parameters and
+remain nonpersistent. Readback still checks applied inversion against the module constants.
+`DriveDirectionReversedByOptimization` is logged during normal driving so software optimization
+can be distinguished from a changed controller parameter. No test limits or new motion guards
+are introduced by this correction.
+
+Regression tests pin CAN IDs, calibrated offsets, steering polarity, and the corrected drive
+polarity, check that tuning updates preserve encoder settings and both inversion values, and
+reproduce the half-turn optimization while checking the resulting chassis travel vector.
+`gradlew.bat test jar -x spotlessApply --console=plain` passed all 27 tests. Physical rolling
+direction still requires operator confirmation under normal driving; configuration readback
+does not substitute for that confirmation.
+
+After the operator's full power cycle, a four-second read-only capture at
+`2026-10-09T06:48:56.070342+00:00` contained 185 fresh snapshots per module. All four modules
+reported connected drive/steering/CANcoder devices, healthy configuration, seeded steering,
+P 1.0, and zero drive/steering voltage. Applied drive inversion was `true,false,false,true`,
+including the corrected back-left `false`. Driver Station was attached and disabled.
+
+Warm restart initially exposed failed identification/status reads on CAN 33, 5, and 25;
+the power cycle restored them. SPARK constructors now receive acknowledged CAN requests
+(100 ms, two retries) before asking for model/firmware data, since the previous module leaves
+global transport nonblocking. Runtime telemetry still restores zero request timeout and no
+retries. Verification of these readbacks after the final deployment is recorded separately
+from the physical rolling-direction check.
+
+The final deployment succeeded while disabled. At `2026-10-09T06:51:24.565685+00:00`,
+five seconds of fresh telemetry verified all four drive/steering/CANcoder connections, seeds,
+and configuration checks healthy. Applied drive polarity remained `true,false,false,true`,
+steering P remained 1.0, and every motor output remained zero. The deployed JAR SHA-256 matched
+the local build: `2300dd6a20362ec7747f9ee6a244c578c92b2a39a2ebc1141b3f14a585234580`.
+No powered test was performed for this correction; physical rolling-direction confirmation is pending.
