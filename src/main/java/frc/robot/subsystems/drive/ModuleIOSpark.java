@@ -7,6 +7,7 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase;
@@ -18,6 +19,7 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.lib.LoggedTunableNumber;
 
@@ -36,7 +38,7 @@ import frc.robot.lib.LoggedTunableNumber;
  *       FusedCANcoder}); a SPARK cannot. Instead the CANcoder is read over CAN and seeded into the
  *       steer motor's relative encoder once at construction, after which the SPARK closes the loop
  *       on its own encoder. If a module is ever re-zeroed mid-match, call {@link
- *       #seedTurnPosition()}.
+ *       #seedTurnPosition(double)}.
  *   <li><b>No high-rate odometry thread.</b> {@link PhoenixOdometryThread} depends on Phoenix
  *       signal timestamps and CANivore timesync, neither of which exists here, so odometry is
  *       sampled once per main loop. Expect 50 Hz pose updates rather than 250 Hz, which degrades
@@ -76,6 +78,14 @@ public class ModuleIOSpark implements ModuleIO {
   private final CANcoder cancoder;
   private final StatusSignal<Angle> turnAbsolutePosition;
 
+  private static final int kBootSeedAttempts = 5;
+  private static final double kBootSeedTimeoutSec = 0.1;
+  private static final int kDisabledReseedLoops = 50; // ~1 s at 50 Hz
+  private static final double kReseedMaxVelocityRadPerSec = 0.1;
+
+  private boolean turnSeeded = false;
+  private int loopsSinceSeed = 0;
+
   private final SwerveModuleConstants<
           TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
       constants;
@@ -98,7 +108,12 @@ public class ModuleIOSpark implements ModuleIO {
     configure(driveSpark, buildDriveConfig());
     configure(turnSpark, buildTurnConfig());
 
-    seedTurnPosition();
+    // At boot the CANcoder may not have published a reading yet, and a failed read still hands
+    // back 0, which would seed every module to -offset. Block briefly for a real sample; if none
+    // arrives, updateInputs keeps retrying until one does.
+    for (int attempt = 0; attempt < kBootSeedAttempts && !turnSeeded; attempt++) {
+      turnSeeded = seedTurnPosition(kBootSeedTimeoutSec);
+    }
   }
 
   private static void configure(SparkFlex spark, SparkBaseConfig config) {
@@ -112,11 +127,40 @@ public class ModuleIOSpark implements ModuleIO {
   /**
    * Copies the CANcoder's absolute reading into the steer motor's relative encoder. A SPARK has no
    * firmware sensor fusion, so this is what makes closed-loop steering absolute.
+   *
+   * @param timeoutSec how long to wait for a fresh CANcoder sample; 0 uses the latest one received
+   * @return true only if the CANcoder reading was valid and the SPARK accepted the new position
    */
-  public final void seedTurnPosition() {
-    turnAbsolutePosition.refresh();
+  public final boolean seedTurnPosition(double timeoutSec) {
+    if (timeoutSec > 0) {
+      turnAbsolutePosition.waitForUpdate(timeoutSec);
+    } else {
+      turnAbsolutePosition.refresh();
+    }
+    if (!turnAbsolutePosition.getStatus().isOK()) {
+      return false;
+    }
     double absoluteRotations = turnAbsolutePosition.getValueAsDouble() - constants.EncoderOffset;
-    turnEncoder.setPosition(Units.rotationsToRadians(absoluteRotations));
+    return turnEncoder.setPosition(Units.rotationsToRadians(absoluteRotations)) == REVLibError.kOk;
+  }
+
+  /**
+   * Retries a seed that failed at boot, and re-seeds periodically while disabled so any drift or a
+   * bad boot read is corrected before the match. Never re-seeds while enabled: jumping the encoder
+   * under an active position loop would kick the module.
+   */
+  private void maintainTurnSeed() {
+    if (!turnSeeded) {
+      turnSeeded = seedTurnPosition(0);
+      loopsSinceSeed = 0;
+      return;
+    }
+    if (DriverStation.isDisabled()
+        && ++loopsSinceSeed >= kDisabledReseedLoops
+        && Math.abs(turnEncoder.getVelocity()) < kReseedMaxVelocityRadPerSec) {
+      seedTurnPosition(0);
+      loopsSinceSeed = 0;
+    }
   }
 
   private SparkFlexConfig buildDriveConfig() {
@@ -187,6 +231,7 @@ public class ModuleIOSpark implements ModuleIO {
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
     updateTunables();
+    maintainTurnSeed();
     inputs.driveConnected = driveSpark.getFirmwareVersion() != 0;
     inputs.drivePositionRad = driveEncoder.getPosition();
     inputs.driveVelocityRadPerSec = driveEncoder.getVelocity();
