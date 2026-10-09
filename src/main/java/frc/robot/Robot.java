@@ -8,9 +8,9 @@
 package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.lib.command.CachedTrigger;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
@@ -104,6 +104,7 @@ public class Robot extends LoggedRobot {
       if (!wasTestMode) CommandScheduler.getInstance().cancelAll();
       wasTestMode = true;
       robotContainer.diagnosticPeriodic(now, periodMs);
+      recordExecutionTime(now);
       return;
     }
     wasTestMode = false;
@@ -121,6 +122,13 @@ public class Robot extends LoggedRobot {
     }
     robotContainer.periodic();
     robotContainer.diagnosticPeriodic(now, periodMs);
+    recordExecutionTime(now);
+  }
+
+  private void recordExecutionTime(double startSec) {
+    if (Constants.kEnableLoopTimingLogs) {
+      Logger.recordOutput("LoopTiming/ExecutionMS", (Timer.getFPGATimestamp() - startSec) * 1000);
+    }
   }
 
   /** This function is called once when the robot is disabled. */

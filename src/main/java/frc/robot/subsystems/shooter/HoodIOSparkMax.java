@@ -41,7 +41,16 @@ public class HoodIOSparkMax implements HoodIO {
     config
         .idleMode(SparkBaseConfig.IdleMode.kBrake)
         .smartCurrentLimit((int) ShooterConstants.kHoodCurrentLimit.in(Amps));
+    config
+        .signals
+        .appliedOutputAlwaysOn(true)
+        .appliedOutputPeriodMs(20)
+        .busVoltageAlwaysOn(true)
+        .outputCurrentAlwaysOn(true);
 
+    // Restore startup acknowledgements after earlier monitors selected global nonblocking reads.
+    actuators.setCANTimeout(100);
+    actuators.setCANMaxRetries(5);
     actuators.clearFaults();
     actuators.configure(
         config,
@@ -62,12 +71,12 @@ public class HoodIOSparkMax implements HoodIO {
     controllerConnection.beginCycle();
     inputs.extendCommanded = extendCommanded;
     double dutyCycle = actuators.getAppliedOutput();
-    controllerConnection.checkLastError();
+    controllerConnection.checkLastError(dutyCycle);
     double busVoltage = actuators.getBusVoltage();
-    controllerConnection.checkLastError();
+    controllerConnection.checkLastError(busVoltage);
     inputs.appliedVolts = dutyCycle * busVoltage;
     inputs.currentAmps = actuators.getOutputCurrent();
-    controllerConnection.checkLastError();
+    controllerConnection.checkLastError(inputs.currentAmps);
     inputs.controllerConnected = controllerConnection.isConnected();
   }
 

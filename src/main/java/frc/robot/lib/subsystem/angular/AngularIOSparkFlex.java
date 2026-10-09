@@ -89,6 +89,7 @@ public class AngularIOSparkFlex implements AngularIO {
       if (config.getSmartCurrentLimit() != null) {
         followerConfig.smartCurrentLimit((int) config.getSmartCurrentLimit().in(Amps));
       }
+      followerConfig.signals.motorTemperatureAlwaysOn(true).motorTemperaturePeriodMs(100);
       ok &= applyConfig(follower, followerConfig);
     }
     configurationsNotAppliedAlert.set(!ok);
@@ -100,6 +101,10 @@ public class AngularIOSparkFlex implements AngularIO {
   }
 
   private static boolean applyConfig(SparkFlex spark, SparkBaseConfig config) {
+    // REV request settings are global; earlier IO constructors may already have selected runtime
+    // nonblocking reads. Restore acknowledged startup writes before configuring this device.
+    spark.setCANTimeout(100);
+    spark.setCANMaxRetries(5);
     spark.clearFaults();
     return spark.configure(
             config,
@@ -142,6 +147,21 @@ public class AngularIOSparkFlex implements AngularIO {
     double gearing = deviceConfig.getMotorRotationsPerOutputRotations();
     configuration.encoder.positionConversionFactor(1.0 / gearing);
     configuration.encoder.velocityConversionFactor(1.0 / (gearing * 60.0));
+    configuration
+        .signals
+        .primaryEncoderPositionAlwaysOn(true)
+        .primaryEncoderPositionPeriodMs(20)
+        .primaryEncoderVelocityAlwaysOn(true)
+        .primaryEncoderVelocityPeriodMs(20)
+        .appliedOutputAlwaysOn(true)
+        .appliedOutputPeriodMs(20)
+        .busVoltageAlwaysOn(true)
+        .outputCurrentAlwaysOn(true)
+        .motorTemperatureAlwaysOn(true)
+        .maxMotionSetpointPositionAlwaysOn(true)
+        .maxMotionSetpointPositionPeriodMs(20)
+        .maxMotionSetpointVelocityAlwaysOn(true)
+        .maxMotionSetpointVelocityPeriodMs(20);
 
     configuration.closedLoop.pid(
         deviceConfig.getKP() * anglePerRotation(),
@@ -189,9 +209,9 @@ public class AngularIOSparkFlex implements AngularIO {
   public void updateInputs(AngularIOInputs inputs) {
     masterConnection.beginCycle();
     double outputRotations = encoder.getPosition();
-    masterConnection.checkLastError();
+    masterConnection.checkLastError(outputRotations);
     double outputRotationsPerSec = encoder.getVelocity();
-    masterConnection.checkLastError();
+    masterConnection.checkLastError(outputRotationsPerSec);
 
     inputs.angle = Radians.of(outputRotations * anglePerRotation());
     inputs.velocity = RadiansPerSecond.of(outputRotationsPerSec * anglePerRotation());
@@ -206,11 +226,12 @@ public class AngularIOSparkFlex implements AngularIO {
     inputs.acceleration = RadiansPerSecondPerSecond.of(accelerationRadPerSecSq);
 
     double dutyCycle = master.getAppliedOutput();
-    masterConnection.checkLastError();
+    masterConnection.checkLastError(dutyCycle);
     double outputCurrent = master.getOutputCurrent();
-    masterConnection.checkLastError();
-    inputs.appliedVolts = Volts.of(dutyCycle * master.getBusVoltage());
-    masterConnection.checkLastError();
+    masterConnection.checkLastError(outputCurrent);
+    double busVoltage = master.getBusVoltage();
+    masterConnection.checkLastError(busVoltage);
+    inputs.appliedVolts = Volts.of(dutyCycle * busVoltage);
     inputs.statorCurrent = Amps.of(outputCurrent);
     // Estimated: a SPARK reports no separate supply current.
     inputs.supplyCurrent = Amps.of(outputCurrent * Math.abs(dutyCycle));
@@ -218,11 +239,11 @@ public class AngularIOSparkFlex implements AngularIO {
     int deviceCount = followers.size() + 1;
     inputs.motorTemperatures = new double[deviceCount];
     inputs.motorTemperatures[0] = master.getMotorTemperature();
-    masterConnection.checkLastError();
+    masterConnection.checkLastError(inputs.motorTemperatures[0]);
     for (int i = 0; i < followers.size(); i++) {
       followerConnections.get(i).beginCycle();
       inputs.motorTemperatures[i + 1] = followers.get(i).getMotorTemperature();
-      followerConnections.get(i).checkLastError();
+      followerConnections.get(i).checkLastError(inputs.motorTemperatures[i + 1]);
     }
 
     if (inputs.deviceConnectedStatuses.length != deviceCount) {
@@ -236,15 +257,18 @@ public class AngularIOSparkFlex implements AngularIO {
     if (this.outputMode == kVelocity) {
       inputs.referenceVel =
           RadiansPerSecond.of(controller.getMAXMotionSetpointVelocity() * anglePerRotation());
-      masterConnection.checkLastError();
+      masterConnection.checkLastError(inputs.referenceVel.in(RadiansPerSecond));
       inputs.referencePos = Radians.of(0.0);
-    } else {
+    } else if (this.outputMode == kClosedLoop) {
       inputs.referencePos =
           Radians.of(controller.getMAXMotionSetpointPosition() * anglePerRotation());
-      masterConnection.checkLastError();
+      masterConnection.checkLastError(inputs.referencePos.in(Radians));
       inputs.referenceVel =
           RadiansPerSecond.of(controller.getMAXMotionSetpointVelocity() * anglePerRotation());
-      masterConnection.checkLastError();
+      masterConnection.checkLastError(inputs.referenceVel.in(RadiansPerSecond));
+    } else {
+      inputs.referencePos = Radians.of(0.0);
+      inputs.referenceVel = RadiansPerSecond.of(0.0);
     }
     setConnected(inputs, 0, masterConnection.isConnected(), deviceConfig.getMasterId());
     for (int i = 0; i < followers.size(); i++) {

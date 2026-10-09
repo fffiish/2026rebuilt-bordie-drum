@@ -16,8 +16,8 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -38,8 +38,8 @@ import org.littletonrobotics.junction.Logger;
  * <ol>
  *   <li><b>No fused absolute encoder.</b> A TalonFX can fuse a remote CANcoder in firmware ({@code
  *       FusedCANcoder}); a SPARK cannot. Instead the CANcoder is read over CAN and seeded into the
- *       steer motor's relative encoder while disabled, after which the SPARK closes the loop on
- *       its own encoder. {@link #seedTurnPosition(double)} refuses reseeding while enabled.
+ *       steer motor's relative encoder while disabled, after which the SPARK closes the loop on its
+ *       own encoder. {@link #seedTurnPosition(double)} refuses reseeding while enabled.
  *   <li><b>No high-rate odometry thread.</b> {@link PhoenixOdometryThread} depends on Phoenix
  *       signal timestamps and CANivore timesync, neither of which exists here, so odometry is
  *       sampled once per main loop. Expect 50 Hz pose updates rather than 250 Hz, which degrades
@@ -77,11 +77,57 @@ public class ModuleIOSpark implements ModuleIO {
 
   private static final int kBootSeedAttempts = 5;
   private static final double kBootSeedTimeoutSec = 0.1;
-  private static final int kDisabledReseedLoops = 50; // ~1 s at 50 Hz
+  private static final double kDisabledReseedIntervalSec = 1.0;
   private static final double kReseedMaxVelocityRadPerSec = 0.1;
+  private static final SeedAttemptBudget seedAttemptBudget = new SeedAttemptBudget();
+
+  /** Keeps acknowledged encoder writes from accumulating across modules in one 20 ms loop. */
+  static final class SeedAttemptBudget {
+    private double lastAttemptSec = Double.NEGATIVE_INFINITY;
+
+    boolean acquire(double now) {
+      if (now - lastAttemptSec < 0.020) return false;
+      lastAttemptSec = now;
+      return true;
+    }
+  }
+
+  /** Hardware-independent scheduling; attempted writes count even when seeding fails. */
+  static final class TurnSeedCadence {
+    private final SeedAttemptBudget budget;
+    private double lastAttemptSec = Double.NEGATIVE_INFINITY;
+
+    TurnSeedCadence(SeedAttemptBudget budget) {
+      this.budget = budget;
+    }
+
+    void recordAttempt(double now) {
+      lastAttemptSec = now;
+    }
+
+    boolean acquire(
+        double now,
+        boolean disabled,
+        boolean configured,
+        boolean statusHealthy,
+        boolean seeded,
+        double velocityRadPerSec) {
+      if (!Double.isFinite(now)
+          || !disabled
+          || !configured
+          || !statusHealthy
+          || now - lastAttemptSec < kDisabledReseedIntervalSec
+          || (seeded && !(Math.abs(velocityRadPerSec) < kReseedMaxVelocityRadPerSec))) {
+        return false;
+      }
+      if (!budget.acquire(now)) return false;
+      recordAttempt(now);
+      return true;
+    }
+  }
 
   private boolean turnSeeded = false;
-  private int loopsSinceSeed = 0;
+  private final TurnSeedCadence turnSeedCadence = new TurnSeedCadence(seedAttemptBudget);
   private boolean driveConfigurationHealthy;
   private boolean turnConfigurationHealthy;
   private boolean baseConfigurationHealthy;
@@ -126,14 +172,19 @@ public class ModuleIOSpark implements ModuleIO {
     turnSpark.setCANMaxRetries(0);
     driveSpark.setPeriodicFrameTimeout(100);
     turnSpark.setPeriodicFrameTimeout(100);
-    driveConfigurationHealthy = DriverStation.isDisabled() && validGains() && configure(driveSpark, buildDriveConfig());
-    turnConfigurationHealthy = DriverStation.isDisabled() && validGains() && configure(turnSpark, buildTurnConfig());
-    driveConfigurationHealthy &= verifyDriveConfiguration();
-    turnConfigurationHealthy &= verifyTurnConfiguration();
-    baseConfigurationHealthy = driveConfigurationHealthy && turnConfigurationHealthy;
-    rememberRequestedConfiguration();
-    driveSpark.setCANTimeout(0);
-    turnSpark.setCANTimeout(0);
+    try {
+      driveSpark.setCANTimeout(100);
+      driveConfigurationHealthy =
+          DriverStation.isDisabled() && validGains() && configure(driveSpark, buildDriveConfig());
+      turnConfigurationHealthy =
+          DriverStation.isDisabled() && validGains() && configure(turnSpark, buildTurnConfig());
+      driveConfigurationHealthy &= verifyDriveConfiguration();
+      turnConfigurationHealthy &= verifyTurnConfiguration();
+      baseConfigurationHealthy = driveConfigurationHealthy && turnConfigurationHealthy;
+      rememberRequestedConfiguration();
+    } finally {
+      restoreNonblockingCAN();
+    }
 
     // At boot the CANcoder may not have published a reading yet, and a failed read still hands
     // back 0, which would seed every module to -offset. Block briefly for a real sample; if none
@@ -144,12 +195,19 @@ public class ModuleIOSpark implements ModuleIO {
   }
 
   private static boolean configure(SparkFlex spark, SparkBaseConfig config) {
-    spark.setCANTimeout(100);
     spark.clearFaults();
     return spark.configure(
-        config,
-        SparkBase.ResetMode.kResetSafeParameters,
-        SparkBase.PersistMode.kNoPersistParameters) == REVLibError.kOk;
+            config,
+            SparkBase.ResetMode.kResetSafeParameters,
+            SparkBase.PersistMode.kNoPersistParameters)
+        == REVLibError.kOk;
+  }
+
+  private void restoreNonblockingCAN() {
+    // REVLib stores these transport settings globally, across all SPARK controllers. Temporary
+    // acknowledged writes must not leave mechanism telemetry waiting for responses afterward.
+    driveSpark.setCANTimeout(0);
+    driveSpark.setCANMaxRetries(0);
   }
 
   /**
@@ -161,6 +219,7 @@ public class ModuleIOSpark implements ModuleIO {
    */
   public final boolean seedTurnPosition(double timeoutSec) {
     if (DriverStation.isEnabled() || !turnConfigurationHealthy) return false;
+    turnSeedCadence.recordAttempt(Timer.getFPGATimestamp());
     if (timeoutSec > 0) {
       turnAbsolutePosition.waitForUpdate(timeoutSec);
     } else {
@@ -173,11 +232,14 @@ public class ModuleIOSpark implements ModuleIO {
     }
     double absoluteRotations = turnAbsolutePosition.getValueAsDouble() - constants.EncoderOffset;
     if (!Double.isFinite(absoluteRotations)) return false;
-    turnSpark.setCANTimeout(10);
-    boolean seeded = turnEncoder.setPosition(
-        MathUtil.angleModulus(Units.rotationsToRadians(absoluteRotations))) == REVLibError.kOk;
-    turnSpark.setCANTimeout(0);
-    return seeded;
+    try {
+      turnSpark.setCANTimeout(10);
+      return turnEncoder.setPosition(
+              MathUtil.angleModulus(Units.rotationsToRadians(absoluteRotations)))
+          == REVLibError.kOk;
+    } finally {
+      restoreNonblockingCAN();
+    }
   }
 
   /**
@@ -185,19 +247,18 @@ public class ModuleIOSpark implements ModuleIO {
    * bad boot read is corrected before the match. Never re-seeds while enabled: jumping the encoder
    * under an active position loop would kick the module.
    */
-  private void maintainTurnSeed() {
-    if (!DriverStation.isDisabled()) return;
-    if (!turnSeeded) {
-      turnSeeded = seedTurnPosition(0);
-      loopsSinceSeed = 0;
-      return;
-    }
-    if (DriverStation.isDisabled()
-        && ++loopsSinceSeed >= kDisabledReseedLoops
-        && Math.abs(turnEncoder.getVelocity()) < kReseedMaxVelocityRadPerSec) {
-      turnSeeded = seedTurnPosition(0);
-      loopsSinceSeed = 0;
-    }
+  private void maintainTurnSeed(double velocityRadPerSec) {
+    // Even with a fresh CANcoder sample, a missing SPARK can make setPosition wait for its
+    // acknowledgement. Space both successful reseeds and failed attempts by elapsed time so a
+    // disconnected steering controller cannot impose that wait on every disabled loop.
+    if (!turnSeedCadence.acquire(
+        Timer.getFPGATimestamp(),
+        DriverStation.isDisabled(),
+        turnConfigurationHealthy,
+        turnStatusHealthy,
+        turnSeeded,
+        velocityRadPerSec)) return;
+    turnSeeded = seedTurnPosition(0);
   }
 
   private SparkFlexConfig buildDriveConfig() {
@@ -224,8 +285,8 @@ public class ModuleIOSpark implements ModuleIO {
     config.closedLoop.pid(driveKp.get(), 0.0, 0.0, kSlot);
     // REV 2026 feedforward uses volts per configured velocity unit (wheel radians/second).
     config.closedLoop.feedForward.kV(driveKv.get(), kSlot);
-    config.closedLoop.outputRange(diagnosticLimits ? -0.15 : -1.0,
-        diagnosticLimits ? 0.15 : 1.0, kSlot);
+    config.closedLoop.outputRange(
+        diagnosticLimits ? -0.15 : -1.0, diagnosticLimits ? 0.15 : 1.0, kSlot);
     return config;
   }
 
@@ -249,16 +310,24 @@ public class ModuleIOSpark implements ModuleIO {
     config.signals.busVoltageAlwaysOn(true).busVoltagePeriodMs(20);
     config.signals.outputCurrentAlwaysOn(true).outputCurrentPeriodMs(20);
     config.closedLoop.pid(turnKp.get(), 0.0, turnKd.get(), kSlot);
-    config.closedLoop.outputRange(diagnosticLimits ? -0.1 : -1.0,
-        diagnosticLimits ? 0.1 : 1.0, kSlot);
+    config.closedLoop.outputRange(
+        diagnosticLimits ? -0.1 : -1.0, diagnosticLimits ? 0.1 : 1.0, kSlot);
     return config;
   }
 
   private boolean validGains() {
-    return Double.isFinite(driveKp.get()) && driveKp.get() >= 0.0 && driveKp.get() <= 1.0
-        && Double.isFinite(driveKv.get()) && driveKv.get() >= 0.0 && driveKv.get() <= 2.0
-        && Double.isFinite(turnKp.get()) && turnKp.get() >= 0.0 && turnKp.get() <= 1.0
-        && Double.isFinite(turnKd.get()) && turnKd.get() >= 0.0 && turnKd.get() <= 1.0;
+    return Double.isFinite(driveKp.get())
+        && driveKp.get() >= 0.0
+        && driveKp.get() <= 1.0
+        && Double.isFinite(driveKv.get())
+        && driveKv.get() >= 0.0
+        && driveKv.get() <= 2.0
+        && Double.isFinite(turnKp.get())
+        && turnKp.get() >= 0.0
+        && turnKp.get() <= 1.0
+        && Double.isFinite(turnKd.get())
+        && turnKd.get() >= 0.0
+        && turnKd.get() <= 1.0;
   }
 
   /** Only send partial PID/output configs while disabled; never reset an already seeded encoder. */
@@ -272,39 +341,53 @@ public class ModuleIOSpark implements ModuleIO {
     }
     // A failed request remains inhibited. Do not repeatedly block the loop retrying a missing
     // controller; a deliberate gain/limit change or robot-program restart is required to retry.
-    boolean changed = requestedDriveKp != driveKp.get() || requestedDriveKv != driveKv.get()
-        || requestedTurnKp != turnKp.get() || requestedTurnKd != turnKd.get()
-        || requestedLimitsMode != diagnosticLimits;
+    boolean changed =
+        requestedDriveKp != driveKp.get()
+            || requestedDriveKv != driveKv.get()
+            || requestedTurnKp != turnKp.get()
+            || requestedTurnKd != turnKd.get()
+            || requestedLimitsMode != diagnosticLimits;
     double now = Timer.getFPGATimestamp();
     if (!changed || now - lastGainAttemptSec < 1.0) return;
     lastGainAttemptSec = now;
     rememberRequestedConfiguration();
     driveSpark.stopMotor();
     turnSpark.stopMotor();
-    driveSpark.setCANTimeout(20);
-    turnSpark.setCANTimeout(20);
-    SparkFlexConfig driveConfig = new SparkFlexConfig();
-    driveConfig.closedLoop.pid(driveKp.get(), 0, 0, kSlot);
-    driveConfig.closedLoop.feedForward.kV(driveKv.get(), kSlot);
-    driveConfig.closedLoop.outputRange(diagnosticLimits ? -.15 : -1,
-        diagnosticLimits ? .15 : 1, kSlot);
-    SparkFlexConfig turnConfig = new SparkFlexConfig();
-    turnConfig.closedLoop.pid(turnKp.get(), 0, turnKd.get(), kSlot);
-    turnConfig.closedLoop.outputRange(diagnosticLimits ? -.10 : -1,
-        diagnosticLimits ? .10 : 1, kSlot);
-    driveConfigurationHealthy = driveSpark.configure(driveConfig,
-        SparkBase.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kNoPersistParameters)
-        == REVLibError.kOk;
-    turnConfigurationHealthy = turnSpark.configure(turnConfig,
-        SparkBase.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kNoPersistParameters)
-        == REVLibError.kOk;
-    driveConfigurationHealthy &= verifyDriveConfiguration();
-    turnConfigurationHealthy &= verifyTurnConfiguration();
-    driveConfigurationHealthy &= baseConfigurationHealthy;
-    turnConfigurationHealthy &= baseConfigurationHealthy;
-    diagnosticLimitsApplied = diagnosticLimits && driveConfigurationHealthy && turnConfigurationHealthy;
-    driveSpark.setCANTimeout(0);
-    turnSpark.setCANTimeout(0);
+    driveConfigurationHealthy = false;
+    turnConfigurationHealthy = false;
+    diagnosticLimitsApplied = false;
+    try {
+      driveSpark.setCANTimeout(20);
+      SparkFlexConfig driveConfig = new SparkFlexConfig();
+      driveConfig.closedLoop.pid(driveKp.get(), 0, 0, kSlot);
+      driveConfig.closedLoop.feedForward.kV(driveKv.get(), kSlot);
+      driveConfig.closedLoop.outputRange(
+          diagnosticLimits ? -.15 : -1, diagnosticLimits ? .15 : 1, kSlot);
+      SparkFlexConfig turnConfig = new SparkFlexConfig();
+      turnConfig.closedLoop.pid(turnKp.get(), 0, turnKd.get(), kSlot);
+      turnConfig.closedLoop.outputRange(
+          diagnosticLimits ? -.10 : -1, diagnosticLimits ? .10 : 1, kSlot);
+      driveConfigurationHealthy =
+          driveSpark.configure(
+                  driveConfig,
+                  SparkBase.ResetMode.kNoResetSafeParameters,
+                  SparkBase.PersistMode.kNoPersistParameters)
+              == REVLibError.kOk;
+      turnConfigurationHealthy =
+          turnSpark.configure(
+                  turnConfig,
+                  SparkBase.ResetMode.kNoResetSafeParameters,
+                  SparkBase.PersistMode.kNoPersistParameters)
+              == REVLibError.kOk;
+      driveConfigurationHealthy &= verifyDriveConfiguration();
+      turnConfigurationHealthy &= verifyTurnConfiguration();
+      driveConfigurationHealthy &= baseConfigurationHealthy;
+      turnConfigurationHealthy &= baseConfigurationHealthy;
+      diagnosticLimitsApplied =
+          diagnosticLimits && driveConfigurationHealthy && turnConfigurationHealthy;
+    } finally {
+      restoreNonblockingCAN();
+    }
   }
 
   private void rememberRequestedConfiguration() {
@@ -316,7 +399,8 @@ public class ModuleIOSpark implements ModuleIO {
   }
 
   private boolean matches(SparkFlex spark, double actual, double expected) {
-    return spark.getLastError() == REVLibError.kOk && Double.isFinite(actual)
+    return spark.getLastError() == REVLibError.kOk
+        && Double.isFinite(actual)
         && Math.abs(actual - expected) <= 1e-5;
   }
 
@@ -328,12 +412,30 @@ public class ModuleIOSpark implements ModuleIO {
     ok &= matches(driveSpark, driveSpark.configAccessor.closedLoop.getD(kSlot), 0);
     appliedDriveKv = driveSpark.configAccessor.closedLoop.feedForward.getkV(kSlot);
     ok &= matches(driveSpark, appliedDriveKv, driveKv.get());
-    ok &= matches(driveSpark, driveSpark.configAccessor.closedLoop.getMinOutput(kSlot), diagnosticLimits ? -.15 : -1);
-    ok &= matches(driveSpark, driveSpark.configAccessor.closedLoop.getMaxOutput(kSlot), diagnosticLimits ? .15 : 1);
+    ok &=
+        matches(
+            driveSpark,
+            driveSpark.configAccessor.closedLoop.getMinOutput(kSlot),
+            diagnosticLimits ? -.15 : -1);
+    ok &=
+        matches(
+            driveSpark,
+            driveSpark.configAccessor.closedLoop.getMaxOutput(kSlot),
+            diagnosticLimits ? .15 : 1);
     appliedDriveInverted = driveSpark.configAccessor.getInverted();
-    ok &= driveSpark.getLastError() == REVLibError.kOk && appliedDriveInverted == constants.DriveMotorInverted;
-    ok &= matches(driveSpark, driveSpark.configAccessor.encoder.getPositionConversionFactor(), 2 * Math.PI / constants.DriveMotorGearRatio);
-    ok &= matches(driveSpark, driveSpark.configAccessor.encoder.getVelocityConversionFactor(), 2 * Math.PI / constants.DriveMotorGearRatio / 60);
+    ok &=
+        driveSpark.getLastError() == REVLibError.kOk
+            && appliedDriveInverted == constants.DriveMotorInverted;
+    ok &=
+        matches(
+            driveSpark,
+            driveSpark.configAccessor.encoder.getPositionConversionFactor(),
+            2 * Math.PI / constants.DriveMotorGearRatio);
+    ok &=
+        matches(
+            driveSpark,
+            driveSpark.configAccessor.encoder.getVelocityConversionFactor(),
+            2 * Math.PI / constants.DriveMotorGearRatio / 60);
     return ok;
   }
 
@@ -344,23 +446,44 @@ public class ModuleIOSpark implements ModuleIO {
     ok &= matches(turnSpark, turnSpark.configAccessor.closedLoop.getI(kSlot), 0);
     appliedTurnKd = turnSpark.configAccessor.closedLoop.getD(kSlot);
     ok &= matches(turnSpark, appliedTurnKd, turnKd.get());
-    ok &= matches(turnSpark, turnSpark.configAccessor.closedLoop.getMinOutput(kSlot), diagnosticLimits ? -.1 : -1);
-    ok &= matches(turnSpark, turnSpark.configAccessor.closedLoop.getMaxOutput(kSlot), diagnosticLimits ? .1 : 1);
+    ok &=
+        matches(
+            turnSpark,
+            turnSpark.configAccessor.closedLoop.getMinOutput(kSlot),
+            diagnosticLimits ? -.1 : -1);
+    ok &=
+        matches(
+            turnSpark,
+            turnSpark.configAccessor.closedLoop.getMaxOutput(kSlot),
+            diagnosticLimits ? .1 : 1);
     appliedTurnInverted = turnSpark.configAccessor.getInverted();
-    ok &= turnSpark.getLastError() == REVLibError.kOk && appliedTurnInverted == constants.SteerMotorInverted;
-    ok &= matches(turnSpark, turnSpark.configAccessor.encoder.getPositionConversionFactor(), 2 * Math.PI / constants.SteerMotorGearRatio);
-    ok &= matches(turnSpark, turnSpark.configAccessor.encoder.getVelocityConversionFactor(), 2 * Math.PI / constants.SteerMotorGearRatio / 60);
+    ok &=
+        turnSpark.getLastError() == REVLibError.kOk
+            && appliedTurnInverted == constants.SteerMotorInverted;
+    ok &=
+        matches(
+            turnSpark,
+            turnSpark.configAccessor.encoder.getPositionConversionFactor(),
+            2 * Math.PI / constants.SteerMotorGearRatio);
+    ok &=
+        matches(
+            turnSpark,
+            turnSpark.configAccessor.encoder.getVelocityConversionFactor(),
+            2 * Math.PI / constants.SteerMotorGearRatio / 60);
     boolean wrappingEnabled = turnSpark.configAccessor.closedLoop.getPositionWrappingEnabled();
     ok &= turnSpark.getLastError() == REVLibError.kOk && wrappingEnabled;
-    ok &= matches(turnSpark, turnSpark.configAccessor.closedLoop.getPositionWrappingMinInput(), -Math.PI);
-    ok &= matches(turnSpark, turnSpark.configAccessor.closedLoop.getPositionWrappingMaxInput(), Math.PI);
+    ok &=
+        matches(
+            turnSpark, turnSpark.configAccessor.closedLoop.getPositionWrappingMinInput(), -Math.PI);
+    ok &=
+        matches(
+            turnSpark, turnSpark.configAccessor.closedLoop.getPositionWrappingMaxInput(), Math.PI);
     return ok;
   }
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
     updateTunables();
-    maintainTurnSeed();
     boolean driveOk = true;
     inputs.drivePositionRad = driveEncoder.getPosition();
     driveOk &= driveSpark.getLastError() == REVLibError.kOk;
@@ -373,17 +496,22 @@ public class ModuleIOSpark implements ModuleIO {
     inputs.driveAppliedVolts = driveAppliedOutput * driveBusVoltage;
     inputs.driveCurrentAmps = driveSpark.getOutputCurrent();
     driveOk &= driveSpark.getLastError() == REVLibError.kOk;
-    driveOk &= Double.isFinite(inputs.drivePositionRad) && Double.isFinite(inputs.driveVelocityRadPerSec)
-        && Double.isFinite(inputs.driveAppliedVolts) && Double.isFinite(inputs.driveCurrentAmps);
+    driveOk &=
+        Double.isFinite(inputs.drivePositionRad)
+            && Double.isFinite(inputs.driveVelocityRadPerSec)
+            && Double.isFinite(inputs.driveAppliedVolts)
+            && Double.isFinite(inputs.driveCurrentAmps);
     driveStatusHealthy = driveOk;
     inputs.driveConnected = driveOk;
 
     boolean turnOk = true;
     turnAbsolutePosition.refresh();
     inputs.absoluteSensorAgeSec = turnAbsolutePosition.getTimestamp().getLatency();
-    inputs.turnEncoderConnected = turnAbsolutePosition.getStatus().isOK()
-        && turnAbsolutePosition.getTimestamp().isValid() && inputs.absoluteSensorAgeSec <= .1
-        && Double.isFinite(turnAbsolutePosition.getValueAsDouble());
+    inputs.turnEncoderConnected =
+        turnAbsolutePosition.getStatus().isOK()
+            && turnAbsolutePosition.getTimestamp().isValid()
+            && inputs.absoluteSensorAgeSec <= .1
+            && Double.isFinite(turnAbsolutePosition.getValueAsDouble());
     inputs.turnAbsolutePosition =
         Rotation2d.fromRotations(turnAbsolutePosition.getValueAsDouble() - constants.EncoderOffset);
     inputs.turnPosition = new Rotation2d(turnEncoder.getPosition());
@@ -397,14 +525,20 @@ public class ModuleIOSpark implements ModuleIO {
     inputs.turnAppliedVolts = turnAppliedOutput * turnBusVoltage;
     inputs.turnCurrentAmps = turnSpark.getOutputCurrent();
     turnOk &= turnSpark.getLastError() == REVLibError.kOk;
-    turnOk &= Double.isFinite(inputs.turnPosition.getRadians()) && Double.isFinite(inputs.turnVelocityRadPerSec)
-        && Double.isFinite(inputs.turnAppliedVolts) && Double.isFinite(inputs.turnCurrentAmps);
+    turnOk &=
+        Double.isFinite(inputs.turnPosition.getRadians())
+            && Double.isFinite(inputs.turnVelocityRadPerSec)
+            && Double.isFinite(inputs.turnAppliedVolts)
+            && Double.isFinite(inputs.turnCurrentAmps);
     turnStatusHealthy = turnOk;
+    maintainTurnSeed(inputs.turnVelocityRadPerSec);
     inputs.turnConnected = turnOk;
     inputs.driveStatusHealthy = driveStatusHealthy;
     inputs.turnStatusHealthy = turnStatusHealthy;
-    inputs.driveMotorRpm = inputs.driveVelocityRadPerSec * constants.DriveMotorGearRatio * 60 / (2 * Math.PI);
-    inputs.turnMotorRpm = inputs.turnVelocityRadPerSec * constants.SteerMotorGearRatio * 60 / (2 * Math.PI);
+    inputs.driveMotorRpm =
+        inputs.driveVelocityRadPerSec * constants.DriveMotorGearRatio * 60 / (2 * Math.PI);
+    inputs.turnMotorRpm =
+        inputs.turnVelocityRadPerSec * constants.SteerMotorGearRatio * 60 / (2 * Math.PI);
     inputs.turnSeeded = turnSeeded;
     inputs.configurationHealthy = driveConfigurationHealthy && turnConfigurationHealthy;
     inputs.diagnosticLimitsApplied = diagnosticLimitsApplied;
@@ -488,8 +622,12 @@ public class ModuleIOSpark implements ModuleIO {
   }
 
   private boolean outputsReady() {
-    return DriverStation.isEnabled() && turnSeeded && driveConfigurationHealthy
-        && turnConfigurationHealthy && driveStatusHealthy && turnStatusHealthy
+    return DriverStation.isEnabled()
+        && turnSeeded
+        && driveConfigurationHealthy
+        && turnConfigurationHealthy
+        && driveStatusHealthy
+        && turnStatusHealthy
         && turnAbsolutePosition.getStatus().isOK()
         && turnAbsolutePosition.getTimestamp().isValid()
         && Double.isFinite(turnAbsolutePosition.getValueAsDouble())

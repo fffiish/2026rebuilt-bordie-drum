@@ -2,60 +2,59 @@ package frc.robot.lib.subsystem;
 
 import com.revrobotics.REVLibError;
 import com.revrobotics.spark.SparkBase;
-import edu.wpi.first.wpilibj.Timer;
+import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
-/** Bounded firmware probes plus immediate status-read error checks for REVLib 2026. */
+/** Connection health from cached status reads, with no firmware requests in the robot loop. */
 public final class SparkConnectionMonitor {
-  private final SparkBase spark;
   private final String logKey;
-  private int firmwareVersion;
-  private boolean firmwareHealthy;
-  private double nextProbe;
-  private double lastProbe;
-  private double probeDurationMs;
+  private final Supplier<REVLibError> lastError;
+  private int readCount;
+  private boolean invalidData;
   private REVLibError cycleError = REVLibError.kOk;
 
   /** Create after initial configuration so startup parameter writes keep their normal retries. */
   public SparkConnectionMonitor(SparkBase spark) {
-    this.spark = spark;
-    logKey = "Health/SparkCAN" + spark.getDeviceId();
-    // Firmware queries request a CAN response. A missing mechanism must not delay every robot loop.
-    // Runtime parameter requests get one bounded attempt; configuration failures remain visible.
-    spark.setCANTimeout(5);
+    this(spark.getDeviceId(), spark::getLastError);
+    // Apply only after startup configuration. Periodic telemetry uses cached CAN status frames;
+    // runtime parameter requests must never wait on a missing device on the scheduler thread.
+    spark.setCANTimeout(0);
     spark.setCANMaxRetries(0);
-    beginCycle();
+    // REV enforces a minimum age limit of 2.1 times each frame's configured period. Zero selects
+    // that limit rather than allowing the default 500 ms of stale data to look connected.
+    spark.setPeriodicFrameTimeout(0);
   }
 
-  /** Start before telemetry reads; firmware is requested no more than once per second. */
+  SparkConnectionMonitor(int deviceId, Supplier<REVLibError> lastError) {
+    logKey = "Health/SparkCAN" + deviceId;
+    this.lastError = lastError;
+  }
+
+  /** Start before telemetry reads. This method performs no CAN operation. */
   public void beginCycle() {
     cycleError = REVLibError.kOk;
-    double now = Timer.getFPGATimestamp();
-    if (now >= nextProbe) {
-      firmwareVersion = spark.getFirmwareVersion();
-      REVLibError error = spark.getLastError();
-      firmwareHealthy = firmwareVersion != 0 && error == REVLibError.kOk;
-      cycleError = error;
-      lastProbe = now;
-      nextProbe = now + 1.0;
-      probeDurationMs = (Timer.getFPGATimestamp() - now) * 1000.0;
-    }
+    readCount = 0;
+    invalidData = false;
   }
 
   /** REVLib errors are per thread: inspect immediately after each read, before another device. */
-  public void checkLastError() {
-    REVLibError error = spark.getLastError();
+  public void checkLastError(double value) {
+    REVLibError error = lastError.get();
+    readCount++;
+    invalidData |= !Double.isFinite(value);
     if (error != REVLibError.kOk) {
       cycleError = error;
     }
   }
 
   public boolean isConnected() {
-    Logger.recordOutput(logKey + "/FirmwareVersion", firmwareVersion);
-    Logger.recordOutput(logKey + "/FirmwareProbeHealthy", firmwareHealthy);
     Logger.recordOutput(logKey + "/LastReadError", cycleError.toString());
-    Logger.recordOutput(logKey + "/FirmwareProbeAgeSec", Timer.getFPGATimestamp() - lastProbe);
-    Logger.recordOutput(logKey + "/FirmwareProbeDurationMS", probeDurationMs);
-    return firmwareHealthy && cycleError == REVLibError.kOk;
+    Logger.recordOutput(logKey + "/StatusReadCount", readCount);
+    Logger.recordOutput(logKey + "/InvalidData", invalidData);
+    return hasHealthyReadings();
+  }
+
+  boolean hasHealthyReadings() {
+    return readCount > 0 && !invalidData && cycleError == REVLibError.kOk;
   }
 }
