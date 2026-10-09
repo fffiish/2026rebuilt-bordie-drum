@@ -26,10 +26,7 @@ public final class DriveDiagnosticPolicy {
   }
 
   public static boolean sensorsHealthy(
-      boolean driveConnected,
-      boolean turnConnected,
-      boolean encoderConnected,
-      boolean turnSeeded) {
+      boolean driveConnected, boolean turnConnected, boolean encoderConnected, boolean turnSeeded) {
     return driveConnected && turnConnected && encoderConnected && turnSeeded;
   }
 
@@ -83,9 +80,7 @@ public final class DriveDiagnosticPolicy {
         return Double.NaN;
       }
       double[] sorted = sortedPeriods();
-      return count % 2 == 0
-          ? (sorted[count / 2 - 1] + sorted[count / 2]) / 2.0
-          : sorted[count / 2];
+      return count % 2 == 0 ? (sorted[count / 2 - 1] + sorted[count / 2]) / 2.0 : sorted[count / 2];
     }
 
     /** Nearest-rank 95th percentile. */
@@ -146,8 +141,8 @@ public final class DriveDiagnosticPolicy {
       crossings.clear();
       lastSign = 0;
       lastTimeSec = nowSec;
-      growthLimitRad = Math.max(Math.abs(initialStepRad), Math.toRadians(5.0))
-          + Math.toRadians(2.0);
+      growthLimitRad =
+          Math.max(Math.abs(initialStepRad), Math.toRadians(5.0)) + Math.toRadians(2.0);
       tripped = !Double.isFinite(nowSec) || !Double.isFinite(initialStepRad);
     }
 

@@ -71,10 +71,14 @@ class ModuleDiagnosticTest {
     double scale = Math.cos(io.target.minus(io.measuredAngle).getRadians());
     assertEquals(-0.5 * scale / WHEEL_RADIUS, io.driveVelocity, 1e-9);
     // Negative wheel speed at the opposite heading still requests the same chassis motion.
-    assertEquals(0.5 * scale * requestedAngle.getCos(),
-        io.driveVelocity * WHEEL_RADIUS * io.target.getCos(), 1e-9);
-    assertEquals(0.5 * scale * requestedAngle.getSin(),
-        io.driveVelocity * WHEEL_RADIUS * io.target.getSin(), 1e-9);
+    assertEquals(
+        0.5 * scale * requestedAngle.getCos(),
+        io.driveVelocity * WHEEL_RADIUS * io.target.getCos(),
+        1e-9);
+    assertEquals(
+        0.5 * scale * requestedAngle.getSin(),
+        io.driveVelocity * WHEEL_RADIUS * io.target.getSin(),
+        1e-9);
   }
 
   @Test

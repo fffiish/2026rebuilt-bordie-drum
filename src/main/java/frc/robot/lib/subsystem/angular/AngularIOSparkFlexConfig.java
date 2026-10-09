@@ -45,6 +45,26 @@ public class AngularIOSparkFlexConfig {
   /** Followers spin opposite the master (gearbox reverses them). */
   @Builder.Default private final boolean opposeMaster = false;
 
+  /**
+   * Follower CAN IDs that spin opposite the master, for mechanisms where only some followers are
+   * mirrored. A follower listed here is opposed even when {@link #opposeMaster} is false.
+   */
+  @Singular("opposedFollowerId")
+  private final List<Integer> opposedFollowerIds;
+
+  public boolean isFollowerOpposed(int followerId) {
+    return opposeMaster || opposedFollowerIds.contains(followerId);
+  }
+
+  /**
+   * Velocity filter on the motor's built-in encoder. The defaults (32 ms window, depth 8) match the
+   * SPARK's own and lag a fast flywheel enough to make velocity P oscillate; shorten them for
+   * high-speed mechanisms.
+   */
+  @Builder.Default private final int encoderMeasurementPeriodMs = 32;
+
+  @Builder.Default private final int encoderAverageDepth = 8;
+
   @Builder.Default private final Angle resetAngle = Radians.of(0.0);
   @Builder.Default private final Angle softMinAngle = Radians.of(Double.NEGATIVE_INFINITY);
   @Builder.Default private final Angle softMaxAngle = Radians.of(Double.POSITIVE_INFINITY);

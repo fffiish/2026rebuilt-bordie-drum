@@ -17,9 +17,11 @@ class ModulePolarityRegressionTest {
 
   @Test
   void calibratedModuleIdsOffsetsAndDrivePolaritiesStayTogether() {
-    var modules = new com.ctre.phoenix6.swerve.SwerveModuleConstants[] {
-        TunerConstants.FrontLeft, TunerConstants.FrontRight,
-        TunerConstants.BackLeft, TunerConstants.BackRight};
+    var modules =
+        new com.ctre.phoenix6.swerve.SwerveModuleConstants[] {
+          TunerConstants.FrontLeft, TunerConstants.FrontRight,
+          TunerConstants.BackLeft, TunerConstants.BackRight
+        };
     int[] driveIds = {32, 33, 7, 1};
     int[] steerIds = {6, 5, 52, 25};
     int[] encoderIds = {20, 17, 10, 4};

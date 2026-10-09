@@ -73,15 +73,12 @@ public class VisionIOLimelight implements VisionIO {
         new TargetObservation(
             Rotation2d.fromDegrees(txSubscriber.get()), Rotation2d.fromDegrees(tySubscriber.get()));
 
-    double afterSubscribers =
-        Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
+    double afterSubscribers = Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
     double yawDegrees = rotationSupplier.get().getDegrees();
     double afterRotation = Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
     // This publishes to a local NT topic; it does not wait for the Limelight to respond.
-    orientationPublisher.accept(
-        new double[] {yawDegrees, 0.0, 0.0, 0.0, 0.0, 0.0});
-    double afterOrientation =
-        Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
+    orientationPublisher.accept(new double[] {yawDegrees, 0.0, 0.0, 0.0, 0.0, 0.0});
+    double afterOrientation = Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
 
     // Read new pose observations from NetworkTables
     Set<Integer> tagIds = new HashSet<>();
@@ -154,8 +151,10 @@ public class VisionIOLimelight implements VisionIO {
       String key = "Timing/Vision/" + name;
       Logger.recordOutput(key + "/SubscriberReadsMS", (afterSubscribers - start) * 1000.0);
       Logger.recordOutput(key + "/RotationSupplierMS", (afterRotation - afterSubscribers) * 1000.0);
-      Logger.recordOutput(key + "/OrientationPublishMS", (afterOrientation - afterRotation) * 1000.0);
-      Logger.recordOutput(key + "/PoseDecodeMS", (Timer.getFPGATimestamp() - afterOrientation) * 1000.0);
+      Logger.recordOutput(
+          key + "/OrientationPublishMS", (afterOrientation - afterRotation) * 1000.0);
+      Logger.recordOutput(
+          key + "/PoseDecodeMS", (Timer.getFPGATimestamp() - afterOrientation) * 1000.0);
       Logger.recordOutput(key + "/ObservationCount", inputs.poseObservations.length);
     }
   }

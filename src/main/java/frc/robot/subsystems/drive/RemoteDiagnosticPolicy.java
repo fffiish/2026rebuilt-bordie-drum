@@ -12,8 +12,7 @@ public final class RemoteDiagnosticPolicy {
     return heartbeatFresh(nowSec, lastHeartbeatSec, MAX_HEARTBEAT_AGE_SEC);
   }
 
-  public static boolean heartbeatFresh(
-      double nowSec, double lastHeartbeatSec, double maxAgeSec) {
+  public static boolean heartbeatFresh(double nowSec, double lastHeartbeatSec, double maxAgeSec) {
     double age = nowSec - lastHeartbeatSec;
     return Double.isFinite(nowSec)
         && nowSec >= 0.0

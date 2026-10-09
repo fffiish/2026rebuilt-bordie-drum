@@ -176,10 +176,12 @@ public class ModuleIOSpark implements ModuleIO {
     try {
       driveSpark.setCANTimeout(100);
       driveConfigurationHealthy =
-          DriverStation.isDisabled() && validGains()
+          DriverStation.isDisabled()
+              && validGains()
               && configure(driveSpark, buildDriveConfig(), constants.DriveMotorInverted);
       turnConfigurationHealthy =
-          DriverStation.isDisabled() && validGains()
+          DriverStation.isDisabled()
+              && validGains()
               && configure(turnSpark, buildTurnConfig(), constants.SteerMotorInverted);
       driveConfigurationHealthy &= verifyDriveConfiguration();
       turnConfigurationHealthy &= verifyTurnConfiguration();
@@ -199,14 +201,16 @@ public class ModuleIOSpark implements ModuleIO {
 
   private static boolean configure(SparkFlex spark, SparkBaseConfig config, boolean inverted) {
     boolean previousInverted = spark.configAccessor.getInverted();
-    boolean persistPolarity = spark.getLastError() != REVLibError.kOk || previousInverted != inverted;
+    boolean persistPolarity =
+        spark.getLastError() != REVLibError.kOk || previousInverted != inverted;
     spark.clearFaults();
     // Persist a polarity correction once. Ordinary startup and live PID writes avoid rewriting
     // controller flash; live tuning below explicitly reasserts the same module polarity.
     return spark.configure(
             config,
             SparkBase.ResetMode.kResetSafeParameters,
-            persistPolarity ? SparkBase.PersistMode.kPersistParameters
+            persistPolarity
+                ? SparkBase.PersistMode.kPersistParameters
                 : SparkBase.PersistMode.kNoPersistParameters)
         == REVLibError.kOk;
   }
@@ -290,8 +294,9 @@ public class ModuleIOSpark implements ModuleIO {
     config.signals.appliedOutputAlwaysOn(true).appliedOutputPeriodMs(20);
     config.signals.busVoltageAlwaysOn(true).busVoltagePeriodMs(20);
     config.signals.outputCurrentAlwaysOn(true).outputCurrentPeriodMs(20);
-    config.apply(buildDriveTuningConfig(
-        constants.DriveMotorInverted, driveKp.get(), driveKv.get(), diagnosticLimits));
+    config.apply(
+        buildDriveTuningConfig(
+            constants.DriveMotorInverted, driveKp.get(), driveKv.get(), diagnosticLimits));
     return config;
   }
 
@@ -314,8 +319,9 @@ public class ModuleIOSpark implements ModuleIO {
     config.signals.appliedOutputAlwaysOn(true).appliedOutputPeriodMs(20);
     config.signals.busVoltageAlwaysOn(true).busVoltagePeriodMs(20);
     config.signals.outputCurrentAlwaysOn(true).outputCurrentPeriodMs(20);
-    config.apply(buildTurnTuningConfig(
-        constants.SteerMotorInverted, turnKp.get(), turnKd.get(), diagnosticLimits));
+    config.apply(
+        buildTurnTuningConfig(
+            constants.SteerMotorInverted, turnKp.get(), turnKd.get(), diagnosticLimits));
     return config;
   }
 
@@ -398,10 +404,12 @@ public class ModuleIOSpark implements ModuleIO {
     diagnosticLimitsApplied = false;
     try {
       driveSpark.setCANTimeout(20);
-      SparkFlexConfig driveConfig = buildDriveTuningConfig(
-          constants.DriveMotorInverted, driveKp.get(), driveKv.get(), diagnosticLimits);
-      SparkFlexConfig turnConfig = buildTurnTuningConfig(
-          constants.SteerMotorInverted, turnKp.get(), turnKd.get(), diagnosticLimits);
+      SparkFlexConfig driveConfig =
+          buildDriveTuningConfig(
+              constants.DriveMotorInverted, driveKp.get(), driveKv.get(), diagnosticLimits);
+      SparkFlexConfig turnConfig =
+          buildTurnTuningConfig(
+              constants.SteerMotorInverted, turnKp.get(), turnKd.get(), diagnosticLimits);
       driveConfigurationHealthy =
           driveSpark.configure(
                   driveConfig,

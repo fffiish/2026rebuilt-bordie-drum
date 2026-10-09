@@ -82,13 +82,14 @@ public class Module {
     // Optimize velocity setpoint
     state.optimize(getAngle());
     state.cosineScale(inputs.turnPosition);
-    Logger.recordOutput("Drive/Module" + index + "/DriveDirectionReversedByOptimization",
+    Logger.recordOutput(
+        "Drive/Module" + index + "/DriveDirectionReversedByOptimization",
         state.speedMetersPerSecond != 0.0
-            && Math.signum(state.speedMetersPerSecond)
-                != Math.signum(requestedSpeedForDirection));
+            && Math.signum(state.speedMetersPerSecond) != Math.signum(requestedSpeedForDirection));
     Logger.recordOutput("Drive/Module" + index + "/OptimizedSpeed", state.speedMetersPerSecond);
     Logger.recordOutput("Drive/Module" + index + "/SteeringTarget", state.angle);
-    Logger.recordOutput("Drive/Module" + index + "/SteeringErrorRad",
+    Logger.recordOutput(
+        "Drive/Module" + index + "/SteeringErrorRad",
         DriveDiagnosticPolicy.wrapRadians(state.angle.getRadians() - getAngle().getRadians()));
 
     // Apply setpoints
@@ -157,9 +158,13 @@ public class Module {
     return inputs.driveConnected && inputs.turnConnected;
   }
 
-  public ModuleIO.ModuleIOInputs getDiagnosticInputs() { return inputs; }
+  public ModuleIO.ModuleIOInputs getDiagnosticInputs() {
+    return inputs;
+  }
 
-  public void setDiagnosticLimits(boolean active) { io.setDiagnosticLimits(active); }
+  public void setDiagnosticLimits(boolean active) {
+    io.setDiagnosticLimits(active);
+  }
 
   /** Direct voltage tests leave the unselected axis unpowered. */
   public void runDiagnostic(double driveVolts, double turnVolts) {

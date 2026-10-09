@@ -98,6 +98,8 @@ class ShooterDriverBindingTest {
         LiveWindow.setEnabled(false);
         scheduler.enable();
       }
+      // The flywheel idles at a nonzero speed, so the stale ready condition is "measured == idle".
+      flywheelIO.measuredRps = ShooterConstants.kFlywheelIdle.in(RotationsPerSecond);
       axis(0);
       assertTrue(testMode ? DriverStation.isTestEnabled() : DriverStation.isTeleopEnabled());
       assertTrue(shooter.readyToFire().getAsBoolean(), "Establish stale idle-ready condition");
@@ -163,7 +165,10 @@ class ShooterDriverBindingTest {
       robot.advanceTicks(1);
       assertEquals(ShooterState.kIdle, robot.shooter.getTargetState());
       assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
-      assertEquals(0, robot.flywheelIO.requestedRps, 1e-9);
+      assertEquals(
+          ShooterConstants.kFlywheelIdle.in(RotationsPerSecond),
+          robot.flywheelIO.requestedRps,
+          1e-9);
       assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
     }
   }

@@ -40,8 +40,10 @@ public final class ShooterConstants {
       RotationsPerSecond.of(20.0); // TODO(bringup)
 
   // SPARK P uses duty cycle per radian/second; kV uses volts per radian/second.
-  // Initial P corresponds to 0.08 V/(rad/s) at the nominal 12 V bus.
-  public static final double kFlywheelKP = 0.08 / 12.0;
+  // P corresponds to 0.01 V/(rad/s) at the nominal 12 V bus (~0.06 V per rev/s of error). It was
+  // 0.08, about 5x kV, which with the SPARK's velocity filter lag made the flywheel oscillate;
+  // kV does the bulk of the work and P only trims the residual.
+  public static final double kFlywheelKP = 0.01 / 12.0;
   public static final double kFlywheelKV = 0.11 / (2.0 * Math.PI);
 
   public static final AngularIOSparkFlexConfig kFlywheelSparkFlexConfig =
@@ -50,12 +52,16 @@ public final class ShooterConstants {
           .followerId(kFlywheelFollowerIdA)
           .followerId(kFlywheelFollowerIdB)
           .followerId(kFlywheelFollowerIdC)
-          .opposeMaster(false) // TODO(bringup): true if the two wheels face each other
+          // The 26/29 side is mounted mirrored from the 39/34 side, so it must spin opposite.
+          .opposedFollowerId(kFlywheelFollowerIdB)
+          .opposedFollowerId(kFlywheelFollowerIdC)
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(80))
-          .secondaryCurrentLimit(Amps.of(100))
+          .smartCurrentLimit(Amps.of(40)) // per motor
+          .secondaryCurrentLimit(Amps.of(60))
+          .encoderMeasurementPeriodMs(10)
+          .encoderAverageDepth(2)
           .logFollowerTelemetry(true)
           .kP(kFlywheelKP)
           .kV(kFlywheelKV)
@@ -67,8 +73,8 @@ public final class ShooterConstants {
           .numMotors(4)
           .moi(KilogramSquareMeters.of(0.012)) // TODO(bringup): real flywheel inertia matters here
           .motorRotationsPerOutputRotations(1.0)
-          .supplyCurrentLimit(Amps.of(60))
-          .statorCurrentLimit(Amps.of(100))
+          .supplyCurrentLimit(Amps.of(40))
+          .statorCurrentLimit(Amps.of(60))
           .kV(0.11) // TODO(bringup)
           .build();
 

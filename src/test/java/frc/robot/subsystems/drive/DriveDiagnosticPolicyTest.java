@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 class DriveDiagnosticPolicyTest {
   @Test
   void wrapsCrossBoundaryWithoutLongRotation() {
-    assertEquals(Math.toRadians(2.0), DriveDiagnosticPolicy.wrapRadians(Math.toRadians(-358)), 1e-12);
-    assertEquals(Math.toRadians(-2.0), DriveDiagnosticPolicy.wrapRadians(Math.toRadians(358)), 1e-12);
+    assertEquals(
+        Math.toRadians(2.0), DriveDiagnosticPolicy.wrapRadians(Math.toRadians(-358)), 1e-12);
+    assertEquals(
+        Math.toRadians(-2.0), DriveDiagnosticPolicy.wrapRadians(Math.toRadians(358)), 1e-12);
     assertEquals(Math.PI, Math.abs(DriveDiagnosticPolicy.wrapRadians(3 * Math.PI)), 1e-12);
     assertTrue(Double.isNaN(DriveDiagnosticPolicy.wrapRadians(Double.NaN)));
   }

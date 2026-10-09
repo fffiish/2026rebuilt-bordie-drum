@@ -96,11 +96,12 @@ public class AngularIOSparkFlex implements AngularIO {
     controller = master.getClosedLoopController();
 
     boolean ok = applyConfig(master, buildMasterConfig());
-    for (SparkFlex follower : followers) {
+    for (int i = 0; i < followers.size(); i++) {
+      SparkFlex follower = followers.get(i);
       SparkFlexConfig followerConfig = new SparkFlexConfig();
       followerConfig
           .idleMode(idleMode(config.getNeutralMode()))
-          .follow(config.getMasterId(), config.isOpposeMaster());
+          .follow(config.getMasterId(), config.isFollowerOpposed(config.getFollowerIds().get(i)));
       if (config.getSmartCurrentLimit() != null) {
         followerConfig.smartCurrentLimit((int) config.getSmartCurrentLimit().in(Amps));
       }
@@ -183,6 +184,10 @@ public class AngularIOSparkFlex implements AngularIO {
     double gearing = deviceConfig.getMotorRotationsPerOutputRotations();
     configuration.encoder.positionConversionFactor(1.0 / gearing);
     configuration.encoder.velocityConversionFactor(1.0 / (gearing * 60.0));
+    configuration
+        .encoder
+        .uvwMeasurementPeriod(deviceConfig.getEncoderMeasurementPeriodMs())
+        .uvwAverageDepth(deviceConfig.getEncoderAverageDepth());
     configuration
         .signals
         .primaryEncoderPositionAlwaysOn(true)
@@ -708,22 +713,26 @@ public class AngularIOSparkFlex implements AngularIO {
                     == REVLibError.kOk;
             ok &= verifyConfiguration();
             // Reassert follower relationship after reset/brownout as well as idle/current settings.
-            SparkFlexConfig followerConfig = new SparkFlexConfig();
-            followerConfig
-                .idleMode(idleMode(deviceConfig.getNeutralMode()))
-                .follow(deviceConfig.getMasterId(), deviceConfig.isOpposeMaster());
-            if (deviceConfig.getSmartCurrentLimit() != null)
-              followerConfig.smartCurrentLimit((int) deviceConfig.getSmartCurrentLimit().in(Amps));
-            followerConfig
-                .signals
-                .motorTemperatureAlwaysOn(true)
-                .motorTemperaturePeriodMs(100)
-                .faultsAlwaysOn(true)
-                .faultsPeriodMs(20)
-                .warningsAlwaysOn(true)
-                .warningsPeriodMs(20);
-            configureFollowerTelemetry(followerConfig);
-            for (SparkFlex follower : followers) {
+            for (int i = 0; i < followers.size(); i++) {
+              SparkFlex follower = followers.get(i);
+              SparkFlexConfig followerConfig = new SparkFlexConfig();
+              followerConfig
+                  .idleMode(idleMode(deviceConfig.getNeutralMode()))
+                  .follow(
+                      deviceConfig.getMasterId(),
+                      deviceConfig.isFollowerOpposed(deviceConfig.getFollowerIds().get(i)));
+              if (deviceConfig.getSmartCurrentLimit() != null)
+                followerConfig.smartCurrentLimit(
+                    (int) deviceConfig.getSmartCurrentLimit().in(Amps));
+              followerConfig
+                  .signals
+                  .motorTemperatureAlwaysOn(true)
+                  .motorTemperaturePeriodMs(100)
+                  .faultsAlwaysOn(true)
+                  .faultsPeriodMs(20)
+                  .warningsAlwaysOn(true)
+                  .warningsPeriodMs(20);
+              configureFollowerTelemetry(followerConfig);
               try {
                 follower.setCANTimeout(20);
                 follower.setCANMaxRetries(0);

@@ -57,10 +57,17 @@ class RemoteDiagnosticPolicyTest {
   @Test
   void invalidNoncesCannotActivateOrAdvanceTheGate() {
     var gate = new RemoteDiagnosticPolicy.RequestGate();
-    for (double nonce : new double[] {
-      0, -1, 0.5, 1.5, Double.NaN, Double.POSITIVE_INFINITY,
-      Double.NEGATIVE_INFINITY, 9_007_199_254_740_992.0
-    }) {
+    for (double nonce :
+        new double[] {
+          0,
+          -1,
+          0.5,
+          1.5,
+          Double.NaN,
+          Double.POSITIVE_INFINITY,
+          Double.NEGATIVE_INFINITY,
+          9_007_199_254_740_992.0
+        }) {
       assertFalse(gate.consume(nonce, true));
       assertEquals(0, gate.lastConsumedNonce());
     }

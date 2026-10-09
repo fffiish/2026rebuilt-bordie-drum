@@ -53,7 +53,7 @@ class IntakeDriverBindingTest {
           IntakeConstants.kFeederIntaking.in(RotationsPerSecond), robot.feederIO.velocityRps, 1e-9);
       assertTrue(robot.pickupIO.velocityRps > 0);
       assertTrue(robot.feederIO.velocityRps > 0);
-      assertEquals(IndexerState.kIntaking, robot.indexer.getTargetState());
+      assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
     }
 
     void assertStowed() {

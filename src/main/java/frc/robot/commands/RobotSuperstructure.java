@@ -33,11 +33,11 @@ public class RobotSuperstructure {
   }
 
   /**
-   * Deploy the arm and run both the feeder rollers and the indexer, so FUEL is pulled off the floor
-   * and staged at the shooter throat in one motion. Runs until cancelled.
+   * Deploy the arm and run the intake rollers so FUEL is pulled off the floor. The indexer is left
+   * alone; it only runs from {@link #shoot()}. Runs until cancelled.
    */
   public Command intakeFuel() {
-    return intake.set(IntakeState.kIntaking).alongWith(indexer.set(IndexerState.kIntaking));
+    return intake.set(IntakeState.kIntaking);
   }
 
   /**
@@ -47,11 +47,9 @@ public class RobotSuperstructure {
     intakeTrigger.whileTrue(intakeFuel());
   }
 
-  /**
-   * Driver pickup rollers and indexer while held; pivot position is retained on press and release.
-   */
+  /** Driver pickup rollers while held; pivot position is retained on press and release. */
   public Command intakeFuelWithoutDeploy() {
-    return intake.runRollers().alongWith(indexer.set(IndexerState.kIntaking));
+    return intake.runRollers();
   }
 
   /**

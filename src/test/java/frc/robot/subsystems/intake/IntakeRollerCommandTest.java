@@ -125,14 +125,14 @@ class IntakeRollerCommandTest {
     try (var f = new Fixture()) {
       f.intake.setPersistent(IntakeState.kDeployed).initialize();
       var driverCommand = f.superstructure.intakeFuelWithoutDeploy().ignoringDisable(true);
-      assertEquals(Set.of(f.pickup, f.feeder, f.indexer), driverCommand.getRequirements());
+      assertEquals(Set.of(f.pickup, f.feeder), driverCommand.getRequirements());
       boolean[] held = {false};
       new Trigger(() -> held[0]).whileTrue(driverCommand);
       f.scheduler.run();
       held[0] = true;
       f.scheduler.run();
       assertTrue(driverCommand.isScheduled());
-      assertEquals(IndexerState.kIntaking, f.indexer.getTargetState());
+      assertEquals(IndexerState.kIdle, f.indexer.getTargetState());
       assertEquals(IntakeState.kDeployed, f.intake.getTargetState());
       held[0] = false;
       f.scheduler.run();
@@ -143,7 +143,7 @@ class IntakeRollerCommandTest {
       assertEquals(0, f.pivotIO.angleCommands);
       assertEquals(IntakeState.kDeployed, f.intake.getTargetState());
       var autoCommand = f.superstructure.intakeFuel().ignoringDisable(true);
-      assertEquals(Set.of(f.intake, f.indexer), autoCommand.getRequirements());
+      assertEquals(Set.of(f.intake), autoCommand.getRequirements());
       autoCommand.schedule();
       f.scheduler.run();
       assertEquals(IntakeState.kIntaking, f.intake.getTargetState());
