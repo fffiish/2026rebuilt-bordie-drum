@@ -10,7 +10,7 @@ import frc.robot.lib.subsystem.angular.AngularIOSparkFlexConfig;
 import frc.robot.lib.subsystem.angular.AngularSubsystemConfig;
 
 /**
- * Configs for the shooter: a two-motor flywheel plus a linear-actuator hood.
+ * Configs for the shooter: a four-motor flywheel plus a linear-actuator hood.
  *
  * <p>The hood is tracked in <em>extension</em> (inches), never in launch angle — the crank geometry
  * between actuator travel and hood angle is nonlinear, so the mapping lives in a {@link
@@ -39,6 +39,11 @@ public final class ShooterConstants {
   public static final AngularVelocity kFlywheelEjecting =
       RotationsPerSecond.of(20.0); // TODO(bringup)
 
+  // SPARK P uses duty cycle per radian/second; kV uses volts per radian/second.
+  // Initial P corresponds to 0.08 V/(rad/s) at the nominal 12 V bus.
+  public static final double kFlywheelKP = 0.08 / 12.0;
+  public static final double kFlywheelKV = 0.11 / (2.0 * Math.PI);
+
   public static final AngularIOSparkFlexConfig kFlywheelSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
           .masterId(kFlywheelMasterId)
@@ -49,8 +54,11 @@ public final class ShooterConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(60))
+          .smartCurrentLimit(Amps.of(80))
           .secondaryCurrentLimit(Amps.of(100))
+          .logFollowerTelemetry(true)
+          .kP(kFlywheelKP)
+          .kV(kFlywheelKV)
           .build();
 
   public static final AngularIOSimConfig kFlywheelSimConfig =
@@ -69,7 +77,9 @@ public final class ShooterConstants {
           .logKey("ShooterFlywheel")
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(2.0)) // gates "ready to fire"
-          .build(); // TODO(bringup): tune kS/kV/kP
+          .kP(kFlywheelKP)
+          .kV(kFlywheelKV)
+          .build();
 
   public static final AngularSubsystemConfig kFlywheelSubsystemConfigSim =
       AngularSubsystemConfig.builder()

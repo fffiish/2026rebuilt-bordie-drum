@@ -3,6 +3,7 @@ package frc.robot.constants.intake;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.*;
 import frc.robot.constants.RobotConstants;
@@ -27,7 +28,7 @@ public final class IntakeConstants {
   public static final int kPivotMotorId = 21; // confirmed: "Intake pivot"
 
   /** Stowed, inside the frame perimeter. */
-  public static final Angle kPivotStowed = Degrees.of(95.0); // TODO(bringup)
+  public static final Angle kPivotStowed = Degrees.of(118.0); // operator-confirmed stowed hard stop
 
   /** Deployed, rollers on the floor. */
   public static final Angle kPivotDeployed = Degrees.of(0.0); // TODO(bringup)
@@ -36,14 +37,17 @@ public final class IntakeConstants {
       AngularIOSparkFlexConfig.builder()
           .masterId(kPivotMotorId)
           .inverted(false) // TODO(bringup): verify direction
-          .motorRotationsPerOutputRotations(60.0) // TODO(bringup): real gear ratio
+          .motorRotationsPerOutputRotations(60.0) // operator-confirmed reduction
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(40))
-          .secondaryCurrentLimit(Amps.of(80))
+          .smartCurrentLimit(Amps.of(80))
+          .secondaryCurrentLimit(Amps.of(120))
           .softMinAngle(kPivotDeployed)
           .softMaxAngle(kPivotStowed)
           .resetAngle(kPivotStowed) // arm starts stowed against its hard stop
           .gravityType(Optional.of(GravityTypeValue.Arm_Cosine))
+          .kP(2.0)
+          .kV(0.5)
+          .kG(0.35)
           .cruiseVelocity(RotationsPerSecond.of(1.0)) // TODO(bringup)
           .acceleration(RotationsPerSecondPerSecond.of(2.0)) // TODO(bringup)
           .build();
@@ -53,6 +57,9 @@ public final class IntakeConstants {
           .motor(DCMotor.getNeoVortex(1)) // NEO Vortex, confirmed from CAD
           .numMotors(1)
           .moi(PivotSim.estimateMOI(Inches.of(14.0), Pounds.of(8.0))) // TODO(bringup)
+          // Unverified uniform-rod geometry, for simulation only. Zero is horizontal.
+          .armLengthSupplier(Optional.of(() -> Inches.of(14.0)))
+          .realAngleFromSubsystemAngleZeroSupplier(Optional.of(() -> Rotation2d.kZero))
           .motorRotationsPerOutputRotations(60.0)
           .physicalMinAngle(kPivotDeployed)
           .physicalMaxAngle(kPivotStowed)
@@ -73,9 +80,12 @@ public final class IntakeConstants {
           .bus(RobotConstants.kRioBus)
           .positionTolerance(Degrees.of(2.0))
           .velocityTolerance(DegreesPerSecond.of(10.0))
+          .kP(2.0)
+          .kV(0.5)
+          .kG(0.35)
           .cruiseVelocity(RotationsPerSecond.of(1.0))
           .acceleration(RotationsPerSecondPerSecond.of(2.0))
-          .build(); // TODO(bringup): kP/kD/kS/kV/kG all zero until tuned on the real arm
+          .build(); // Retain the nonzero gains used in the current robot build.
 
   public static final AngularSubsystemConfig kPivotSubsystemConfigSim =
       AngularSubsystemConfig.builder()
@@ -112,6 +122,7 @@ public final class IntakeConstants {
           .outputAnglePerOutputRotation(Rotations.of(1.0))
           .smartCurrentLimit(Amps.of(40))
           .secondaryCurrentLimit(Amps.of(80))
+          .kV(0.12 / (2.0 * Math.PI)) // 0.12 V per rps, expressed as V per rad/s
           .build();
 
   public static final AngularIOSimConfig kFeederSimConfig =
@@ -123,6 +134,8 @@ public final class IntakeConstants {
           .supplyCurrentLimit(Amps.of(40))
           .statorCurrentLimit(Amps.of(80))
           .kV(0.12) // TODO(bringup)
+          // Sim-only starting profile: 10 seconds to the unverified 50 rps goal.
+          .acceleration(RotationsPerSecondPerSecond.of(5.0))
           .build();
 
   public static final AngularSubsystemConfig kFeederSubsystemConfigReal =
@@ -130,6 +143,7 @@ public final class IntakeConstants {
           .logKey("Feeder")
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
+          .kV(0.12 / (2.0 * Math.PI)) // 6 V feedforward at the 50 rps target
           .build(); // TODO(bringup): tune kS/kV/kP against the real rollers
 
   public static final AngularSubsystemConfig kFeederSubsystemConfigSim =
@@ -138,6 +152,7 @@ public final class IntakeConstants {
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
           .kV(0.12)
+          .acceleration(RotationsPerSecondPerSecond.of(5.0)) // sim-only, unverified
           .build();
 
   // ---------------------------------------------------- intake rollers (floor pickup)
@@ -160,8 +175,9 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(40))
-          .secondaryCurrentLimit(Amps.of(80))
+          .smartCurrentLimit(Amps.of(80))
+          .secondaryCurrentLimit(Amps.of(120))
+          .kV(0.12 / (2.0 * Math.PI)) // 0.12 V per rps, expressed as V per rad/s
           .build();
 
   public static final AngularIOSimConfig kIntakeRollerSimConfig =
@@ -173,6 +189,7 @@ public final class IntakeConstants {
           .supplyCurrentLimit(Amps.of(40))
           .statorCurrentLimit(Amps.of(80))
           .kV(0.12) // TODO(bringup)
+          .acceleration(RotationsPerSecondPerSecond.of(5.0)) // sim-only, unverified
           .build();
 
   public static final AngularSubsystemConfig kIntakeRollerSubsystemConfigReal =
@@ -180,6 +197,7 @@ public final class IntakeConstants {
           .logKey("IntakeRollers")
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
+          .kV(0.12 / (2.0 * Math.PI)) // 6 V feedforward at the 50 rps target
           .build(); // TODO(bringup): tune kS/kV/kP
 
   public static final AngularSubsystemConfig kIntakeRollerSubsystemConfigSim =
@@ -188,5 +206,6 @@ public final class IntakeConstants {
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
           .kV(0.12)
+          .acceleration(RotationsPerSecondPerSecond.of(5.0)) // sim-only, unverified
           .build();
 }

@@ -51,6 +51,7 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeDiagnostics;
 import frc.robot.subsystems.shooter.Hood;
 import frc.robot.subsystems.shooter.HoodIO;
 import frc.robot.subsystems.shooter.HoodIOSparkMax;
@@ -97,6 +98,7 @@ public class RobotContainer {
   private final Vision vision;
 
   private final Intake intake;
+  private final IntakeDiagnostics intakeDiagnostics;
   private final Indexer indexer;
   private final Shooter shooter;
 
@@ -268,6 +270,7 @@ public class RobotContainer {
     }
 
     driveDiagnostics = new DriveDiagnostics(drive);
+    intakeDiagnostics = new IntakeDiagnostics(intake.getDiagnosticPivot());
     stopOtherMechanisms();
     superstructure = new RobotSuperstructure(intake, indexer, shooter);
     superstructure.registerAutoCommands();
@@ -362,7 +365,7 @@ public class RobotContainer {
     - Right bumper: outtake            - Left bumper: turbo
     - A: trench align                  - X (real robot only): X-lock the wheels
      */
-    driverController.leftTrigger.whileTrue(superstructure.intakeFuel());
+    superstructure.bindIntakeTrigger(driverController.leftTrigger);
     driverController.rightTrigger.whileTrue(superstructure.shoot());
     driverController.rightBumper.whileTrue(superstructure.outtake());
 
@@ -401,14 +404,38 @@ public class RobotContainer {
 
   /** Normal scheduler and bindings are not polled anywhere in this path. */
   public void diagnosticPeriodic(double now, double loopPeriodMs) {
-    if (DriverStation.isTest()) {
+    boolean intakeSelected = intakeDiagnostics.isSelected();
+    boolean driveSelected = SmartDashboard.getBoolean("DriveDiagnostics/Prepare", false);
+    if (intakeSelected) {
+      intake.diagnosticStopRollers();
+      indexer.stopImmediately();
+      shooter.stopImmediately();
+      drive.periodic();
+      drive.stopOutputs();
+      Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", true);
+    } else if (driveSelected) {
       stopOtherMechanisms();
       drive.periodic();
       Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", true);
     } else {
       Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", false);
     }
-    driveDiagnostics.periodic(edu.wpi.first.wpilibj.Timer.getFPGATimestamp(), loopPeriodMs);
+    // Both diagnostic handlers stop outputs in Test; do not poll them during normal Xbox control.
+    if (!intakeSelected && !driveSelected && !DriverStation.isDisabled()) return;
+    driveDiagnostics.periodic(
+        edu.wpi.first.wpilibj.Timer.getFPGATimestamp(), loopPeriodMs, intakeSelected);
+    intakeDiagnostics.periodic(
+        edu.wpi.first.wpilibj.Timer.getFPGATimestamp(), loopPeriodMs, driveSelected);
+  }
+
+  public boolean isDiagnosticSelected() {
+    return isIntakeDiagnosticSelected()
+        || SmartDashboard.getBoolean("DriveDiagnostics/Prepare", false);
+  }
+
+  /** Preparation remains latched until disabled, preventing normal commands from resuming. */
+  public boolean isIntakeDiagnosticSelected() {
+    return intakeDiagnostics.isSelected();
   }
 
   /**

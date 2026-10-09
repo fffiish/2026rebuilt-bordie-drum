@@ -41,6 +41,20 @@ public class RobotSuperstructure {
   }
 
   /**
+   * Driver trigger: deploy and intake while held; release stows the pivot and stops the rollers.
+   */
+  public void bindIntakeTrigger(Trigger intakeTrigger) {
+    intakeTrigger.whileTrue(intakeFuel());
+  }
+
+  /**
+   * Driver pickup rollers and indexer while held; pivot position is retained on press and release.
+   */
+  public Command intakeFuelWithoutDeploy() {
+    return intake.runRollers().alongWith(indexer.set(IndexerState.kIntaking));
+  }
+
+  /**
    * Spin the flywheel up and extend the hood, then start feeding once <em>both</em> are in
    * tolerance. Holding the feed off until {@link Shooter#readyToFire()} is what stops the first
    * ball of a burst from going short.

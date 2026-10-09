@@ -1,13 +1,17 @@
 package frc.robot.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.constants.shooter.ShooterConstants;
 import frc.robot.lib.subsystem.VirtualSubsystem;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
+import org.littletonrobotics.junction.Logger;
 
 /**
- * Two-motor flywheel plus a linear-actuator hood.
+ * Four-motor flywheel plus a linear-actuator hood.
  *
  * <p>The hood is a two-position actuator pair, not a continuously variable surface, so range within
  * a hood position comes from flywheel RPM.
@@ -48,13 +52,23 @@ public class Shooter extends VirtualSubsystem {
     hood.stopImmediately();
   }
 
-  /**
-   * Flywheel is within its velocity tolerance of the commanded speed. {@code atAngle()} is
-   * mode-aware — in velocity mode it compares goal velocity to measured velocity — so this is the
-   * correct "spun up" signal, despite the name.
-   */
+  /** Compare measured speed with the current state, including the first trigger-press cycle. */
   public Trigger atSpeed() {
-    return flywheel.atAngle();
+    return new Trigger(
+        () ->
+            Math.abs(
+                    flywheel.getVelocity().in(RadiansPerSecond)
+                        - targetState.getFlywheelVelocity().in(RadiansPerSecond))
+                <= ShooterConstants.kFlywheelSubsystemConfigReal
+                    .getVelocityTolerance()
+                    .in(RadiansPerSecond));
+  }
+
+  @Override
+  public void periodic() {
+    Logger.recordOutput("Shooter/TargetState", targetState.toString());
+    Logger.recordOutput("Shooter/AtSpeed", atSpeed().getAsBoolean());
+    Logger.recordOutput("Shooter/ReadyToFire", readyToFire().getAsBoolean());
   }
 
   /**

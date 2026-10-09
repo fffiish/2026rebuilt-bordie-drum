@@ -36,7 +36,7 @@ public class PivotSim extends LinearSystemSim<N2, N1, N2> {
   private final double m_maxAngle;
 
   // Whether the simulator should simulate gravity.
-  private final Optional<Supplier<Rotation2d>> m_realAngleFromSubsystemAngleZero;
+  private Optional<Supplier<Rotation2d>> m_realAngleFromSubsystemAngleZero;
 
   /**
    * Creates a simulated arm mechanism.
@@ -73,6 +73,7 @@ public class PivotSim extends LinearSystemSim<N2, N1, N2> {
     m_minAngle = minAngleRads;
     m_maxAngle = maxAngleRads;
     m_realAngleFromSubsystemAngleZero = realAngleFromSubsystemAngleZero;
+    validateGravityGeometry();
 
     setState(startingAngleRads, 0.0);
   }
@@ -281,6 +282,28 @@ public class PivotSim extends LinearSystemSim<N2, N1, N2> {
   }
 
   public void setArmLength(Distance length) {
-    m_armLenMeters = length.in(Meters);
+    double meters = length.in(Meters);
+    if (m_realAngleFromSubsystemAngleZero.isPresent()
+        && (!Double.isFinite(meters) || meters <= 0.0)) {
+      throw new IllegalArgumentException(
+          "Gravity simulation requires a finite positive arm length");
+    }
+    m_armLenMeters = meters;
+  }
+
+  public void setRealAngleFromSubsystemAngleZeroSupplier(Optional<Supplier<Rotation2d>> supplier) {
+    if (supplier.isPresent() && (!Double.isFinite(m_armLenMeters) || m_armLenMeters <= 0.0)) {
+      throw new IllegalArgumentException(
+          "Gravity simulation requires a finite positive arm length");
+    }
+    m_realAngleFromSubsystemAngleZero = supplier;
+  }
+
+  private void validateGravityGeometry() {
+    if (m_realAngleFromSubsystemAngleZero.isPresent()
+        && (!Double.isFinite(m_armLenMeters) || m_armLenMeters <= 0.0)) {
+      throw new IllegalArgumentException(
+          "Gravity simulation requires a finite positive arm length");
+    }
   }
 }

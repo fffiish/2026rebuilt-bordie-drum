@@ -44,6 +44,7 @@ public final class IndexerConstants {
           .outputAnglePerOutputRotation(Rotations.of(1.0))
           .smartCurrentLimit(Amps.of(40))
           .secondaryCurrentLimit(Amps.of(80))
+          .kV(0.12 / (2.0 * Math.PI))
           .build();
 
   public static final AngularIOSimConfig kSimConfig =
@@ -62,7 +63,8 @@ public final class IndexerConstants {
           .logKey("Indexer")
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
-          .build(); // TODO(bringup): tune kS/kV/kP
+          .kV(0.12 / (2.0 * Math.PI))
+          .build();
 
   public static final AngularSubsystemConfig kSubsystemConfigSim =
       AngularSubsystemConfig.builder()

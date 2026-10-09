@@ -32,8 +32,11 @@ public class AngularIOSimConfig {
   @Builder.Default @Setter private double kV = 0.0;
   @Builder.Default @Setter private double kG = 0.0;
   @Builder.Default @Setter private double kS = 0.0;
+  // Selects cosine feedforward. Physical gravity is separately enabled by the angle supplier below.
   @Builder.Default @Setter private boolean kgArm = false;
 
+  // Present means gravity is modeled; armLengthSupplier must provide a finite positive length.
+  // The supplied angle is the physical horizontal offset of subsystem zero.
   @Builder.Default
   private final Optional<Supplier<Rotation2d>> realAngleFromSubsystemAngleZeroSupplier =
       Optional.empty();

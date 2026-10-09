@@ -18,8 +18,7 @@ public final class DriveDiagnostics {
   private final Module[] modules;
   private final DriveDiagnosticPolicy.TimingWindow timing =
       new DriveDiagnosticPolicy.TimingWindow();
-  private final DriveDiagnosticPolicy.DeadmanGate gate =
-      new DriveDiagnosticPolicy.DeadmanGate();
+  private final DriveDiagnosticPolicy.DeadmanGate gate = new DriveDiagnosticPolicy.DeadmanGate();
   private final RemoteDiagnosticPolicy.RequestGate remoteRequests =
       new RemoteDiagnosticPolicy.RequestGate();
   private final DriveDiagnosticPolicy.OscillationGuard steeringGuard =
@@ -81,7 +80,8 @@ public final class DriveDiagnostics {
     Logger.recordOutput(KEY + "LastRunReason", "No completed run in this program instance");
     SmartDashboard.setDefaultNumber(KEY + "Module", 0);
     SmartDashboard.setDefaultNumber(KEY + "Magnitude", 0.5);
-    Logger.recordOutput(KEY + "TraceColumns",
+    Logger.recordOutput(
+        KEY + "TraceColumns",
         "time,stage,module,requestedSpeed; per module: relativeAngle,absoluteAngle,target,error,"
             + "speed,driveVolts,turnVolts,driveAmps,turnAmps,driveRpm,turnRpm,snapshotTime,"
             + "absoluteAge,driveStatus,turnStatus,seeded,configurationHealthy,limitsApplied");
@@ -92,6 +92,35 @@ public final class DriveDiagnostics {
 
   /** Called once per loop after module input updates, in every Driver Station mode. */
   public void periodic(double nowSec, double loopPeriodMs) {
+    periodic(nowSec, loopPeriodMs, false);
+  }
+
+  /** Intake calibration takes exclusive ownership of Test mode and stops all drive outputs. */
+  public void periodic(double nowSec, double loopPeriodMs, boolean inhibited) {
+    if (inhibited) {
+      synchronized (outputLock) {
+        if (active) finish(false, "Intake diagnostic selected");
+        stopAll();
+        gate.cancel();
+        timing.clear();
+        wasTestEnabled = false;
+        watchdogRunning = false;
+      }
+      Logger.recordOutput(KEY + "Ready", false);
+      Logger.recordOutput(KEY + "Active", false);
+      Logger.recordOutput(KEY + "Status", "Blocked: intake diagnostic selected");
+      Logger.recordOutput(KEY + "TimestampSec", nowSec);
+      Logger.recordOutput(
+          KEY + "DSState",
+          new double[] {
+            nowSec,
+            DriverStation.isEnabled() ? 1 : 0,
+            DriverStation.isTest() ? 1 : 0,
+            DriverStation.isDSAttached() ? 1 : 0,
+            DriverStation.isEStopped() ? 1 : 0
+          });
+      return;
+    }
     boolean testMode = DriverStation.isTest();
     if (testMode != wasTestMode) {
       timing.clear();
@@ -120,8 +149,8 @@ public final class DriveDiagnostics {
         clearSteeringPasses();
       }
     }
-    boolean operatorAvailable = DriverStation.isDSAttached()
-        && (remoteAllowed || DriverStation.isJoystickConnected(0));
+    boolean operatorAvailable =
+        DriverStation.isDSAttached() && (remoteAllowed || DriverStation.isJoystickConnected(0));
     boolean testEnabled = DriverStation.isTestEnabled() && operatorAvailable;
     invalidateChangedGains();
     String fault = healthFault(Timer.getFPGATimestamp());
@@ -129,57 +158,79 @@ public final class DriveDiagnostics {
       clearSteeringPasses();
     }
     boolean ready = prepare && limitsRequested && fault.isEmpty() && timing.ready(nowSec);
-    boolean continuous = Double.isFinite(nowSec)
-        && (!Double.isFinite(lastNowSec)
-            || (nowSec >= lastNowSec && nowSec - lastNowSec <= 0.1))
-        && Double.isFinite(loopPeriodMs) && loopPeriodMs <= 100.0;
+    boolean continuous =
+        Double.isFinite(nowSec)
+            && (!Double.isFinite(lastNowSec)
+                || (nowSec >= lastNowSec && nowSec - lastNowSec <= 0.1))
+            && Double.isFinite(loopPeriodMs)
+            && loopPeriodMs <= 100.0;
     lastNowSec = nowSec;
 
     synchronized (outputLock) {
       heartbeatSec = Timer.getFPGATimestamp();
       updateRemoteState(heartbeatSec);
-      boolean held = remoteAllowed ? remoteActivation
-          && RemoteDiagnosticPolicy.heartbeatFresh(heartbeatSec, remoteHeartbeatReceiptSec)
-          : operatorAvailable && DriverStation.getStickButton(0, 1);
-      boolean newRemoteRequest = remoteRequests.consume(
-          SmartDashboard.getNumber(KEY + "StartNonce", 0),
-          remoteAllowed && testEnabled && wasTestEnabled && held && ready && continuous && !active);
+      boolean held =
+          remoteAllowed
+              ? remoteActivation
+                  && RemoteDiagnosticPolicy.heartbeatFresh(heartbeatSec, remoteHeartbeatReceiptSec)
+              : operatorAvailable && DriverStation.getStickButton(0, 1);
+      boolean newRemoteRequest =
+          remoteRequests.consume(
+              SmartDashboard.getNumber(KEY + "StartNonce", 0),
+              remoteAllowed
+                  && testEnabled
+                  && wasTestEnabled
+                  && held
+                  && ready
+                  && continuous
+                  && !active);
       wasTestEnabled = testEnabled;
-    if (active && (!testEnabled || !held || !ready || !continuous)) {
-      finish(false, !testEnabled ? "Test disabled or operator disconnected"
-          : !held ? remoteAllowed ? "Remote activation off or heartbeat stale" : "Operator released Xbox A"
-          : !continuous ? "Loop gap exceeds 100 ms"
-          : !fault.isEmpty() ? fault : "Preparation or timing qualification lost");
-    }
-    boolean authorized;
-    if (remoteAllowed) {
-      gate.cancel();
-      authorized = newRemoteRequest;
-    } else {
-      authorized = gate.update(testEnabled, held, ready && continuous);
-    }
-    if (!active && authorized) {
-      activeRunNonce = remoteAllowed ? remoteRequests.lastConsumedNonce() : 0;
-      start(nowSec);
-    }
-    if (active) {
-      if (watchdogTripped && !"Deadline reached".equals(watchdogReason)) {
-        finish(false, "Independent watchdog: " + watchdogReason);
-      } else if (!selectionUnchanged()) {
-        finish(false, "Diagnostic selection changed during movement");
+      if (active && (!testEnabled || !held || !ready || !continuous)) {
+        finish(
+            false,
+            !testEnabled
+                ? "Test disabled or operator disconnected"
+                : !held
+                    ? remoteAllowed
+                        ? "Remote activation off or heartbeat stale"
+                        : "Operator released Xbox A"
+                    : !continuous
+                        ? "Loop gap exceeds 100 ms"
+                        : !fault.isEmpty() ? fault : "Preparation or timing qualification lost");
+      }
+      boolean authorized;
+      if (remoteAllowed) {
+        gate.cancel();
+        authorized = newRemoteRequest;
       } else {
-        runStage(nowSec, watchdogTripped);
+        authorized = gate.update(testEnabled, held, ready && continuous);
+      }
+      if (!active && authorized) {
+        activeRunNonce = remoteAllowed ? remoteRequests.lastConsumedNonce() : 0;
+        start(nowSec);
+      }
+      if (active) {
+        if (watchdogTripped && !"Deadline reached".equals(watchdogReason)) {
+          finish(false, "Independent watchdog: " + watchdogReason);
+        } else if (!selectionUnchanged()) {
+          finish(false, "Diagnostic selection changed during movement");
+        } else {
+          runStage(nowSec, watchdogTripped);
+        }
+      }
+      if (!active && testMode) {
+        stopAll();
       }
     }
-    if (!active && testMode) {
-      stopAll();
-    }
-    }
     if (!active && !ready && testMode) {
-      status = !prepare ? "Blocked: Prepare must be set while Test mode is disabled"
-          : !limitsRequested ? "Blocked: diagnostic limits must be applied while disabled"
-          : !fault.isEmpty() ? "Blocked: " + fault
-          : "Blocked: need 100 fresh Test loops, median <25 ms and p95 <40 ms";
+      status =
+          !prepare
+              ? "Blocked: Prepare must be set while Test mode is disabled"
+              : !limitsRequested
+                  ? "Blocked: diagnostic limits must be applied while disabled"
+                  : !fault.isEmpty()
+                      ? "Blocked: " + fault
+                      : "Blocked: need 100 fresh Test loops, median <25 ms and p95 <40 ms";
     }
     Logger.recordOutput(KEY + "Ready", ready);
     Logger.recordOutput(KEY + "HealthFault", fault);
@@ -193,22 +244,31 @@ public final class DriveDiagnostics {
     Logger.recordOutput(KEY + "LoopSamples", timing.sampleCount());
     Logger.recordOutput(KEY + "RequestedSpeedMetersPerSec", requestedSpeed);
     Logger.recordOutput(KEY + "TimestampSec", nowSec);
-    Logger.recordOutput(KEY + "DSState", new double[] {Timer.getFPGATimestamp(),
-        DriverStation.isEnabled() ? 1 : 0, DriverStation.isTest() ? 1 : 0,
-        DriverStation.isDSAttached() ? 1 : 0, DriverStation.isEStopped() ? 1 : 0});
+    Logger.recordOutput(
+        KEY + "DSState",
+        new double[] {
+          Timer.getFPGATimestamp(),
+          DriverStation.isEnabled() ? 1 : 0,
+          DriverStation.isTest() ? 1 : 0,
+          DriverStation.isDSAttached() ? 1 : 0,
+          DriverStation.isEStopped() ? 1 : 0
+        });
     Logger.recordOutput(KEY + "SteeringTargetsRad", targets);
     Logger.recordOutput(KEY + "SteeringPassed", allSteeringPassed());
     Logger.recordOutput(KEY + "WatchdogTripped", watchdogTripped);
     Logger.recordOutput(KEY + "WatchdogReason", watchdogReason);
     Logger.recordOutput(KEY + "RemoteAllowedLatched", remoteAllowed);
-    Logger.recordOutput(KEY + "ActivationSource", remoteAllowed ? "Remote nonce + heartbeat" : "Physical Xbox A");
+    Logger.recordOutput(
+        KEY + "ActivationSource", remoteAllowed ? "Remote nonce + heartbeat" : "Physical Xbox A");
     Logger.recordOutput(KEY + "RemoteHeartbeatReceiptSec", remoteHeartbeatReceiptSec);
     Logger.recordOutput(KEY + "LastConsumedNonce", remoteRequests.lastConsumedNonce());
-    Logger.recordOutput(KEY + "RemoteHeartbeatFresh", RemoteDiagnosticPolicy.heartbeatFresh(
-        Timer.getFPGATimestamp(), remoteHeartbeatReceiptSec));
+    Logger.recordOutput(
+        KEY + "RemoteHeartbeatFresh",
+        RemoteDiagnosticPolicy.heartbeatFresh(Timer.getFPGATimestamp(), remoteHeartbeatReceiptSec));
     SmartDashboard.putBoolean(KEY + "RemoteAllowedLatched", remoteAllowed);
     SmartDashboard.putNumber(KEY + "LastConsumedNonce", remoteRequests.lastConsumedNonce());
-    SmartDashboard.putString(KEY + "ActivationSource", remoteAllowed ? "Remote nonce + heartbeat" : "Physical Xbox A");
+    SmartDashboard.putString(
+        KEY + "ActivationSource", remoteAllowed ? "Remote nonce + heartbeat" : "Physical Xbox A");
     SmartDashboard.putString(KEY + "Status", status);
     SmartDashboard.putBoolean(KEY + "Ready", ready);
     SmartDashboard.putNumber(KEY + "LoopMedianMs", timing.medianMs());
@@ -222,8 +282,8 @@ public final class DriveDiagnostics {
     for (int i = 0; i < modules.length; i++) {
       ModuleIO.ModuleIOInputs in = modules[i].getDiagnosticInputs();
       String prefix = "Module " + i + ": ";
-      if (!DriveDiagnosticPolicy.sensorsHealthy(in.driveConnected, in.turnConnected,
-          in.turnEncoderConnected, in.turnSeeded)) {
+      if (!DriveDiagnosticPolicy.sensorsHealthy(
+          in.driveConnected, in.turnConnected, in.turnEncoderConnected, in.turnSeeded)) {
         return prefix + "sensor disconnected or steering not seeded";
       }
       if (!in.configurationHealthy || !in.diagnosticLimitsApplied) {
@@ -232,7 +292,8 @@ public final class DriveDiagnostics {
       if (!in.driveStatusHealthy || !in.turnStatusHealthy) {
         return prefix + "REV signal read failed";
       }
-      if (!Double.isFinite(in.absoluteSensorAgeSec) || in.absoluteSensorAgeSec < 0
+      if (!Double.isFinite(in.absoluteSensorAgeSec)
+          || in.absoluteSensorAgeSec < 0
           || in.absoluteSensorAgeSec > 0.1
           || !DriveDiagnosticPolicy.samplesFresh(nowSec, in.snapshotTimestampSec)) {
         return prefix + "encoder telemetry stale";
@@ -250,8 +311,11 @@ public final class DriveDiagnostics {
   private void start(double nowSec) {
     Stage choice = selectedStage();
     double moduleChoice = SmartDashboard.getNumber(KEY + "Module", 0);
-    if (choice == Stage.NONE || !Double.isFinite(moduleChoice)
-        || moduleChoice != Math.rint(moduleChoice) || moduleChoice < 0 || moduleChoice > 4) {
+    if (choice == Stage.NONE
+        || !Double.isFinite(moduleChoice)
+        || moduleChoice != Math.rint(moduleChoice)
+        || moduleChoice < 0
+        || moduleChoice > 4) {
       finish(false, "Choose a valid stage and module 0..3, or 4 for all");
       return;
     }
@@ -282,7 +346,8 @@ public final class DriveDiagnostics {
         return;
       }
       startingAngles[i] = modules[i].getAngle().getRadians();
-      startingAbsoluteAngles[i] = modules[i].getDiagnosticInputs().turnAbsolutePosition.getRadians();
+      startingAbsoluteAngles[i] =
+          modules[i].getDiagnosticInputs().turnAbsolutePosition.getRadians();
       targets[i] = startingAngles[i];
     }
     stage = choice;
@@ -299,21 +364,25 @@ public final class DriveDiagnostics {
     if (stage == Stage.STEER_POSITIVE || stage == Stage.STEER_NEGATIVE) {
       int direction = stage == Stage.STEER_POSITIVE ? 0 : 1;
       steeringPassed[selectedModule][direction] = false;
-      targets[selectedModule] = DriveDiagnosticPolicy.wrapRadians(startingAngles[selectedModule]
-          + (stage == Stage.STEER_POSITIVE ? STEP_RAD : -STEP_RAD));
+      targets[selectedModule] =
+          DriveDiagnosticPolicy.wrapRadians(
+              startingAngles[selectedModule]
+                  + (stage == Stage.STEER_POSITIVE ? STEP_RAD : -STEP_RAD));
     }
     stopAll();
     active = true;
     watchdogTripped = false;
     watchdogReason = "";
     heartbeatSec = Timer.getFPGATimestamp();
-    hardDeadlineSec = startSec + switch (stage) {
-      case FEEDBACK -> 0.145;
-      case DRIVE_OPEN -> 19.995;
-      case DRIVE_CLOSED -> 2.995;
-      case STEER_POSITIVE, STEER_NEGATIVE -> 11.995;
-      default -> 0;
-    };
+    hardDeadlineSec =
+        startSec
+            + switch (stage) {
+              case FEEDBACK -> 0.145;
+              case DRIVE_OPEN -> 19.995;
+              case DRIVE_CLOSED -> 2.995;
+              case STEER_POSITIVE, STEER_NEGATIVE -> 11.995;
+              default -> 0;
+            };
     watchdogRunning = true;
     status = "Running " + stage.name() + " on module " + selectedModule;
   }
@@ -325,13 +394,14 @@ public final class DriveDiagnostics {
       return;
     }
     if (deadlineReached) {
-      elapsed = switch (stage) {
-        case FEEDBACK -> 0.150;
-        case DRIVE_OPEN -> 20.0;
-        case DRIVE_CLOSED -> 3.0;
-        case STEER_POSITIVE, STEER_NEGATIVE -> 12.0;
-        default -> elapsed;
-      };
+      elapsed =
+          switch (stage) {
+            case FEEDBACK -> 0.150;
+            case DRIVE_OPEN -> 20.0;
+            case DRIVE_CLOSED -> 3.0;
+            case STEER_POSITIVE, STEER_NEGATIVE -> 12.0;
+            default -> elapsed;
+          };
     }
     for (int i = 0; i < modules.length; i++) {
       if (!isSelected(i)) {
@@ -349,23 +419,29 @@ public final class DriveDiagnostics {
 
   private void feedback(double elapsed) {
     double relative = angleTravel(selectedModule);
-    double absolute = DriveDiagnosticPolicy.wrapRadians(
-        modules[selectedModule].getDiagnosticInputs().turnAbsolutePosition.getRadians()
-            - startingAbsoluteAngles[selectedModule]);
+    double absolute =
+        DriveDiagnosticPolicy.wrapRadians(
+            modules[selectedModule].getDiagnosticInputs().turnAbsolutePosition.getRadians()
+                - startingAbsoluteAngles[selectedModule]);
     if (DriveDiagnosticPolicy.steerPulseComplete(elapsed, relative)
         || Math.abs(absolute) >= TRAVEL_LIMIT_RAD) {
-      boolean enough = Math.abs(relative) >= Math.toRadians(0.2)
-          && Math.abs(absolute) >= Math.toRadians(0.2);
+      boolean enough =
+          Math.abs(relative) >= Math.toRadians(0.2) && Math.abs(absolute) >= Math.toRadians(0.2);
       boolean sameDirection = relative * absolute > 0;
-      boolean agree = Math.abs(DriveDiagnosticPolicy.wrapRadians(relative - absolute))
-          <= Math.toRadians(0.5);
+      boolean agree =
+          Math.abs(DriveDiagnosticPolicy.wrapRadians(relative - absolute)) <= Math.toRadians(0.5);
       Logger.recordOutput(KEY + "FeedbackRelativeDeltaRad", relative);
       Logger.recordOutput(KEY + "FeedbackAbsoluteDeltaRad", absolute);
       feedbackPassed[selectedModule] = enough && sameDirection && agree;
-      finish(enough && sameDirection && agree, !enough ? "Feedback motion below 0.2 degrees"
-          : !sameDirection ? "Absolute and relative steering disagree in direction"
-          : !agree ? "Absolute and relative steering disagree in magnitude"
-          : "Steering feedback direction agrees");
+      finish(
+          enough && sameDirection && agree,
+          !enough
+              ? "Feedback motion below 0.2 degrees"
+              : !sameDirection
+                  ? "Absolute and relative steering disagree in direction"
+                  : !agree
+                      ? "Absolute and relative steering disagree in magnitude"
+                      : "Steering feedback direction agrees");
       return;
     }
     commandOpen(selectedModule, 0, 0.25);
@@ -377,8 +453,9 @@ public final class DriveDiagnostics {
       returnPhase = true;
       steeringGuard.reset(nowSec, STEP_RAD);
     }
-    double error = DriveDiagnosticPolicy.wrapRadians(
-        targets[selectedModule] - modules[selectedModule].getAngle().getRadians());
+    double error =
+        DriveDiagnosticPolicy.wrapRadians(
+            targets[selectedModule] - modules[selectedModule].getAngle().getRadians());
     if (steeringGuard.update(nowSec, error)) {
       finish(false, "Steering error grew or repeatedly reversed");
       return;
@@ -402,7 +479,8 @@ public final class DriveDiagnostics {
     }
     if (elapsed >= 20.0) {
       reportSpeeds(false);
-      finish(true, "Bounded 20-second drive-voltage hold completed; review recorded speeds/current");
+      finish(
+          true, "Bounded 20-second drive-voltage hold completed; review recorded speeds/current");
       return;
     }
     for (int i = 0; i < modules.length; i++) {
@@ -418,16 +496,20 @@ public final class DriveDiagnostics {
       return;
     }
     for (int i = 0; i < modules.length; i++) {
-      if (Math.abs(DriveDiagnosticPolicy.wrapRadians(targets[i]
-          - modules[i].getAngle().getRadians())) > TRAVEL_LIMIT_RAD) {
+      if (Math.abs(
+              DriveDiagnosticPolicy.wrapRadians(targets[i] - modules[i].getAngle().getRadians()))
+          > TRAVEL_LIMIT_RAD) {
         finish(false, "Closed-loop steering heading error exceeds two degrees");
         return;
       }
     }
     if (elapsed >= 3) {
       boolean speedsPassed = reportSpeeds(true);
-      finish(speedsPassed, speedsPassed ? "Drive speeds pass spread and target criteria"
-          : "Drive speed spread or target tolerance failed");
+      finish(
+          speedsPassed,
+          speedsPassed
+              ? "Drive speeds pass spread and target criteria"
+              : "Drive speed spread or target tolerance failed");
       return;
     }
     requestedSpeed = magnitude * Math.min(1, elapsed);
@@ -507,8 +589,12 @@ public final class DriveDiagnostics {
     watchdogRunning = false;
     requestedSpeed = 0;
     gate.cancel();
-    status = (passed ? "PASS: " : "STOP: ") + reason
-        + (remoteAllowed ? "; send a new StartNonce for another run" : "; release Xbox A before another run");
+    status =
+        (passed ? "PASS: " : "STOP: ")
+            + reason
+            + (remoteAllowed
+                ? "; send a new StartNonce for another run"
+                : "; release Xbox A before another run");
     Logger.recordOutput(KEY + "LastRunPassed", passed);
     Logger.recordOutput(KEY + "LastRunReason", reason);
     Logger.recordOutput(KEY + "LastRunNonce", activeRunNonce);
@@ -540,8 +626,8 @@ public final class DriveDiagnostics {
   }
 
   private double angleTravel(int index) {
-    return DriveDiagnosticPolicy.wrapRadians(modules[index].getAngle().getRadians()
-        - startingAngles[index]);
+    return DriveDiagnosticPolicy.wrapRadians(
+        modules[index].getAngle().getRadians() - startingAngles[index]);
   }
 
   private boolean allSteeringPassed() {
@@ -566,12 +652,15 @@ public final class DriveDiagnostics {
       ModuleIO.ModuleIOInputs in = modules[i].getDiagnosticInputs();
       double[] gains = {in.appliedDriveKp, in.appliedDriveKv, in.appliedTurnKp, in.appliedTurnKd};
       for (int gain = 0; gain < gains.length; gain++) {
-        changed |= gainsObserved
-            && Double.doubleToLongBits(verifiedGains[i][gain]) != Double.doubleToLongBits(gains[gain]);
+        changed |=
+            gainsObserved
+                && Double.doubleToLongBits(verifiedGains[i][gain])
+                    != Double.doubleToLongBits(gains[gain]);
         verifiedGains[i][gain] = gains[gain];
       }
-      boolean[] state = {in.appliedDriveInverted, in.appliedTurnInverted,
-          in.configurationHealthy, in.turnSeeded};
+      boolean[] state = {
+        in.appliedDriveInverted, in.appliedTurnInverted, in.configurationHealthy, in.turnSeeded
+      };
       for (int value = 0; value < state.length; value++) {
         changed |= gainsObserved && verifiedState[i][value] != state[value];
         verifiedState[i][value] = state[value];
@@ -624,12 +713,13 @@ public final class DriveDiagnostics {
       }
       double now = Timer.getFPGATimestamp();
       updateRemoteState(now);
-      boolean activated = remoteAllowed ? remoteActivation
-          && RemoteDiagnosticPolicy.heartbeatFresh(now, remoteHeartbeatReceiptSec)
-          : DriverStation.isJoystickConnected(0) && DriverStation.getStickButton(0, 1);
+      boolean activated =
+          remoteAllowed
+              ? remoteActivation
+                  && RemoteDiagnosticPolicy.heartbeatFresh(now, remoteHeartbeatReceiptSec)
+              : DriverStation.isJoystickConnected(0) && DriverStation.getStickButton(0, 1);
       String reason = "";
-      if (!DriverStation.isTestEnabled() || !DriverStation.isDSAttached()
-          || !activated) {
+      if (!DriverStation.isTestEnabled() || !DriverStation.isDSAttached() || !activated) {
         reason = "Operator activation or Test mode lost";
       } else if (now - heartbeatSec > 0.080) {
         reason = "Main-loop heartbeat stale";
