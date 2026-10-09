@@ -350,9 +350,9 @@ public class RobotContainer {
                 -driverController.getRightStickX()
                     * superstructure.getDriveMultiplier(true, driverController.leftBumper)));
 
-    if (!sim) {
-      driverController.buttonX.whileTrue(Commands.runOnce(drive::stopWithX, drive));
-    }
+    // X deploys the intake arm at the higher deploy current limit, then drops back to the normal
+    // limit once it arrives. This is the deploy path while testing; auto deploys it on its own.
+    driverController.buttonX.onTrue(intake.deploy());
 
     driverController.buttonA.whileTrue(
         DriveCommands.joystickDriveThroughTrench(
@@ -367,7 +367,7 @@ public class RobotContainer {
     - Left trigger: intake rollers     - Right trigger: agitate, raise arm, shoot
     - Right bumper: outtake rollers    - Left bumper: turbo
     The arm deploys at the start of auto and stays down; only a shot raises it.
-    - A: trench align                  - X (real robot only): X-lock the wheels
+    - A: trench align                  - X: deploy intake arm (80 A, then 60 A)
     - Start: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
