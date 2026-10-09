@@ -343,9 +343,9 @@ public class RobotContainer {
                 -driverController.getRightStickX()
                     * superstructure.getDriveMultiplier(true, driverController.leftBumper)));
 
-    if (!sim) {
-      driverController.buttonX.whileTrue(Commands.runOnce(drive::stopWithX, drive));
-    }
+    // X deploys the intake arm at the higher deploy current limit, then drops back to the normal
+    // limit once it arrives. This is the deploy path while testing; auto deploys it on its own.
+    driverController.buttonX.onTrue(intake.deploy());
 
     driverController.buttonA.whileTrue(
         DriveCommands.joystickDriveThroughTrench(
@@ -360,7 +360,7 @@ public class RobotContainer {
     - Left trigger: intake rollers     - Right trigger: agitate, raise arm, shoot
     - Right bumper: outtake rollers    - Left bumper: turbo
     The arm deploys at the start of auto and stays down; only a shot raises it.
-    - A: trench align                  - X (real robot only): X-lock the wheels
+    - A: trench align                  - X: deploy intake arm (80 A, then 60 A)
     - Start: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
@@ -384,11 +384,9 @@ public class RobotContainer {
     driverController.rightTrigger.whileTrue(superstructure.shoot()); // agitate, raise, feed
     driverController.rightBumper.whileTrue(superstructure.outtake()); // rollers only
 
-    // The arm deploys once per match, at the start of auto, and stays down after that.
+    // In a match the arm deploys once at the start of auto and stays down. In teleop it only
+    // deploys when the driver presses X, so it can be powered on folded and deployed on demand.
     RobotModeTriggers.autonomous().onTrue(superstructure.deployIntake());
-    // Safety net for practice: with no auto run, the arm would otherwise stay stowed all match.
-    // deployIntake() is a no-op if auto already did it.
-    RobotModeTriggers.teleop().onTrue(superstructure.deployIntake());
 
     // Rumble the driver when a ball reaches the throat, so they know to stop chasing it.
     indexer.staged().onTrue(driverController.rumble.rumble(0.5, 0.25));
