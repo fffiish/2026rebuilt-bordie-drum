@@ -337,6 +337,27 @@ public class AngularIOSparkFlex implements AngularIO {
   }
 
   /**
+   * Swaps the smart current limit without touching anything else. Async, so it never stalls the
+   * loop, and without a parameter reset so the follower relationship survives. Followers get the
+   * same limit, since they share the load.
+   */
+  @Override
+  public void setCurrentLimit(Current limit) {
+    SparkFlexConfig limitOnly = new SparkFlexConfig();
+    limitOnly.smartCurrentLimit((int) limit.in(Amps));
+    master.configureAsync(
+        limitOnly,
+        SparkBase.ResetMode.kNoResetSafeParameters,
+        SparkBase.PersistMode.kNoPersistParameters);
+    followers.forEach(
+        follower ->
+            follower.configureAsync(
+                limitOnly,
+                SparkBase.ResetMode.kNoResetSafeParameters,
+                SparkBase.PersistMode.kNoPersistParameters));
+  }
+
+  /**
    * Live re-tuning. Async so a dashboard edit never blocks the 20 ms loop, and without a parameter
    * reset so the follower relationship survives.
    */

@@ -56,5 +56,8 @@ public interface AngularIO {
 
   default void setNeutralMode(NeutralModeValue neutralMode) {}
 
+  /** Change the supply-side current limit at runtime. No-op where the hardware can't. */
+  default void setCurrentLimit(Current limit) {}
+
   default void setLogKey(String logKey) {}
 }
