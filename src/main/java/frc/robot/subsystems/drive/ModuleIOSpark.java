@@ -22,6 +22,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.lib.LoggedTunableNumber;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Swerve module IO for NEO Vortex drive and steer motors on SPARK Flex controllers, with a CTRE
@@ -255,6 +256,31 @@ public class ModuleIOSpark implements ModuleIO {
     inputs.turnVelocityRadPerSec = turnEncoder.getVelocity();
     inputs.turnAppliedVolts = turnSpark.getAppliedOutput() * turnSpark.getBusVoltage();
     inputs.turnCurrentAmps = turnSpark.getOutputCurrent();
+
+    // A timestamped snapshot also publishes when the wheel angle is unchanged. This lets a
+    // read-only calibration client distinguish a stationary wheel from stale CAN data.
+    // Fields: FPGA seconds, raw absolute rotations, CAN sample age seconds, timestamp valid,
+    // encoder connected, drive connected, turn connected, zeroed absolute radians,
+    // relative turn radians, drive volts, turn volts, disabled, turn encoder seeded.
+    if (DriverStation.isDisabled()) {
+      Logger.recordOutput(
+          "Drive/Calibration/CANcoder" + constants.EncoderId,
+          new double[] {
+            Timer.getFPGATimestamp(),
+            turnAbsolutePosition.getValueAsDouble(),
+            turnAbsolutePosition.getTimestamp().getLatency(),
+            turnAbsolutePosition.getTimestamp().isValid() ? 1.0 : 0.0,
+            inputs.turnEncoderConnected ? 1.0 : 0.0,
+            inputs.driveConnected ? 1.0 : 0.0,
+            inputs.turnConnected ? 1.0 : 0.0,
+            inputs.turnAbsolutePosition.getRadians(),
+            inputs.turnPosition.getRadians(),
+            inputs.driveAppliedVolts,
+            inputs.turnAppliedVolts,
+            1.0,
+            turnSeeded ? 1.0 : 0.0
+          });
+    }
 
     // One sample per loop — see the class note on odometry rate.
     inputs.odometryTimestamps = new double[] {Timer.getFPGATimestamp()};
