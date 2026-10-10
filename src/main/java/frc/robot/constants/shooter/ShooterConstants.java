@@ -46,6 +46,15 @@ public final class ShooterConstants {
   // Measured 10-10: holding 242 rad/s took 4.46 V with no balls -> 0.0184.
   public static final double kFlywheelKV = 0.0184;
 
+  // 39/34/26/29 run open loop at a fixed voltage; the velocity loop oscillated.
+  public static final Voltage kFlywheelIdleVoltage = Volts.of(0.0);
+  public static final Voltage kFlywheelShootingVoltage = Volts.of(2.5);
+  public static final Voltage kFlywheelShootingFarVoltage = kFlywheelShootingVoltage;
+  public static final Voltage kFlywheelEjectingVoltage = Volts.of(1.25);
+  // With no speed setpoint, feeding starts once every motor reaches this fraction of the speed the
+  // voltage settles at (volts / kV): 2.5 V settles near 136 rad/s, so feeding starts at 109.
+  public static final double kFlywheelReadyFraction = 0.8;
+
   public static final AngularIOSparkFlexConfig kFlywheelSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
           .masterId(kFlywheelMasterId)

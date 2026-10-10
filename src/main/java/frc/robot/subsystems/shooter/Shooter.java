@@ -1,5 +1,8 @@
 package frc.robot.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -26,7 +29,7 @@ public class Shooter extends VirtualSubsystem {
     this.flywheel = flywheel;
     this.hood = hood;
 
-    flywheel.setDefaultCommand(flywheel.velocity(() -> targetState.getFlywheelVelocity()));
+    flywheel.setDefaultCommand(flywheel.openLoop(() -> targetState.getFlywheelVoltage()));
     // The hood is a two-position actuator with no feedback, so it is pushed rather than tracked.
     hood.setDefaultCommand(hood.run(() -> hood.setState(targetState.getHoodState())));
   }
@@ -50,13 +53,18 @@ public class Shooter extends VirtualSubsystem {
     hood.stopImmediately();
   }
 
-  /** Require all connected flywheel motors to reach the current state's target speed. */
+  /**
+   * Require every connected flywheel motor to be near the speed the open-loop voltage settles at.
+   */
   public Trigger atSpeed() {
     return new Trigger(
-        () ->
-            flywheel.areAllMotorsAtVelocity(
-                targetState.getFlywheelVelocity(),
-                ShooterConstants.kFlywheelSubsystemConfigReal.getVelocityTolerance()));
+        () -> {
+          double volts = targetState.getFlywheelVoltage().in(Volts);
+          double settled = volts / ShooterConstants.kFlywheelKV;
+          return volts > 0
+              && flywheel.areAllMotorsAtLeast(
+                  RadiansPerSecond.of(ShooterConstants.kFlywheelReadyFraction * settled));
+        });
   }
 
   @Override

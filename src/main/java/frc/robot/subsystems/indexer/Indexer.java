@@ -36,7 +36,7 @@ public class Indexer extends VirtualSubsystem {
     this.stagedSensor = stagedSensor;
     this.jamSensor = jamSensor;
 
-    rollers.setDefaultCommand(rollers.velocity(() -> targetState.getVelocity()));
+    rollers.setDefaultCommand(rollers.openLoop(() -> targetState.getVoltage()));
   }
 
   /** Holds {@code state} while scheduled, then falls back to idle. Bind with {@code whileTrue}. */

@@ -379,6 +379,17 @@ public class AngularSubsystem extends RegisteredSubsystem {
                         && Math.abs(Math.abs(value) - Math.abs(desired)) <= allowed);
   }
 
+  /** Every connected motor is spinning forward at {@code minimum} or faster. */
+  public boolean areAllMotorsAtLeast(AngularVelocity minimum) {
+    double floor = minimum.in(RadiansPerSecond);
+    return areAllDevicesConnected()
+        && Double.isFinite(floor)
+        && inputs.velocity.in(RadiansPerSecond) >= floor
+        // Mirrored followers report opposite encoder polarity, so compare magnitudes.
+        && Arrays.stream(inputs.motorVelocitiesRadiansPerSecond)
+            .allMatch(value -> Double.isFinite(value) && Math.abs(value) >= floor);
+  }
+
   /** Test mode bypasses the scheduler. Refresh actual IO without running any default command. */
   public void diagnosticRefresh() {
     if (DriverStation.isDisabled()) updateTunables();
