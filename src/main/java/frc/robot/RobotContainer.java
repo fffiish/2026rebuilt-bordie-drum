@@ -336,17 +336,19 @@ public class RobotContainer {
     - Full speed by default; hold left bumper for slow mode (see RobotSuperstructure#getDriveMultiplier)
     - Hold A: dynamically align heading & X position with the trench, you control forward speed
      */
+    // Field-centric (driver-oriented). On the real robot the textbook signs drove and turned
+    // backwards, so all three stick axes are negated from the WPILib convention.
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
             () ->
-                driverController.getLeftStickY()
+                -driverController.getLeftStickY()
                     * superstructure.getDriveMultiplier(false, driverController.leftBumper),
             () ->
-                -driverController.getLeftStickX()
+                driverController.getLeftStickX()
                     * superstructure.getDriveMultiplier(false, driverController.leftBumper),
             () ->
-                -driverController.getRightStickX()
+                driverController.getRightStickX()
                     * superstructure.getDriveMultiplier(true, driverController.leftBumper)));
 
     // X deploys the intake arm at the higher deploy current limit, then drops back to the normal
@@ -361,7 +363,7 @@ public class RobotContainer {
         DriveCommands.joystickDriveThroughTrench(
             drive,
             () ->
-                driverController.getLeftStickY()
+                -driverController.getLeftStickY()
                     * superstructure.getDriveMultiplier(false, driverController.leftBumper),
             drive::getPose));
 
