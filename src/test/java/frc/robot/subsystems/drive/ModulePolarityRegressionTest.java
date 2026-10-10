@@ -25,7 +25,7 @@ class ModulePolarityRegressionTest {
     int[] driveIds = {32, 33, 7, 1};
     int[] steerIds = {6, 5, 52, 25};
     int[] encoderIds = {20, 17, 10, 4};
-    boolean[] inverted = {true, false, false, true};
+    boolean[] inverted = {false, true, true, false};
     double[] offsets = {-0.496740004624, 0.000488281250, 0.001436121331, 0.000976562500};
     for (int i = 0; i < modules.length; i++) {
       assertEquals(driveIds[i], modules[i].DriveMotorId, "Drive CAN ID, module " + i);
