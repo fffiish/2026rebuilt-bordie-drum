@@ -53,18 +53,8 @@ public final class IntakeConstants {
 
   // ----- current limits -----
 
-  /**
-   * Breaking the hopper and intake free on the first deploy of a match costs more current than
-   * ordinary motion. The pivot starts here and drops to {@link #kPivotCurrentLimit} once deployed,
-   * so the higher draw lasts seconds rather than the whole match.
-   */
-  public static final Current kPivotDeployCurrentLimit = Amps.of(80);
-
-  /** Normal running limit, applied after the initial deploy. */
+  /** Pivot current limit. Applies at all times, including while deploying. */
   public static final Current kPivotCurrentLimit = Amps.of(60);
-
-  /** Give up waiting for the arm to arrive after this long and drop to the normal limit anyway. */
-  public static final Time kPivotDeployTimeout = Seconds.of(2.0); // TODO(bringup)
 
   /** How close counts as "arrived" when sequencing arm moves. */
   public static final Angle kPivotArrivalTolerance = Degrees.of(5.0); // TODO(bringup)
@@ -155,7 +145,7 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(60))
+          .smartCurrentLimit(Amps.of(40))
           .secondaryCurrentLimit(Amps.of(60))
           .logFollowerTelemetry(true)
           .kP(0.01 / 12.0)

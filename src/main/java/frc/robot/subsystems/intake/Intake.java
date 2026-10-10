@@ -140,20 +140,12 @@ public class Intake extends VirtualSubsystem {
   }
 
   /**
-   * Puts the arm down for the match. Runs at the higher deploy current limit, because breaking the
-   * hopper and intake free costs more than ordinary motion, then drops to the normal limit once the
-   * arm arrives — so the high draw lasts a second or two rather than the whole match.
-   *
-   * <p>Waits on the measured angle rather than {@code atAngle()}: the latter reports against the
-   * previous goal for a loop after the target changes, and would read "arrived" instantly.
+   * Puts the arm down for the match and makes down its resting position. Runs at the pivot's normal
+   * current limit ({@link IntakeConstants#kPivotCurrentLimit}) — there is deliberately no higher
+   * limit for deploying.
    */
   public Command deploy() {
-    return Commands.sequence(
-        pivot.setCurrentLimit(IntakeConstants.kPivotDeployCurrentLimit),
-        Commands.runOnce(() -> restingPivot = IntakePivotState.kDeployed),
-        Commands.waitUntil(() -> isPivotNear(IntakePivotState.kDeployed))
-            .withTimeout(IntakeConstants.kPivotDeployTimeout),
-        pivot.setCurrentLimit(IntakeConstants.kPivotCurrentLimit));
+    return Commands.runOnce(() -> restingPivot = IntakePivotState.kDeployed);
   }
 
   /**
