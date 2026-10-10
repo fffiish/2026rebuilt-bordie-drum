@@ -204,8 +204,8 @@ class ShooterDriverBindingTest {
       assertEquals(ShooterState.kIdle, robot.shooter.getTargetState());
       robot.axis(0.8);
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
-      assertEquals(6.3, robot.shooter.getTargetState().getFlywheelVoltage().in(Volts), 1e-9);
-      assertEquals(6.3, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.7, robot.shooter.getTargetState().getFlywheelVoltage().in(Volts), 1e-9);
+      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
       assertFalse(robot.shooter.atSpeed().getAsBoolean(), "Flywheel is still stopped");
       assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
@@ -249,7 +249,7 @@ class ShooterDriverBindingTest {
       robot.axis(0.8);
       assertFalse(robot.shooter.hoodAtTarget().getAsBoolean());
       assertFalse(robot.shooter.readyToFire().getAsBoolean());
-      assertEquals(6.3, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;
@@ -375,7 +375,7 @@ class ShooterDriverBindingTest {
       robot.axis(0.9);
       assertEquals(IntakeRollerState.kIntaking, robot.intake.getRollerState());
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
-      assertEquals(6.3, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
@@ -424,7 +424,7 @@ class ShooterDriverBindingTest {
       assertFalse(robot.intake.isDeployed());
       robot.axis(0.9);
       assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
-      assertEquals(6.3, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;

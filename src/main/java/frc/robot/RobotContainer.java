@@ -365,7 +365,7 @@ public class RobotContainer {
     - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
     - X: deploy intake arm (80 A, then 60 A)
-    - A + right trigger: lower-power shot (5.7 V instead of 6.3 V); A alone does nothing
+    - A + right trigger: lower-power shot (5.7 V instead of 6.7 V); A alone does nothing
     - Y: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
@@ -382,7 +382,7 @@ public class RobotContainer {
             0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling);
     shootHeld
         .and(driverController.buttonA.negate())
-        .whileTrue(superstructure.shoot()); // agitate, raise, feed at 6.3 V
+        .whileTrue(superstructure.shoot()); // agitate, raise, feed at 6.7 V
     shootHeld
         .and(driverController.buttonA)
         .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at 5.7 V

@@ -48,7 +48,7 @@ public final class ShooterConstants {
 
   // 39/34/26/29 run open loop at a fixed voltage; the velocity loop oscillated.
   public static final Voltage kFlywheelIdleVoltage = Volts.of(0.0);
-  public static final Voltage kFlywheelShootingVoltage = Volts.of(6.3);
+  public static final Voltage kFlywheelShootingVoltage = Volts.of(6.7);
   // Lower-power shot: right trigger while holding A.
   public static final Voltage kFlywheelShootingSoftVoltage = Volts.of(5.7);
   public static final Voltage kFlywheelShootingFarVoltage = kFlywheelShootingVoltage;
