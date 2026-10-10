@@ -25,46 +25,59 @@ public final class IndexerConstants {
 
   // --------------------------------------------------------------- rollers
 
-  // Bottom shooter rollers, confirmed by the operator: CAN 36 leader, CAN 22 follower.
-  public static final int kMasterId = 36; // confirmed: "Shooter #36"
-  public static final int kFollowerId = 22; // confirmed: "Shooter #22"
+  // Bottom shooter rollers: CAN 30 leader, CAN 8 follower. They replace 36/22, which drove the
+  // roller directly; 30/8 each drive it through a 5:1 reduction.
+  public static final int kMasterId = 30;
+  public static final int kFollowerId = 8;
 
-  public static final AngularVelocity kMaximumSpeed = RotationsPerSecond.of(65.0);
-  // Below free speed so the loop has headroom and current stays lower on a sagging battery.
-  public static final AngularVelocity kFeeding = RotationsPerSecond.of(45.0);
+  /** Motor rotations per roller rotation. */
+  public static final double kGearRatio = 5.0;
+
+  // Below motor free speed so the loop has headroom and current stays lower on a sagging battery.
+  public static final AngularVelocity kMaximumMotorSpeed = RotationsPerSecond.of(65.0);
+  // Roller speeds: the SPARK reports velocity through the gear ratio.
+  public static final AngularVelocity kMaximumSpeed = RotationsPerSecond.of(65.0 / kGearRatio);
+  public static final AngularVelocity kFeeding = RotationsPerSecond.of(45.0 / kGearRatio);
   public static final AngularVelocity kIntaking = kMaximumSpeed;
-  public static final AngularVelocity kUnjamming = RPM.of(-6784.0 * 0.20);
+  public static final AngularVelocity kUnjamming = RPM.of(-6784.0 * 0.20 / kGearRatio);
 
-  // 36/22 run open loop at a fixed voltage; the velocity loop oscillated on this mechanism.
-  public static final Voltage kFeedingVoltage = Volts.of(3.0);
-  public static final Voltage kIntakingVoltage = Volts.of(2.5);
-  public static final Voltage kUnjammingVoltage = Volts.of(-2.5);
+  // 30/8 run open loop at a fixed voltage; the velocity loop oscillated on this mechanism.
+  // Free-speed model: V = kS + 0.0175 V per motor rad/s. On 36/22 (1:1), 2.5 V gave ~20.9 roller
+  // rps and 3.0 V ~25.5 roller rps. At 5:1 the motor turns 5x as fast for the same roller speed,
+  // so V = 0.2 + 5 * (Vold - 0.2): 2.5 V -> 11.7 V. Feeding would need 14.2 V, more than the
+  // battery has, so it runs at the full 12 V (~21.5 roller rps free). Under load the 5x torque
+  // holds speed better than 36/22 did, so the loaded gap should be smaller.
+  public static final Voltage kFeedingVoltage = Volts.of(12.0);
+  public static final Voltage kIntakingVoltage = Volts.of(11.7);
+  public static final Voltage kUnjammingVoltage = Volts.of(-11.7);
 
-  // Baselines from the 10-10 shooter captures: kV matches the measured flywheel (same motor),
-  // kS covers belt/roller friction. SPARK P is duty per rad/s: 0.01 / 12 is 0.01 V per rad/s,
-  // about 1 V per 100 rad/s of error, the same proportion as the stable flywheel loop.
-  public static final double kRollerKV = 0.0175;
+  // Baselines from the 10-10 shooter captures: 0.0175 V per motor rad/s matches the measured
+  // flywheel (same motor), and kS covers belt/roller friction. The gains act on roller rad/s, so
+  // kV and kP carry the gear ratio. SPARK P is duty per rad/s: 0.01 / 12 per motor rad/s is about
+  // 1 V per 100 rad/s of error, the same proportion as the stable flywheel loop.
+  public static final double kRollerKV = 0.0175 * kGearRatio;
   public static final double kRollerKS = 0.20;
-  public static final double kRollerKP = 0.01 / 12.0;
+  public static final double kRollerKP = 0.01 / 12.0 * kGearRatio;
 
   public static final AngularIOSparkFlexConfig kSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
           .masterId(kMasterId)
           .followerId(kFollowerId)
-          .opposeMaster(true) // Confirmed: CAN 22 must turn opposite CAN 36 to drive together.
+          .opposeMaster(true) // CAN 8 turns opposite CAN 30 to drive together, as 22/36 did.
           .inverted(false) // TODO(bringup)
-          .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
+          .motorRotationsPerOutputRotations(kGearRatio)
           .outputAnglePerOutputRotation(Rotations.of(1.0))
           // Smart limit must sit below the secondary. The secondary is a hard cutoff that briefly
           // kills output; with it at 60 A under an 80 A smart limit, a loaded indexer tripped the
           // cutoff before the smart limit ever regulated, and 36/22 stopped mid-run.
-          // 50 A / 70 A: at 3 V a stalled Vortex wants only ~53 A, so 50 A lets it deliver nearly
-          // full stall torque for jams of more than 3 balls, and 70 A keeps the cutoff clear.
+          // 50 A / 70 A: through the 5:1 reduction, 50 A gives the roller about 5x the jam torque
+          // 36/22 had at the same current.
+          // TODO(bringup): near 12 V a stall wants far more than 50 A; watch for cutoff trips.
           .smartCurrentLimit(Amps.of(50))
           .secondaryCurrentLimit(Amps.of(70))
           .rampRateSeconds(0.3) // output rises over 0.3 s, not in one step
           .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
-          .maximumMotorVelocity(kMaximumSpeed)
+          .maximumMotorVelocity(kMaximumMotorSpeed)
           .logFollowerTelemetry(true)
           .kP(kRollerKP)
           .kV(kRollerKV)
@@ -76,12 +89,12 @@ public final class IndexerConstants {
           .motor(DCMotor.getNeoVortex(2)) // NEO Vortex, confirmed from CAD
           .numMotors(2)
           .moi(KilogramSquareMeters.of(0.003)) // TODO(bringup)
-          .motorRotationsPerOutputRotations(1.0)
+          .motorRotationsPerOutputRotations(kGearRatio)
           .supplyCurrentLimit(Amps.of(60))
           .statorCurrentLimit(Amps.of(60))
-          .kP(0.01)
+          .kP(0.01 * kGearRatio)
           .kV(kRollerKV)
-          .acceleration(RotationsPerSecondPerSecond.of(50))
+          .acceleration(RotationsPerSecondPerSecond.of(50 / kGearRatio))
           .build();
 
   public static final AngularSubsystemConfig kSubsystemConfigReal =
@@ -89,7 +102,7 @@ public final class IndexerConstants {
           .logKey("Indexer")
           .maximumVelocity(kMaximumSpeed)
           .bus(RobotConstants.kRioBus)
-          .velocityTolerance(RotationsPerSecond.of(5.0))
+          .velocityTolerance(RotationsPerSecond.of(5.0 / kGearRatio))
           .kP(kRollerKP)
           .kV(kRollerKV)
           .kS(kRollerKS)
@@ -100,10 +113,10 @@ public final class IndexerConstants {
           .logKey("Indexer")
           .maximumVelocity(kMaximumSpeed)
           .bus(RobotConstants.kRioBus)
-          .velocityTolerance(RotationsPerSecond.of(5.0))
-          .kP(0.01)
+          .velocityTolerance(RotationsPerSecond.of(5.0 / kGearRatio))
+          .kP(0.01 * kGearRatio)
           .kV(kRollerKV)
-          .acceleration(RotationsPerSecondPerSecond.of(50))
+          .acceleration(RotationsPerSecondPerSecond.of(50 / kGearRatio))
           .build();
 
   // ------------------------------------------------------- staging sensor

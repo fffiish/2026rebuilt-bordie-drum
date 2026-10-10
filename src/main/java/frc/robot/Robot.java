@@ -8,10 +8,12 @@
 package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.constants.RobotConstants;
 import frc.robot.lib.command.CachedTrigger;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
 import frc.robot.lib.subsystem.angular.SignalIOManager;
@@ -190,7 +192,14 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
+    configureBrownoutVoltage();
     CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+  }
+
+  /** Sets the RIO brownout threshold and logs what the RIO reports back. */
+  static void configureBrownoutVoltage() {
+    RobotController.setBrownoutVoltage(RobotConstants.kBrownoutVoltage);
+    Logger.recordOutput("Robot/BrownoutVoltage", RobotController.getBrownoutVoltage());
   }
 
   /** This function is called periodically during test mode. */

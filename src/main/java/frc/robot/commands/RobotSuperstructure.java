@@ -131,7 +131,7 @@ public class RobotSuperstructure {
   }
 
   /**
-   * Like {@link #outtake()}, but leaves the bottom rollers (36/22) and the flywheel stopped. Only
+   * Like {@link #outtake()}, but leaves the bottom rollers (30/8) and the flywheel stopped. Only
    * the floor rollers and feeder reverse, clearing a clog behind the shooter while the FUEL already
    * staged at the shooter stays put to be shot afterwards.
    */

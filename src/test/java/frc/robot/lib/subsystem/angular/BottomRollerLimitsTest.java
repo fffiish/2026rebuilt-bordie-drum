@@ -82,30 +82,31 @@ class BottomRollerLimitsTest {
       assertTrue(ids.add(config.getMasterId()), "Duplicate leader CAN ID");
       for (int id : config.getFollowerIds()) assertTrue(ids.add(id), "Duplicate follower CAN ID");
     }
-    assertTrue(ids.containsAll(List.of(22, 36, 28, 35)));
+    assertTrue(ids.containsAll(List.of(8, 30, 28, 35)));
   }
 
   @Test
-  void bottomRollersUseFortyAmpSmartLimitBelowSixtyAmpCutoffAndFeedAtFortyFiveRps() {
+  void bottomRollersUseFiftyAmpSmartLimitBelowSeventyAmpCutoffThroughFiveToOne() {
     var config = IndexerConstants.kSparkFlexConfig;
-    assertEquals(36, config.getMasterId());
-    assertEquals(List.of(22), config.getFollowerIds());
+    assertEquals(30, config.getMasterId());
+    assertEquals(List.of(8), config.getFollowerIds());
     assertEquals(50, config.getSmartCurrentLimit().in(Amps));
     assertEquals(70, config.getSecondaryCurrentLimit().in(Amps));
     assertEquals(3900, config.getMaximumMotorVelocity().in(RPM), 1e-9);
+    assertEquals(5.0, config.getMotorRotationsPerOutputRotations(), 1e-12);
     assertEquals(SparkBase.ControlType.kVelocity, AngularIOSparkFlex.velocityControlType(config));
     assertTrue(config.getKP() > 0);
-    assertTrue(config.isFollowerOpposed(22));
-    assertEquals(0.0175, config.getKV(), 1e-12);
+    assertTrue(config.isFollowerOpposed(8));
+    assertEquals(0.0875, config.getKV(), 1e-12);
     assertEquals(0.20, config.getKS(), 1e-12);
-    assertEquals(45, IndexerConstants.kFeeding.in(RotationsPerSecond), 1e-9);
-    assertEquals(65, IndexerConstants.kIntaking.in(RotationsPerSecond), 1e-9);
+    assertEquals(9, IndexerConstants.kFeeding.in(RotationsPerSecond), 1e-9);
+    assertEquals(13, IndexerConstants.kIntaking.in(RotationsPerSecond), 1e-9);
     assertEquals(
-        45,
+        9,
         AngularIOSparkFlex.limitMotorVelocity(config, IndexerConstants.kFeeding)
             .in(RotationsPerSecond),
         1e-9);
-    assertEquals(-1356.8, IndexerConstants.kUnjamming.in(RPM), 1e-9);
+    assertEquals(-271.36, IndexerConstants.kUnjamming.in(RPM), 1e-9);
     var feeder = IntakeConstants.kFeederSparkFlexConfig;
     assertEquals(28, feeder.getMasterId());
     assertEquals(List.of(35), feeder.getFollowerIds());
@@ -121,7 +122,7 @@ class BottomRollerLimitsTest {
     var config =
         AngularIOSparkFlexConfig.builder()
             .masterId(36)
-            .maximumMotorVelocity(IndexerConstants.kMaximumSpeed)
+            .maximumMotorVelocity(IndexerConstants.kMaximumMotorSpeed)
             .motorRotationsPerOutputRotations(2)
             .build();
     assertEquals(1950, AngularIOSparkFlex.limitMotorVelocity(config, RPM.of(6000)).in(RPM), 1e-9);
@@ -137,8 +138,8 @@ class BottomRollerLimitsTest {
   void subsystemCapAppliesToRealAndSim() {
     for (var config :
         List.of(IndexerConstants.kSubsystemConfigReal, IndexerConstants.kSubsystemConfigSim)) {
-      assertEquals(3900, config.limitVelocity(RPM.of(6000)).in(RPM), 1e-9);
-      assertEquals(-3900, config.limitVelocity(RPM.of(-6000)).in(RPM), 1e-9);
+      assertEquals(780, config.limitVelocity(RPM.of(6000)).in(RPM), 1e-9);
+      assertEquals(-780, config.limitVelocity(RPM.of(-6000)).in(RPM), 1e-9);
       assertEquals(0, config.limitVelocity(RPM.of(0)).in(RPM));
     }
   }

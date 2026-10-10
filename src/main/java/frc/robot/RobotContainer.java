@@ -391,7 +391,7 @@ public class RobotContainer {
         .and(driverController.buttonA)
         .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at 5.7 V
     driverController.rightBumper.whileTrue(superstructure.outtake()); // rollers only
-    // Hold D-pad down: outtake without 36/22 or the flywheel, so staged FUEL stays to be shot.
+    // Hold D-pad down: outtake without 30/8 or the flywheel, so staged FUEL stays to be shot.
     driverController.dPadDown.whileTrue(superstructure.clearBehindShooter());
 
     superstructure.bindDeploymentTriggers();

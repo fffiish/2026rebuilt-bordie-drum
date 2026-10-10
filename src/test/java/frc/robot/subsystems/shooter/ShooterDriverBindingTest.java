@@ -219,7 +219,7 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
-      assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(50, robot.feederIO.requestedRps, 1e-9);
       robot.xboxSim.setRightTriggerAxis(0);
       robot.advanceTicks(1);
@@ -255,7 +255,7 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertFalse(robot.shooter.hoodAtTarget().getAsBoolean());
-      assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(50, robot.feederIO.requestedRps, 1e-9);
       robot.axis(0);
       assertEquals(0, robot.flywheelIO.requestedVolts, 1e-9);
@@ -281,7 +281,7 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.allConnected = true;
       robot.tick();
       assertTrue(robot.shooter.atSpeed().getAsBoolean());
-      assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(50, robot.feederIO.requestedRps, 1e-9);
     }
   }
@@ -296,7 +296,7 @@ class ShooterDriverBindingTest {
             new double[] {60.072, 60.064, followerSign * 60.087, followerSign * 60.055};
         robot.axis(0.8);
         assertTrue(robot.shooter.atSpeed().getAsBoolean());
-        assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+        assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
         assertEquals(50, robot.feederIO.requestedRps, 1e-9);
         robot.axis(0);
         assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
@@ -329,7 +329,7 @@ class ShooterDriverBindingTest {
       robot.axis(0.8);
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
-      assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
       assertTrue(robot.feederIO.requestedRps > 0);
 
       // Balls leaving dip the flywheel well out of tolerance, and the hood may fault; the gate is
@@ -341,7 +341,7 @@ class ShooterDriverBindingTest {
         robot.advanceTicks(1);
         assertFalse(robot.shooter.atSpeed().getAsBoolean());
         assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
-        assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+        assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
         assertTrue(robot.feederIO.requestedRps > 0);
       }
 
@@ -380,7 +380,7 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
-      assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(50, robot.feederIO.requestedRps, 1e-9);
       assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
       List<IntakePivotState> states = new ArrayList<>();
