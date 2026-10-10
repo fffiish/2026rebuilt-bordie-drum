@@ -18,6 +18,9 @@ public enum ShooterState {
   /** Flywheel at speed, hood at the shooting position. */
   kShootingNear(ShooterConstants.kFlywheelShootingVoltage, HoodState.kNear),
 
+  /** Lower flywheel voltage, hood at the shooting position — right trigger while holding A. */
+  kShootingSoft(ShooterConstants.kFlywheelShootingSoftVoltage, HoodState.kNear),
+
   /** Same flywheel speed, hood pulled forward — the long-range preset. */
   kShootingFar(ShooterConstants.kFlywheelShootingFarVoltage, HoodState.kFar),
 

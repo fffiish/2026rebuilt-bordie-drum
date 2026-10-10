@@ -81,8 +81,13 @@ public class RobotSuperstructure {
    * redeploys on its own.
    */
   public Command shoot() {
+    return shoot(ShooterState.kShootingNear);
+  }
+
+  /** {@link #shoot()} with the flywheel in {@code state}, e.g. the lower-power shot. */
+  public Command shoot(ShooterState state) {
     return shooter
-        .set(ShooterState.kShootingNear)
+        .set(state)
         .alongWith(
             Commands.waitUntil(
                     () -> !Constants.shooterHardwareExists || shooter.atSpeed().getAsBoolean())

@@ -59,6 +59,7 @@ import frc.robot.subsystems.shooter.Hood;
 import frc.robot.subsystems.shooter.HoodIO;
 import frc.robot.subsystems.shooter.HoodIOSparkMax;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterState;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
@@ -359,13 +360,17 @@ public class RobotContainer {
     // instead, press Back once (enabled or not) so the code knows. Do this before pressing X.
     driverController.leftMidButton.onTrue(intake.markArmDeployed());
 
-    driverController.buttonA.whileTrue(
-        DriveCommands.joystickDriveThroughTrench(
-            drive,
-            () ->
-                driverController.getLeftStickY()
-                    * superstructure.getDriveMultiplier(false, driverController.leftBumper),
-            drive::getPose));
+    // A alone trench-aligns. With the right trigger it is the low-power shot modifier instead.
+    driverController
+        .buttonA
+        .and(driverController.rightTrigger.negate())
+        .whileTrue(
+            DriveCommands.joystickDriveThroughTrench(
+                drive,
+                () ->
+                    driverController.getLeftStickY()
+                        * superstructure.getDriveMultiplier(false, driverController.leftBumper),
+                drive::getPose));
 
     /* DRIVER
     - Left stick: translate            - Right stick: rotate
@@ -373,6 +378,7 @@ public class RobotContainer {
     - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
     - A: trench align                  - X: deploy intake arm (80 A, then 60 A)
+    - A + right trigger: lower-power shot (5.7 V instead of 6.3 V)
     - Y: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
@@ -384,10 +390,15 @@ public class RobotContainer {
     // The trigger is analog with a 0.5 threshold, so a loose grip flickers across it. Without a
     // falling-edge debounce, every flicker ends the shot, drops the flywheel to idle and makes the
     // feeders wait for spin-up again.
-    driverController
-        .rightTrigger
-        .debounce(0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling)
-        .whileTrue(superstructure.shoot()); // agitate, raise, feed
+    Trigger shootHeld =
+        driverController.rightTrigger.debounce(
+            0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling);
+    shootHeld
+        .and(driverController.buttonA.negate())
+        .whileTrue(superstructure.shoot()); // agitate, raise, feed at 6.3 V
+    shootHeld
+        .and(driverController.buttonA)
+        .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at 5.7 V
     driverController.rightBumper.whileTrue(superstructure.outtake()); // rollers only
 
     superstructure.bindDeploymentTriggers();
