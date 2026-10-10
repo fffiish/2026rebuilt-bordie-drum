@@ -86,21 +86,22 @@ class BottomRollerLimitsTest {
   }
 
   @Test
-  void bottomRollersUseSixtyAmpSmartLimitBelowEightyAmpCutoffAndSixtyFiveRps() {
+  void bottomRollersUseFortyAmpSmartLimitBelowSixtyAmpCutoffAndFeedAtFortyFiveRps() {
     var config = IndexerConstants.kSparkFlexConfig;
     assertEquals(36, config.getMasterId());
     assertEquals(List.of(22), config.getFollowerIds());
-    assertEquals(60, config.getSmartCurrentLimit().in(Amps));
-    assertEquals(80, config.getSecondaryCurrentLimit().in(Amps));
+    assertEquals(40, config.getSmartCurrentLimit().in(Amps));
+    assertEquals(60, config.getSecondaryCurrentLimit().in(Amps));
     assertEquals(3900, config.getMaximumMotorVelocity().in(RPM), 1e-9);
     assertEquals(SparkBase.ControlType.kVelocity, AngularIOSparkFlex.velocityControlType(config));
     assertTrue(config.getKP() > 0);
     assertTrue(config.isFollowerOpposed(22));
-    assertEquals(12, config.getKV() * RPM.of(6784).in(RadiansPerSecond), 1e-9);
-    assertEquals(65, IndexerConstants.kFeeding.in(RotationsPerSecond), 1e-9);
+    assertEquals(0.0175, config.getKV(), 1e-12);
+    assertEquals(0.20, config.getKS(), 1e-12);
+    assertEquals(45, IndexerConstants.kFeeding.in(RotationsPerSecond), 1e-9);
     assertEquals(65, IndexerConstants.kIntaking.in(RotationsPerSecond), 1e-9);
     assertEquals(
-        65,
+        45,
         AngularIOSparkFlex.limitMotorVelocity(config, IndexerConstants.kFeeding)
             .in(RotationsPerSecond),
         1e-9);

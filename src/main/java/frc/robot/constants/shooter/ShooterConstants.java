@@ -43,7 +43,8 @@ public final class ShooterConstants {
   // 0.08, about 5x kV, which with the SPARK's velocity filter lag made the flywheel oscillate;
   // kV does the bulk of the work and P only trims the residual.
   public static final double kFlywheelKP = 0.01 / 12.0;
-  public static final double kFlywheelKV = 0.11 / (2.0 * Math.PI);
+  // Measured 10-10: holding 242 rad/s took 4.46 V with no balls -> 0.0184.
+  public static final double kFlywheelKV = 0.0184;
 
   public static final AngularIOSparkFlexConfig kFlywheelSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()

@@ -462,14 +462,12 @@ public class AngularIOSparkFlex implements AngularIO {
       Logger.recordOutput(key + "Connected", connection.isConnected());
       Logger.recordOutput(key + "PollTimestampSeconds", Timer.getFPGATimestamp());
     }
-    // A brownout WARNING alone does not latch the mechanism off. On a loaded battery the bus can
-    // dip under the SPARK's threshold for a few milliseconds without the controller rebooting, and
-    // latching on it stopped the feeders until the next disable. A real reboot still latches,
-    // because it sets hasReset and wipes the follower and current-limit settings.
-    return faults.rawBits != 0
-        || stickyFaults.rawBits != 0
-        || warnings.hasReset
-        || stickyWarnings.hasReset;
+    // Only a real reboot stops and reconfigures: it sets hasReset and wipes the follower and
+    // current-limit settings. Faults stay logged above but do not stop the motor. A sagging bus
+    // raises a gate-driver fault and a stale sticky CAN fault kept re-tripping this check, which
+    // stopped 36/22 eight times in one 60 s capture without the controllers ever rebooting. The
+    // SPARK already cuts its own output on a real hardware fault.
+    return warnings.hasReset || stickyWarnings.hasReset;
   }
 
   private static void setConnected(

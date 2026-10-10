@@ -30,11 +30,16 @@ public final class IndexerConstants {
   public static final int kFollowerId = 22; // confirmed: "Shooter #22"
 
   public static final AngularVelocity kMaximumSpeed = RotationsPerSecond.of(65.0);
-  public static final AngularVelocity kFeeding = kMaximumSpeed;
+  // Below free speed so the loop has headroom and current stays lower on a sagging battery.
+  public static final AngularVelocity kFeeding = RotationsPerSecond.of(45.0);
   public static final AngularVelocity kIntaking = kMaximumSpeed;
   public static final AngularVelocity kUnjamming = RPM.of(-6784.0 * 0.20);
 
-  public static final double kRollerKV = 12.0 / RPM.of(6784.0).in(RadiansPerSecond);
+  // Baselines from the 10-10 shooter captures: kV matches the measured flywheel (same motor),
+  // kS covers belt/roller friction. SPARK P is duty per rad/s: 0.01 / 12 is 0.01 V per rad/s,
+  // about 1 V per 100 rad/s of error, the same proportion as the stable flywheel loop.
+  public static final double kRollerKV = 0.0175;
+  public static final double kRollerKS = 0.20;
   public static final double kRollerKP = 0.01 / 12.0;
 
   public static final AngularIOSparkFlexConfig kSparkFlexConfig =
@@ -48,14 +53,16 @@ public final class IndexerConstants {
           // Smart limit must sit below the secondary. The secondary is a hard cutoff that briefly
           // kills output; with it at 60 A under an 80 A smart limit, a loaded indexer tripped the
           // cutoff before the smart limit ever regulated, and 36/22 stopped mid-run.
-          .smartCurrentLimit(Amps.of(60))
-          .secondaryCurrentLimit(Amps.of(80))
+          // 40 A / 60 A: at 60 A each the pair sagged 36/22's supply to 5 V.
+          .smartCurrentLimit(Amps.of(40))
+          .secondaryCurrentLimit(Amps.of(60))
           .rampRateSeconds(0.3) // output rises over 0.3 s, not in one step
           .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
           .maximumMotorVelocity(kMaximumSpeed)
           .logFollowerTelemetry(true)
           .kP(kRollerKP)
           .kV(kRollerKV)
+          .kS(kRollerKS)
           .build();
 
   public static final AngularIOSimConfig kSimConfig =
@@ -79,6 +86,7 @@ public final class IndexerConstants {
           .velocityTolerance(RotationsPerSecond.of(5.0))
           .kP(kRollerKP)
           .kV(kRollerKV)
+          .kS(kRollerKS)
           .build();
 
   public static final AngularSubsystemConfig kSubsystemConfigSim =
