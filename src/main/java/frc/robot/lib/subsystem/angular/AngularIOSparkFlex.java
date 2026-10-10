@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.lib.ShuffleboardNumbers;
 import frc.robot.lib.subsystem.DeviceConnectedStatus;
 import frc.robot.lib.subsystem.SparkConnectionMonitor;
 import java.io.IOException;
@@ -442,6 +443,10 @@ public class AngularIOSparkFlex implements AngularIO {
     Logger.recordOutput(key + "BusVolts", bus);
     Logger.recordOutput(key + "AppliedVolts", duty * bus);
     Logger.recordOutput(key + "TemperatureCelsius", temperature);
+    if (deviceConfig.getDashboardName() != null) {
+      ShuffleboardNumbers.set(
+          "Shooter", deviceConfig.getDashboardName() + " " + id + " V", duty * bus);
+    }
   }
 
   private boolean controllerFault(SparkFlex spark, SparkConnectionMonitor connection) {

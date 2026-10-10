@@ -47,6 +47,12 @@ public class AngularIOSparkFlexConfig {
   /** Optional per-motor cached telemetry; enable only for mechanisms being investigated. */
   @Builder.Default private final boolean logFollowerTelemetry = false;
 
+  /**
+   * When set (with {@link #logFollowerTelemetry}), each motor's applied voltage is shown on the
+   * "Shooter" Shuffleboard tab as "{name} {CAN id} V".
+   */
+  @Builder.Default private final String dashboardName = null;
+
   /** Followers spin opposite the master (gearbox reverses them). */
   @Builder.Default private final boolean opposeMaster = false;
 

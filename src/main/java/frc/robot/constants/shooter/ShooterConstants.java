@@ -78,6 +78,7 @@ public final class ShooterConstants {
           .encoderMeasurementPeriodMs(10)
           .encoderAverageDepth(2)
           .logFollowerTelemetry(true)
+          .dashboardName("Flywheel")
           .kP(kFlywheelKP)
           .kV(kFlywheelKV)
           .build();

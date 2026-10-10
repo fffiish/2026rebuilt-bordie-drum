@@ -45,6 +45,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.constants.DriveConstants;
 import frc.robot.generated.TunerConstants;
+import frc.robot.lib.ShuffleboardNumbers;
 import frc.robot.lib.command.CachedTrigger;
 import frc.robot.subsystems.vision.VisionConstants;
 import java.util.ArrayList;
@@ -89,6 +90,9 @@ public class Drive extends SubsystemBase {
   private final GyroIO gyroIO;
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
+
+  /** Robot-relative speeds last requested through {@link #runVelocity}; zero while disabled. */
+  private ChassisSpeeds targetSpeeds = new ChassisSpeeds();
 
   public Module[] getDiagnosticModules() {
     return modules.clone();
@@ -275,6 +279,11 @@ public class Drive extends SubsystemBase {
       setPose(prev);
     }
 
+    if (DriverStation.isDisabled()) {
+      targetSpeeds = new ChassisSpeeds();
+    }
+    publishSpeeds(targetSpeeds, getChassisSpeeds());
+
     // Check if PID changed for pathplanner, update automatically
     /*if (Constants.kTuningMode
         && DriveConstants.TRANSLATION_KP.hasChanged(DriveConstants.TRANSLATION_KD.hashCode())
@@ -303,6 +312,22 @@ public class Drive extends SubsystemBase {
     }
   }
 
+  /** Robot-relative target and measured chassis speeds on the "Drive" Shuffleboard tab. */
+  static void publishSpeeds(ChassisSpeeds target, ChassisSpeeds measured) {
+    ShuffleboardNumbers.set(
+        "Drive",
+        "Target Linear m/s",
+        Math.hypot(target.vxMetersPerSecond, target.vyMetersPerSecond));
+    ShuffleboardNumbers.set(
+        "Drive", "Target Angular deg/s", Math.toDegrees(target.omegaRadiansPerSecond));
+    ShuffleboardNumbers.set(
+        "Drive",
+        "Actual Linear m/s",
+        Math.hypot(measured.vxMetersPerSecond, measured.vyMetersPerSecond));
+    ShuffleboardNumbers.set(
+        "Drive", "Actual Angular deg/s", Math.toDegrees(measured.omegaRadiansPerSecond));
+  }
+
   /**
    * Runs the drive at the desired velocity.
    *
@@ -310,6 +335,7 @@ public class Drive extends SubsystemBase {
    */
   public void runVelocity(ChassisSpeeds speeds) {
     Logger.recordOutput("SwerveStates/Speeds", speeds);
+    targetSpeeds = speeds;
 
     // Calculate module setpoints
     ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);

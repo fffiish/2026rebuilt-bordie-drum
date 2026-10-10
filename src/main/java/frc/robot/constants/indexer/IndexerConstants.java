@@ -79,6 +79,7 @@ public final class IndexerConstants {
           .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
           .maximumMotorVelocity(kMaximumMotorSpeed)
           .logFollowerTelemetry(true)
+          .dashboardName("Bottom Rollers")
           .kP(kRollerKP)
           .kV(kRollerKV)
           .kS(kRollerKS)

@@ -168,6 +168,7 @@ public final class IntakeConstants {
           .rampRateSeconds(0.3)
           .recoverWhileEnabled(true)
           .logFollowerTelemetry(true)
+          .dashboardName("Feeder")
           .kP(0.01 / 12.0)
           .kV(0.12 / (2.0 * Math.PI)) // 0.12 V per rps, expressed as V per rad/s
           .build();
