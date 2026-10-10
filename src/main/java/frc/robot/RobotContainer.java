@@ -10,7 +10,9 @@ package frc.robot;
 import static frc.robot.subsystems.vision.VisionConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.RobotSuperstructure;
@@ -43,6 +46,7 @@ import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystem;
 import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystemConfig;
 import frc.robot.subsystems.SuperstructureVisualizer;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.DriveDiagnostics;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
@@ -50,10 +54,12 @@ import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.IntakeDiagnostics;
 import frc.robot.subsystems.shooter.Hood;
 import frc.robot.subsystems.shooter.HoodIO;
 import frc.robot.subsystems.shooter.HoodIOSparkMax;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterState;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOLimelight;
@@ -92,9 +98,11 @@ public class RobotContainer {
   private final Field2d field = new Field2d();
 
   private final Drive drive;
+  private final DriveDiagnostics driveDiagnostics;
   private final Vision vision;
 
   private final Intake intake;
+  private final IntakeDiagnostics intakeDiagnostics;
   private final Indexer indexer;
   private final Shooter shooter;
 
@@ -265,6 +273,9 @@ public class RobotContainer {
         break;
     }
 
+    driveDiagnostics = new DriveDiagnostics(drive);
+    intakeDiagnostics = new IntakeDiagnostics(intake.getDiagnosticPivot());
+    stopOtherMechanisms();
     superstructure = new RobotSuperstructure(intake, indexer, shooter);
     superstructure.registerAutoCommands();
 
@@ -323,10 +334,10 @@ public class RobotContainer {
     /* DRIVE COMMANDS
     - Left joystick: translate
     - Right joystick: turn
-    - Hold X (real only): stop and move modules to X pattern to resist push
-    - Hold left bumper: turbo (see RobotSuperstructure#getDriveMultiplier)
-    - Hold A: dynamically align heading & X position with the trench, you control forward speed
+    - Full speed by default; hold left bumper for slow mode (see RobotSuperstructure#getDriveMultiplier)
      */
+    // Field-centric (driver-oriented), standard WPILib signs: stick forward drives away from the
+    // driver station, stick left drives left, right stick left turns counter-clockwise.
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
             drive,
@@ -340,30 +351,72 @@ public class RobotContainer {
                 -driverController.getRightStickX()
                     * superstructure.getDriveMultiplier(true, driverController.leftBumper)));
 
-    if (!sim) {
-      driverController.buttonX.whileTrue(Commands.runOnce(drive::stopWithX, drive));
-    }
+    // X deploys the intake arm at the higher deploy current limit, then drops back to the normal
+    // limit once it arrives. This is the deploy path while testing; auto deploys it on its own.
+    driverController.buttonX.onTrue(intake.deploy());
+    // B folds the arm back to stowed at 60 A, then drops back to the normal limit. X redeploys.
+    driverController.buttonB.onTrue(intake.retract());
 
-    driverController.buttonA.whileTrue(
-        DriveCommands.joystickDriveThroughTrench(
-            drive,
-            () ->
-                driverController.getLeftStickY()
-                    * superstructure.getDriveMultiplier(false, driverController.leftBumper),
-            drive::getPose));
+    // The robot assumes the arm is folded at power-on. If it was powered on with the arm down
+    // instead, press Back once (enabled or not) so the code knows. Do this before pressing X.
+    driverController.leftMidButton.onTrue(intake.markArmDeployed());
 
-    /* DRIVER (single-controller scheme)
+    /* DRIVER
     - Left stick: translate            - Right stick: rotate
-    - Left trigger: intake             - Right trigger: spin up and shoot
-    - Right bumper: outtake            - Left bumper: turbo
-    - A: trench align                  - X (real robot only): X-lock the wheels
+    - Left trigger: intake rollers     - Right trigger: agitate, raise arm, shoot
+    - Right bumper: outtake rollers    - Left bumper: slow mode
+    The arm deploys at the start of auto and stays down; only a shot raises it.
+    - X: deploy intake arm (80 A, then 40 A)
+    - B: retract intake arm to stowed (60 A, then 40 A)
+    - D-pad down: reverse floor rollers + feeder only; balls at the shooter stay for the next shot
+    - A + right trigger: lower-power shot (5.7 V instead of 6.7 V); A alone does nothing
+    - Y: reset field heading (point robot downfield first)
      */
-    driverController.leftTrigger.whileTrue(superstructure.intakeFuel());
-    driverController.rightTrigger.whileTrue(superstructure.shoot());
-    driverController.rightBumper.whileTrue(superstructure.outtake());
+    // Field-centric driving needs a way to say "this way is forward". Point the robot straight
+    // downfield, away from your driver station, and the driver presses Y. On red, downfield is
+    // the opposite field direction, so the heading is set to 180 degrees rather than 0.
+    bindHeadingReset(driverController.buttonY, drive);
+
+    superstructure.bindIntakeTrigger(driverController.leftTrigger); // rollers only
+    // The trigger is analog with a 0.5 threshold, so a loose grip flickers across it. Without a
+    // falling-edge debounce, every flicker ends the shot, drops the flywheel to idle and makes the
+    // feeders wait for spin-up again.
+    Trigger shootHeld =
+        driverController.rightTrigger.debounce(
+            0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling);
+    shootHeld
+        .and(driverController.buttonA.negate())
+        .whileTrue(superstructure.shoot()); // agitate, raise, feed at 6.7 V
+    shootHeld
+        .and(driverController.buttonA)
+        .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at 5.7 V
+    driverController.rightBumper.whileTrue(superstructure.outtake()); // rollers only
+    // Hold D-pad down: outtake without 36/22 or the flywheel, so staged FUEL stays to be shot.
+    driverController.dPadDown.whileTrue(superstructure.clearBehindShooter());
+
+    superstructure.bindDeploymentTriggers();
+    SmartDashboard.putData(
+        "Intake/DeployTest", superstructure.deployIntakeForTest(this::isDiagnosticSelected));
 
     // Rumble the driver when a ball reaches the throat, so they know to stop chasing it.
     indexer.staged().onTrue(driverController.rumble.rumble(0.5, 0.25));
+  }
+
+  /** Binds the driver heading reset while retaining the current field translation. */
+  public static void bindHeadingReset(Trigger trigger, Drive drive) {
+    trigger.onTrue(
+        Commands.runOnce(
+                () -> {
+                  boolean isRed =
+                      DriverStation.getAlliance().isPresent()
+                          && DriverStation.getAlliance().get() == DriverStation.Alliance.Red;
+                  drive.setPose(
+                      new Pose2d(
+                          drive.getPose().getTranslation(),
+                          isRed ? Rotation2d.kPi : Rotation2d.kZero));
+                },
+                drive)
+            .ignoringDisable(true));
   }
 
   private void logInit() {
@@ -387,6 +440,48 @@ public class RobotContainer {
 
     autoAlert.set(autoChooser.get() == null);
     controllerOneAlert.set(!DriverStation.isJoystickConnected(0));
+  }
+
+  public void stopOtherMechanisms() {
+    intake.stopImmediately();
+    indexer.stopImmediately();
+    shooter.stopImmediately();
+  }
+
+  /** Normal scheduler and bindings are not polled anywhere in this path. */
+  public void diagnosticPeriodic(double now, double loopPeriodMs) {
+    boolean intakeSelected = intakeDiagnostics.isSelected();
+    boolean driveSelected = SmartDashboard.getBoolean("DriveDiagnostics/Prepare", false);
+    if (intakeSelected) {
+      intake.diagnosticStopRollers();
+      indexer.stopImmediately();
+      shooter.stopImmediately();
+      drive.periodic();
+      drive.stopOutputs();
+      Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", true);
+    } else if (driveSelected) {
+      stopOtherMechanisms();
+      drive.periodic();
+      Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", true);
+    } else {
+      Logger.recordOutput("Drive/Diagnostics/OtherMechanismsInhibited", false);
+    }
+    // Both diagnostic handlers stop outputs in Test; do not poll them during normal Xbox control.
+    if (!intakeSelected && !driveSelected && !DriverStation.isDisabled()) return;
+    driveDiagnostics.periodic(
+        edu.wpi.first.wpilibj.Timer.getFPGATimestamp(), loopPeriodMs, intakeSelected);
+    intakeDiagnostics.periodic(
+        edu.wpi.first.wpilibj.Timer.getFPGATimestamp(), loopPeriodMs, driveSelected);
+  }
+
+  public boolean isDiagnosticSelected() {
+    return isIntakeDiagnosticSelected()
+        || SmartDashboard.getBoolean("DriveDiagnostics/Prepare", false);
+  }
+
+  /** Preparation remains latched until disabled, preventing normal commands from resuming. */
+  public boolean isIntakeDiagnosticSelected() {
+    return intakeDiagnostics.isSelected();
   }
 
   /**

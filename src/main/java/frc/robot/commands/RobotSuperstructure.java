@@ -4,18 +4,24 @@ import static edu.wpi.first.wpilibj2.command.Commands.*;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.events.EventTrigger;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.constants.DriveConstants;
+import frc.robot.constants.intake.IntakeConstants;
 import frc.robot.lib.command.CachedTrigger;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerState;
 import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.IntakeState;
+import frc.robot.subsystems.intake.IntakePivotState;
+import frc.robot.subsystems.intake.IntakeRollerState;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterState;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BooleanSupplier;
 
 /**
  * Cross-subsystem coordination. Individual subsystems own their own state machines; anything that
@@ -33,23 +39,85 @@ public class RobotSuperstructure {
   }
 
   /**
-   * Deploy the arm and run both the feeder rollers and the indexer, so FUEL is pulled off the floor
-   * and staged at the shooter throat in one motion. Runs until cancelled.
+   * Run the arm's pickup and feeder rollers to pull FUEL in. Does not command the indexer. <b>Does
+   * not move the arm</b> — it is already down, having deployed during auto. Runs until cancelled.
    */
   public Command intakeFuel() {
-    return intake.set(IntakeState.kIntaking).alongWith(indexer.set(IndexerState.kIntaking));
+    return intake.setRollers(IntakeRollerState.kIntaking);
+  }
+
+  /** Driver pickup rollers while held; releasing stops them without moving the pivot. */
+  public void bindIntakeTrigger(Trigger intakeTrigger) {
+    intakeTrigger.whileTrue(intakeFuel());
+  }
+
+  public Command intakeFuelWithoutDeploy() {
+    return intakeFuel();
+  }
+
+  /** Auto deploys once, and teleop also deploys for practice without an autonomous period. */
+  public void bindDeploymentTriggers() {
+    RobotModeTriggers.autonomous().onTrue(deployIntake());
+    RobotModeTriggers.teleop().onTrue(deployIntake());
+  }
+
+  /** Explicit deployment for enabled Test with the existing diagnostic selection respected. */
+  public Command deployIntakeForTest(BooleanSupplier diagnosticSelected) {
+    return deployIntake()
+        .onlyIf(() -> DriverStation.isTestEnabled() && !diagnosticSelected.getAsBoolean());
   }
 
   /**
-   * Spin the flywheel up and extend the hood, then start feeding once <em>both</em> are in
-   * tolerance. Holding the feed off until {@link Shooter#readyToFire()} is what stops the first
-   * ball of a burst from going short.
+   * The full shot, held for as long as the trigger is. Two things run side by side from the moment
+   * it is pressed:
+   *
+   * <ul>
+   *   <li><b>Spin-up.</b> The flywheel immediately runs at its open-loop shooting voltage.
+   *   <li><b>The shot.</b> Once flywheel speed is within tolerance, the bottom rollers and feeder
+   *       start together. The arm shuffles to shake FUEL toward the indexer, then raises and holds.
+   * </ul>
+   *
+   * <p>Releasing the trigger cancels both, and because the arm's resting position is down, it
+   * redeploys on its own.
    */
   public Command shoot() {
+    return shoot(ShooterState.kShootingNear);
+  }
+
+  /** {@link #shoot()} with the flywheel in {@code state}, e.g. the lower-power shot. */
+  public Command shoot(ShooterState state) {
     return shooter
-        .set(ShooterState.kShootingNear)
+        .set(state)
         .alongWith(
-            Commands.waitUntil(shooter.readyToFire()).andThen(indexer.set(IndexerState.kFeeding)));
+            Commands.waitUntil(
+                    () -> !Constants.shooterHardwareExists || shooter.atSpeed().getAsBoolean())
+                .andThen(
+                    indexer
+                        .set(IndexerState.kFeeding)
+                        .alongWith(
+                            intake.feedShooter(),
+                            Commands.sequence(
+                                agitateArm(), intake.setPivot(IntakePivotState.kRaised)))));
+  }
+
+  /**
+   * A slow up/down shuffle of the arm. Built fresh on each call because a WPILib command instance
+   * cannot appear in two compositions, so the steps cannot be shared between cycles.
+   */
+  private Command agitateArm() {
+    int cycles = IntakeConstants.kAgitateCycles;
+    double dwell = IntakeConstants.kAgitateDwell.in(edu.wpi.first.units.Units.Seconds);
+    Command[] strokes = new Command[cycles * 2];
+    for (int i = 0; i < cycles; i++) {
+      strokes[2 * i] = intake.setPivot(IntakePivotState.kAgitateHigh).withTimeout(dwell);
+      strokes[2 * i + 1] = intake.setPivot(IntakePivotState.kAgitateLow).withTimeout(dwell);
+    }
+    return Commands.sequence(strokes);
+  }
+
+  /** Puts the arm down once per match. Safe to call more than once. */
+  public Command deployIntake() {
+    return intake.deployOnce();
   }
 
   /**
@@ -57,7 +125,18 @@ public class RobotSuperstructure {
    * hopper is passive and the indexer is the only thing that can break up a pile.
    */
   public Command outtake() {
-    return indexer.set(IndexerState.kUnjamming).alongWith(intake.set(IntakeState.kEjecting));
+    return indexer
+        .set(IndexerState.kUnjamming)
+        .alongWith(intake.setRollers(IntakeRollerState.kEjecting));
+  }
+
+  /**
+   * Like {@link #outtake()}, but leaves the bottom rollers (36/22) and the flywheel stopped. Only
+   * the floor rollers and feeder reverse, clearing a clog behind the shooter while the FUEL already
+   * staged at the shooter stays put to be shot afterwards.
+   */
+  public Command clearBehindShooter() {
+    return intake.setRollers(IntakeRollerState.kEjecting);
   }
 
   /**
@@ -72,7 +151,9 @@ public class RobotSuperstructure {
   public void registerAutoCommands() {
     NamedCommands.registerCommand("Intake", intakeFuel().asProxy());
     NamedCommands.registerCommand("Shoot", shoot().withTimeout(3.0).asProxy());
-    NamedCommands.registerCommand("StowIntake", intake.setPersistent(IntakeState.kStowed));
+    NamedCommands.registerCommand("DeployIntake", deployIntake().asProxy());
+    NamedCommands.registerCommand(
+        "StowIntake", intake.setPersistentPivot(IntakePivotState.kStowed));
     NamedCommands.registerCommand("SpinUp", shooter.setPersistent(ShooterState.kShootingNear));
 
     // Run the intake for a whole region of a path rather than at a single point.
@@ -84,13 +165,13 @@ public class RobotSuperstructure {
    * for translation (x and y) and once for rotation — so it must be cheap and side-effect free.
    *
    * @param rotation true when scaling the rotation axis (rad/s), false for translation (m/s)
-   * @param turbo held to unlock full speed
+   * @param slow held to drop to slow mode; otherwise the robot drives at full speed
    */
-  public double getDriveMultiplier(boolean rotation, Trigger turbo) {
-    if (turbo.getAsBoolean()) {
-      return rotation ? DriveConstants.maxSpeedW() : DriveConstants.MAX_SPEED.get();
+  public double getDriveMultiplier(boolean rotation, Trigger slow) {
+    if (slow.getAsBoolean()) {
+      return rotation ? DriveConstants.transferSpeedW() : DriveConstants.TRANSFER_SPEED.get();
     }
-    return rotation ? DriveConstants.transferSpeedW() : DriveConstants.TRANSFER_SPEED.get();
+    return rotation ? DriveConstants.maxSpeedW() : DriveConstants.MAX_SPEED.get();
   }
 
   /**
@@ -99,9 +180,10 @@ public class RobotSuperstructure {
    */
   public Command fullRobotCheck() {
     return sequence(
-            intake.set(IntakeState.kDeployed).withTimeout(1.5),
-            intake.set(IntakeState.kIntaking).withTimeout(1.0),
-            intake.set(IntakeState.kStowed).withTimeout(1.5),
+            intake.setPivot(IntakePivotState.kDeployed).withTimeout(1.5),
+            intake.setRollers(IntakeRollerState.kIntaking).withTimeout(1.0),
+            intake.setPivot(IntakePivotState.kRaised).withTimeout(1.5),
+            intake.setPivot(IntakePivotState.kStowed).withTimeout(1.5),
             indexer.set(IndexerState.kFeeding).withTimeout(1.0),
             indexer.set(IndexerState.kUnjamming).withTimeout(1.0),
             shooter.set(ShooterState.kShootingNear).withTimeout(2.5),

@@ -80,9 +80,6 @@ public class TunerConstants {
   private static final Distance kWheelRadius =
       Inches.of(1.968); // TODO(bringup): confirm with Wheel Radius Characterization
 
-  private static final boolean kInvertLeftSide = false;
-  private static final boolean kInvertRightSide = true;
-
   private static final int kPigeonId = 15; // TODO(bringup): no gyro appears in the CAD — confirm
 
   // These are only used for simulation
@@ -116,7 +113,10 @@ public class TunerConstants {
   private static final int kFrontLeftSteerMotorId = 6;
   private static final int kFrontLeftEncoderId = 20;
   private static final Angle kFrontLeftEncoderOffset =
-      Rotations.of(0); // measured: wheels forward, magnet offset 0
+      Rotations.of(-0.496740004624); // straight-position capture, 2026-10-09 UTC
+  // All four drive polarities flipped 2026-10-10: the straight-zero capture pointed every wheel
+  // toward the shooter, so the whole chassis drove and turned backwards with the intake as front.
+  private static final boolean kFrontLeftDriveMotorInverted = false;
   private static final boolean kFrontLeftSteerMotorInverted = true;
   private static final boolean kFrontLeftEncoderInverted = false;
 
@@ -128,7 +128,9 @@ public class TunerConstants {
   private static final int kFrontRightSteerMotorId = 5;
   private static final int kFrontRightEncoderId = 17;
   private static final Angle kFrontRightEncoderOffset =
-      Rotations.of(0); // measured: wheels forward, magnet offset 0
+      Rotations.of(0.000488281250); // straight-position capture, 2026-10-09 UTC
+  // This robot's front-right drive motor needs the opposite direction from the side default.
+  private static final boolean kFrontRightDriveMotorInverted = true;
   private static final boolean kFrontRightSteerMotorInverted = true;
   private static final boolean kFrontRightEncoderInverted = false;
 
@@ -138,9 +140,12 @@ public class TunerConstants {
   // Back Left
   private static final int kBackLeftDriveMotorId = 7;
   private static final int kBackLeftSteerMotorId = 52;
-  private static final int kBackLeftEncoderId = 8;
+  private static final int kBackLeftEncoderId = 10;
   private static final Angle kBackLeftEncoderOffset =
-      Rotations.of(0.0); // measured: wheels forward, magnet offset 0
+      Rotations.of(0.001436121331); // straight-position capture, 2026-10-09 UTC
+  // Positive drive follows the calibrated heading. Do not compensate for a 180-degree steering
+  // target here: swerve optimization already reverses speed when it chooses that target.
+  private static final boolean kBackLeftDriveMotorInverted = true;
   private static final boolean kBackLeftSteerMotorInverted = true;
   private static final boolean kBackLeftEncoderInverted = false;
 
@@ -152,7 +157,8 @@ public class TunerConstants {
   private static final int kBackRightSteerMotorId = 25;
   private static final int kBackRightEncoderId = 4;
   private static final Angle kBackRightEncoderOffset =
-      Rotations.of(0.0); // measured: wheels forward, magnet offset 0
+      Rotations.of(0.000976562500); // straight-position capture, 2026-10-09 UTC
+  private static final boolean kBackRightDriveMotorInverted = false;
   private static final boolean kBackRightSteerMotorInverted = true;
   private static final boolean kBackRightEncoderInverted = false;
 
@@ -169,7 +175,7 @@ public class TunerConstants {
               kFrontLeftEncoderOffset,
               kFrontLeftXPos,
               kFrontLeftYPos,
-              kInvertLeftSide,
+              kFrontLeftDriveMotorInverted,
               kFrontLeftSteerMotorInverted,
               kFrontLeftEncoderInverted);
   public static final SwerveModuleConstants<
@@ -182,7 +188,7 @@ public class TunerConstants {
               kFrontRightEncoderOffset,
               kFrontRightXPos,
               kFrontRightYPos,
-              kInvertRightSide,
+              kFrontRightDriveMotorInverted,
               kFrontRightSteerMotorInverted,
               kFrontRightEncoderInverted);
   public static final SwerveModuleConstants<
@@ -195,7 +201,7 @@ public class TunerConstants {
               kBackLeftEncoderOffset,
               kBackLeftXPos,
               kBackLeftYPos,
-              kInvertLeftSide,
+              kBackLeftDriveMotorInverted,
               kBackLeftSteerMotorInverted,
               kBackLeftEncoderInverted);
   public static final SwerveModuleConstants<
@@ -208,7 +214,7 @@ public class TunerConstants {
                   kBackRightEncoderOffset,
                   kBackRightXPos,
                   kBackRightYPos,
-                  kInvertRightSide,
+                  kBackRightDriveMotorInverted,
                   kBackRightSteerMotorInverted,
                   kBackRightEncoderInverted)
               .withSlipCurrent(kBackRightSlipCurrent);

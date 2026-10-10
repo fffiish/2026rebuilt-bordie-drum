@@ -10,7 +10,7 @@ import frc.robot.lib.subsystem.angular.AngularIOSparkFlexConfig;
 import frc.robot.lib.subsystem.angular.AngularSubsystemConfig;
 
 /**
- * Configs for the shooter: a two-motor flywheel plus a linear-actuator hood.
+ * Configs for the shooter: a four-motor flywheel plus a linear-actuator hood.
  *
  * <p>The hood is tracked in <em>extension</em> (inches), never in launch angle — the crank geometry
  * between actuator travel and hood angle is nonlinear, so the mapping lives in a {@link
@@ -32,12 +32,30 @@ public final class ShooterConstants {
   public static final int kFlywheelFollowerIdC = 29; // confirmed: "Shooter #29"
 
   public static final AngularVelocity kFlywheelIdle = RotationsPerSecond.of(0.0);
-  public static final AngularVelocity kFlywheelShooting =
-      RotationsPerSecond.of(80.0); // TODO(bringup): speed for the near hood preset
-  public static final AngularVelocity kFlywheelShootingFar =
-      RotationsPerSecond.of(95.0); // TODO(bringup): speed for the far hood preset
+  public static final AngularVelocity kFlywheelMaximumSpeed = RotationsPerSecond.of(40.0);
+  public static final AngularVelocity kFlywheelShooting = kFlywheelMaximumSpeed;
+  public static final AngularVelocity kFlywheelShootingFar = kFlywheelMaximumSpeed;
   public static final AngularVelocity kFlywheelEjecting =
       RotationsPerSecond.of(20.0); // TODO(bringup)
+
+  // SPARK P uses duty cycle per radian/second; kV uses volts per radian/second.
+  // P corresponds to 0.01 V/(rad/s) at the nominal 12 V bus (~0.06 V per rev/s of error). It was
+  // 0.08, about 5x kV, which with the SPARK's velocity filter lag made the flywheel oscillate;
+  // kV does the bulk of the work and P only trims the residual.
+  public static final double kFlywheelKP = 0.01 / 12.0;
+  // Measured 10-10: holding 242 rad/s took 4.46 V with no balls -> 0.0184.
+  public static final double kFlywheelKV = 0.0184;
+
+  // 39/34/26/29 run open loop at a fixed voltage; the velocity loop oscillated.
+  public static final Voltage kFlywheelIdleVoltage = Volts.of(0.0);
+  public static final Voltage kFlywheelShootingVoltage = Volts.of(6.7);
+  // Lower-power shot: right trigger while holding A.
+  public static final Voltage kFlywheelShootingSoftVoltage = Volts.of(5.7);
+  public static final Voltage kFlywheelShootingFarVoltage = kFlywheelShootingVoltage;
+  public static final Voltage kFlywheelEjectingVoltage = Volts.of(1.25);
+  // With no speed setpoint, feeding starts once every motor reaches this fraction of the speed the
+  // voltage settles at (volts / kV): 2.5 V settles near 136 rad/s, so feeding starts at 109.
+  public static final double kFlywheelReadyFraction = 0.8;
 
   public static final AngularIOSparkFlexConfig kFlywheelSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
@@ -45,12 +63,23 @@ public final class ShooterConstants {
           .followerId(kFlywheelFollowerIdA)
           .followerId(kFlywheelFollowerIdB)
           .followerId(kFlywheelFollowerIdC)
-          .opposeMaster(false) // TODO(bringup): true if the two wheels face each other
+          // The 26/29 side is mounted mirrored from the 39/34 side, so it must spin opposite.
+          .opposedFollowerId(kFlywheelFollowerIdB)
+          .opposedFollowerId(kFlywheelFollowerIdC)
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(60))
-          .secondaryCurrentLimit(Amps.of(100))
+          .smartCurrentLimit(Amps.of(40)) // per motor
+          .secondaryCurrentLimit(Amps.of(60))
+          .maximumMotorVelocity(kFlywheelMaximumSpeed)
+          // Four motors starting at once drew ~35-40 A each and pulled the bus to ~6.5 V; ease in.
+          .rampRateSeconds(0.4)
+          .recoverWhileEnabled(true) // a fault must not kill the drum until the next disable
+          .encoderMeasurementPeriodMs(10)
+          .encoderAverageDepth(2)
+          .logFollowerTelemetry(true)
+          .kP(kFlywheelKP)
+          .kV(kFlywheelKV)
           .build();
 
   public static final AngularIOSimConfig kFlywheelSimConfig =
@@ -59,23 +88,27 @@ public final class ShooterConstants {
           .numMotors(4)
           .moi(KilogramSquareMeters.of(0.012)) // TODO(bringup): real flywheel inertia matters here
           .motorRotationsPerOutputRotations(1.0)
-          .supplyCurrentLimit(Amps.of(60))
-          .statorCurrentLimit(Amps.of(100))
+          .supplyCurrentLimit(Amps.of(40))
+          .statorCurrentLimit(Amps.of(60))
           .kV(0.11) // TODO(bringup)
           .build();
 
   public static final AngularSubsystemConfig kFlywheelSubsystemConfigReal =
       AngularSubsystemConfig.builder()
           .logKey("ShooterFlywheel")
+          .maximumVelocity(kFlywheelMaximumSpeed)
           .bus(RobotConstants.kRioBus)
-          .velocityTolerance(RotationsPerSecond.of(2.0)) // gates "ready to fire"
-          .build(); // TODO(bringup): tune kS/kV/kP
+          .velocityTolerance(RotationsPerSecond.of(0.5)) // gates feeding near the 40 rps target
+          .kP(kFlywheelKP)
+          .kV(kFlywheelKV)
+          .build();
 
   public static final AngularSubsystemConfig kFlywheelSubsystemConfigSim =
       AngularSubsystemConfig.builder()
           .logKey("ShooterFlywheel")
+          .maximumVelocity(kFlywheelMaximumSpeed)
           .bus(RobotConstants.kRioBus)
-          .velocityTolerance(RotationsPerSecond.of(2.0))
+          .velocityTolerance(RotationsPerSecond.of(0.5))
           .kV(0.11)
           .build();
 

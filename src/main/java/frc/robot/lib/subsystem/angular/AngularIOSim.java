@@ -12,9 +12,11 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.lib.sim.CurrentDrawCalculatorSim;
 import frc.robot.lib.sim.PivotSim;
 import frc.robot.lib.subsystem.DeviceConnectedStatus;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -25,7 +27,8 @@ public class AngularIOSim implements AngularIO {
 
   private final AngularIOSimConfig deviceConfig;
 
-  private final double[] motorTemperatures = new double[] {};
+  // Ambient-only placeholder: this plant does not model motor heating.
+  private final double[] motorTemperatures;
   private final DeviceConnectedStatus[] deviceConnectedStatuses = new DeviceConnectedStatus[] {};
 
   private AngularIOOutputMode outputMode = kNeutral;
@@ -35,6 +38,8 @@ public class AngularIOSim implements AngularIO {
   private Voltage feedforward = Volts.of(0);
 
   private Current supplyCurrent = Amps.of(0.0);
+  private double diagnosticOutputLimit = 1.0;
+  private boolean diagnosticReferenceValid;
 
   private Optional<Supplier<Rotation2d>> realAngleFromSubsystemAngleZero = Optional.empty();
   private Optional<Supplier<Distance>> armLength = Optional.empty();
@@ -44,6 +49,8 @@ public class AngularIOSim implements AngularIO {
   public AngularIOSim(
       AngularIOSimConfig config, CurrentDrawCalculatorSim currentDrawCalculatorSim) {
     this.deviceConfig = config;
+    motorTemperatures = new double[config.getNumMotors()];
+    Arrays.fill(motorTemperatures, 25.0);
 
     this.realAngleFromSubsystemAngleZero = config.getRealAngleFromSubsystemAngleZeroSupplier();
     this.armLength = config.getArmLengthSupplier();
@@ -83,47 +90,62 @@ public class AngularIOSim implements AngularIO {
   public void updateInputs(AngularIOInputs inputs) {
     inputs.goalPos = goalPos.orElse(Radians.of(0.0));
     inputs.goalVel = goalVel.orElse(RadiansPerSecond.of(0.0));
+    inputs.sampleTimestampSeconds = Timer.getFPGATimestamp();
+    inputs.configReady = true;
+    inputs.referenceValid = diagnosticReferenceValid;
+    inputs.configPending = false;
+    inputs.configError = "";
+    inputs.readbackKP = deviceConfig.getKP();
+    inputs.readbackKI = deviceConfig.getKI();
+    inputs.readbackKD = deviceConfig.getKD();
+    inputs.readbackKS = deviceConfig.getKS();
+    inputs.readbackKV = deviceConfig.getKV();
+    inputs.readbackKG = deviceConfig.getKG();
+    inputs.readbackOutputLimit = diagnosticOutputLimit;
+    inputs.readbackCruiseVelocityRadiansPerSecond =
+        deviceConfig.getCruiseVelocity().in(RadiansPerSecond);
+    inputs.readbackAccelerationRadiansPerSecondPerSecond =
+        deviceConfig.getAcceleration().in(RadiansPerSecondPerSecond);
+    inputs.readbackMinimumAngleRadians = deviceConfig.getPhysicalMinAngle().in(Radians);
+    inputs.readbackMaximumAngleRadians = deviceConfig.getPhysicalMaxAngle().in(Radians);
     armLength.ifPresent(length -> pivot.setArmLength(length.get()));
 
     Optional<Angle> posSet = Optional.empty();
     Optional<AngularVelocity> velSet = Optional.empty();
+    double requestedVolts = 0.0;
     switch (outputMode) {
       case kClosedLoop -> {
         double currentAngle = pivot.getAngleRads();
-        double gravityFF =
-            deviceConfig.isKgArm()
-                ? deviceConfig.getKG() * Math.cos(currentAngle)
-                : deviceConfig.getKG();
-
-        inputs.appliedVolts =
-            Volts.of(
-                MathUtil.clamp(
-                    posController.calculate(
-                            currentAngle, goalPos.orElse(Radians.of(0.0)).in(Radians))
-                        + posController.getSetpoint().velocity * deviceConfig.getKV()
-                        + gravityFF
-                        + feedforward.in(Volts),
-                    -12.0,
-                    12.0));
+        double correction =
+            posController.calculate(currentAngle, goalPos.orElse(Radians.of(0.0)).in(Radians));
+        double profileVelocity = posController.getSetpoint().velocity;
+        requestedVolts =
+            correction
+                + profileVelocity * deviceConfig.getKV()
+                + Math.signum(profileVelocity) * deviceConfig.getKS()
+                + gravityFeedforwardVolts()
+                + feedforward.in(Volts);
         posSet = Optional.of(Radians.of(posController.getSetpoint().position));
         velSet = Optional.of(RadiansPerSecond.of(posController.getSetpoint().velocity));
       }
-      case kOpenLoop ->
-          inputs.appliedVolts =
-              Volts.of(MathUtil.clamp(openLoopVolts.orElse(Volts.of(0.0)).in(Volts), -12.0, 12.0));
+      case kOpenLoop -> requestedVolts = openLoopVolts.orElse(Volts.of(0.0)).in(Volts);
       case kVelocity -> {
         double goalVelValue = goalVel.orElse(RadiansPerSecond.of(0.0)).in(RadiansPerSecond);
-        inputs.appliedVolts =
-            Volts.of(
-                MathUtil.clamp(
-                    velController.calculate(pivot.getVelocityRadPerSec(), goalVelValue)
-                        + velController.getSetpoint().position * deviceConfig.getKV(),
-                    -12.0,
-                    12.0));
+        double correction = velController.calculate(pivot.getVelocityRadPerSec(), goalVelValue);
+        double profileVelocity = velController.getSetpoint().position;
+        requestedVolts =
+            correction
+                + profileVelocity * deviceConfig.getKV()
+                + Math.signum(profileVelocity) * deviceConfig.getKS()
+                + gravityFeedforwardVolts();
         velSet = Optional.of(RadiansPerSecond.of(velController.getSetpoint().position));
       }
-      case kNeutral -> inputs.appliedVolts = Volts.of(0.0);
+      case kNeutral -> requestedVolts = 0.0;
     }
+    inputs.requestedVolts = Volts.of(requestedVolts);
+    double batteryVoltage = Math.max(0.0, RobotController.getBatteryVoltage());
+    double voltageLimit = Math.min(12.0, batteryVoltage) * diagnosticOutputLimit;
+    double limitedVolts = MathUtil.clamp(requestedVolts, -voltageLimit, voltageLimit);
 
     // Current limiting by Nishant
     DCMotor motor = deviceConfig.getMotor();
@@ -131,7 +153,7 @@ public class AngularIOSim implements AngularIO {
         pivot.getVelocityRadPerSec()
             * deviceConfig.getMotorRotationsPerOutputRotations()
             / motor.KvRadPerSecPerVolt; // Volts
-    double desiredI = (inputs.appliedVolts.in(Volts) - backemf) / motor.rOhms; // Amps
+    double desiredI = (limitedVolts - backemf) / motor.rOhms; // Amps
 
     // Stator current limit
     if (Math.abs(desiredI)
@@ -148,7 +170,7 @@ public class AngularIOSim implements AngularIO {
     // quadratic sol rOhms * I^2 + backemf * I - supplyLimit * Vbat = 0
     double supplyLimit =
         deviceConfig.getSupplyCurrentLimit().in(Amps) * deviceConfig.getNumMotors();
-    double Vbat = RobotController.getBatteryVoltage();
+    double Vbat = batteryVoltage;
     double maxStatorFromSupply =
         (-backemf
                 + Math.signum(desiredI)
@@ -159,20 +181,19 @@ public class AngularIOSim implements AngularIO {
     }
 
     // Calculate applied voltage from desired current
-    double applV = backemf + desiredI * motor.rOhms;
-    if (applV > 12.0) {
-      applV = 12.0;
-    } else if (applV < -12.0) {
-      applV = -12.0;
-    }
-    double mag = applV / Vbat;
+    double applV = MathUtil.clamp(backemf + desiredI * motor.rOhms, -voltageLimit, voltageLimit);
+    // A stopped controller reports zero output even while the plant coasts/brakes under gravity.
+    if (outputMode == kNeutral) applV = 0.0;
+    inputs.appliedVolts = Volts.of(applV);
+    double mag = Vbat > 0.0 ? Math.abs(applV / Vbat) : 0.0;
 
     pivot.setInput(applV);
 
-    inputs.statorCurrent = Amps.of(pivot.getCurrentDrawAmps());
-    inputs.supplyCurrent = Amps.of(pivot.getCurrentDrawAmps() * mag);
+    inputs.statorCurrent = Amps.of(Math.abs(pivot.getCurrentDrawAmps()));
+    inputs.supplyCurrent = Amps.of(inputs.statorCurrent.in(Amps) * mag);
     this.supplyCurrent = inputs.supplyCurrent;
 
+    double priorVelocity = pivot.getVelocityRadPerSec();
     pivot.update(kDt);
 
     inputs.referencePos = posSet.orElse(Radians.of(0.0));
@@ -182,7 +203,8 @@ public class AngularIOSim implements AngularIO {
 
     inputs.velocity = RadiansPerSecond.of(pivot.getVelocityRadPerSec());
     this.velocity = inputs.velocity;
-    inputs.acceleration = RadiansPerSecondPerSecond.of(0.0);
+    inputs.acceleration =
+        RadiansPerSecondPerSecond.of((inputs.velocity.in(RadiansPerSecond) - priorVelocity) / kDt);
 
     inputs.motorTemperatures = this.motorTemperatures;
     inputs.deviceConnectedStatuses = this.deviceConnectedStatuses;
@@ -238,9 +260,15 @@ public class AngularIOSim implements AngularIO {
 
   @Override
   public void setPIDVG(double kP, double kI, double kD, double kV, double kG) {
+    setGains(kP, kI, kD, deviceConfig.getKS(), kV, kG);
+  }
+
+  @Override
+  public void setGains(double kP, double kI, double kD, double kS, double kV, double kG) {
     deviceConfig.setKP(kP);
     deviceConfig.setKI(kI);
     deviceConfig.setKD(kD);
+    deviceConfig.setKS(kS);
     deviceConfig.setKV(kV);
     deviceConfig.setKG(kG);
 
@@ -267,10 +295,49 @@ public class AngularIOSim implements AngularIO {
 
   public void setRealAngleFromSubsystemAngleZeroSupplier(
       Supplier<Rotation2d> realAngleFromSubsystemAngleZero) {
-    this.realAngleFromSubsystemAngleZero = Optional.ofNullable(realAngleFromSubsystemAngleZero);
+    Optional<Supplier<Rotation2d>> supplier = Optional.ofNullable(realAngleFromSubsystemAngleZero);
+    pivot.setRealAngleFromSubsystemAngleZeroSupplier(supplier);
+    this.realAngleFromSubsystemAngleZero = supplier;
   }
 
   public void setArmLengthSupplier(Supplier<Distance> length) {
+    pivot.setArmLength(length.get());
     this.armLength = Optional.of(length);
+  }
+
+  private double gravityFeedforwardVolts() {
+    if (!deviceConfig.isKgArm()) {
+      return deviceConfig.getKG();
+    }
+    double horizontalOffset =
+        realAngleFromSubsystemAngleZero.map(supplier -> supplier.get().getRadians()).orElse(0.0);
+    return deviceConfig.getKG() * Math.cos(pivot.getAngleRads() + horizontalOffset);
+  }
+
+  @Override
+  public boolean diagnosticSetOutputLimit(double duty) {
+    if (!Double.isFinite(duty) || duty < 0.0 || duty > 1.0) {
+      return false;
+    }
+    diagnosticOutputLimit = duty;
+    return true;
+  }
+
+  @Override
+  public boolean diagnosticCalibrateReference(Angle angle) {
+    double radians = angle.in(Radians);
+    if (!Double.isFinite(radians)
+        || radians < deviceConfig.getPhysicalMinAngle().in(Radians)
+        || radians > deviceConfig.getPhysicalMaxAngle().in(Radians)) {
+      return false;
+    }
+    // Simulation has no independent absolute sensor: place the modeled arm at the reference.
+    pivot.setState(radians, 0.0);
+    velocity = RadiansPerSecond.of(0.0);
+    posController.reset(radians, 0.0);
+    velController.reset(0.0);
+    stop();
+    diagnosticReferenceValid = true;
+    return true;
   }
 }

@@ -8,6 +8,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.lib.command.CachedTrigger;
@@ -33,6 +35,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+  private double previousLoopTime = Double.NaN;
+  private boolean wasDiagnosticSelected;
 
   public Robot() {
     // Record metadata
@@ -92,6 +96,22 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
+    double now = Timer.getFPGATimestamp();
+    double periodMs = Double.isFinite(previousLoopTime) ? (now - previousLoopTime) * 1000 : 20;
+    previousLoopTime = now;
+    Logger.recordOutput("LoopTiming/PeriodMS", periodMs);
+    if (robotContainer.isDiagnosticSelected()) {
+      Logger.recordOutput("Controls/SchedulerActive", false);
+      Logger.recordOutput("Controls/InhibitReason", "Explicit diagnostic selection is active");
+      if (!wasDiagnosticSelected) CommandScheduler.getInstance().cancelAll();
+      wasDiagnosticSelected = true;
+      robotContainer.diagnosticPeriodic(now, periodMs);
+      recordExecutionTime(now);
+      return;
+    }
+    wasDiagnosticSelected = false;
+    Logger.recordOutput("Controls/SchedulerActive", true);
+    Logger.recordOutput("Controls/InhibitReason", "");
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled commands, running already-scheduled commands, removing
     // finished or interrupted commands, and running subsystem periodic() methods.
@@ -105,6 +125,14 @@ public class Robot extends LoggedRobot {
       LinearSubsystem.recordAndResetTiming();
     }
     robotContainer.periodic();
+    robotContainer.diagnosticPeriodic(now, periodMs);
+    recordExecutionTime(now);
+  }
+
+  private void recordExecutionTime(double startSec) {
+    if (Constants.kEnableLoopTimingLogs) {
+      Logger.recordOutput("LoopTiming/ExecutionMS", (Timer.getFPGATimestamp() - startSec) * 1000);
+    }
   }
 
   /** This function is called once when the robot is disabled. */
@@ -151,6 +179,13 @@ public class Robot extends LoggedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    enableTestControls();
+  }
+
+  /** Test uses the normal Xbox commands unless a diagnostic is explicitly selected. */
+  public static void enableTestControls() {
+    LiveWindow.setEnabled(false);
+    CommandScheduler.getInstance().enable();
   }
 
   @Override

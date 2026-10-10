@@ -25,25 +25,49 @@ public final class IndexerConstants {
 
   // --------------------------------------------------------------- rollers
 
-  // ASSUMPTION(grouping): the two remaining "Shooter" ids drive the compliant-wheel row at the
-  // bottom of the shooter stack — one motor at each end, as the render shows.
+  // Bottom shooter rollers, confirmed by the operator: CAN 36 leader, CAN 22 follower.
   public static final int kMasterId = 36; // confirmed: "Shooter #36"
   public static final int kFollowerId = 22; // confirmed: "Shooter #22"
 
-  public static final AngularVelocity kFeeding = RotationsPerSecond.of(45.0); // TODO(bringup)
-  public static final AngularVelocity kIntaking = RotationsPerSecond.of(25.0); // TODO(bringup)
-  public static final AngularVelocity kUnjamming = RotationsPerSecond.of(-30.0); // TODO(bringup)
+  public static final AngularVelocity kMaximumSpeed = RotationsPerSecond.of(65.0);
+  // Below free speed so the loop has headroom and current stays lower on a sagging battery.
+  public static final AngularVelocity kFeeding = RotationsPerSecond.of(45.0);
+  public static final AngularVelocity kIntaking = kMaximumSpeed;
+  public static final AngularVelocity kUnjamming = RPM.of(-6784.0 * 0.20);
+
+  // 36/22 run open loop at a fixed voltage; the velocity loop oscillated on this mechanism.
+  public static final Voltage kFeedingVoltage = Volts.of(3.0);
+  public static final Voltage kIntakingVoltage = Volts.of(2.5);
+  public static final Voltage kUnjammingVoltage = Volts.of(-2.5);
+
+  // Baselines from the 10-10 shooter captures: kV matches the measured flywheel (same motor),
+  // kS covers belt/roller friction. SPARK P is duty per rad/s: 0.01 / 12 is 0.01 V per rad/s,
+  // about 1 V per 100 rad/s of error, the same proportion as the stable flywheel loop.
+  public static final double kRollerKV = 0.0175;
+  public static final double kRollerKS = 0.20;
+  public static final double kRollerKP = 0.01 / 12.0;
 
   public static final AngularIOSparkFlexConfig kSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
           .masterId(kMasterId)
           .followerId(kFollowerId)
-          .opposeMaster(true) // TODO(bringup): ends face opposite ways
+          .opposeMaster(true) // Confirmed: CAN 22 must turn opposite CAN 36 to drive together.
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
+          // Smart limit must sit below the secondary. The secondary is a hard cutoff that briefly
+          // kills output; with it at 60 A under an 80 A smart limit, a loaded indexer tripped the
+          // cutoff before the smart limit ever regulated, and 36/22 stopped mid-run.
+          // 40 A / 60 A: at 60 A each the pair sagged 36/22's supply to 5 V.
           .smartCurrentLimit(Amps.of(40))
-          .secondaryCurrentLimit(Amps.of(80))
+          .secondaryCurrentLimit(Amps.of(60))
+          .rampRateSeconds(0.3) // output rises over 0.3 s, not in one step
+          .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
+          .maximumMotorVelocity(kMaximumSpeed)
+          .logFollowerTelemetry(true)
+          .kP(kRollerKP)
+          .kV(kRollerKV)
+          .kS(kRollerKS)
           .build();
 
   public static final AngularIOSimConfig kSimConfig =
@@ -52,24 +76,33 @@ public final class IndexerConstants {
           .numMotors(2)
           .moi(KilogramSquareMeters.of(0.003)) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0)
-          .supplyCurrentLimit(Amps.of(40))
-          .statorCurrentLimit(Amps.of(80))
-          .kV(0.12) // TODO(bringup)
+          .supplyCurrentLimit(Amps.of(60))
+          .statorCurrentLimit(Amps.of(60))
+          .kP(0.01)
+          .kV(kRollerKV)
+          .acceleration(RotationsPerSecondPerSecond.of(50))
           .build();
 
   public static final AngularSubsystemConfig kSubsystemConfigReal =
       AngularSubsystemConfig.builder()
           .logKey("Indexer")
+          .maximumVelocity(kMaximumSpeed)
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
-          .build(); // TODO(bringup): tune kS/kV/kP
+          .kP(kRollerKP)
+          .kV(kRollerKV)
+          .kS(kRollerKS)
+          .build();
 
   public static final AngularSubsystemConfig kSubsystemConfigSim =
       AngularSubsystemConfig.builder()
           .logKey("Indexer")
+          .maximumVelocity(kMaximumSpeed)
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
-          .kV(0.12)
+          .kP(0.01)
+          .kV(kRollerKV)
+          .acceleration(RotationsPerSecondPerSecond.of(50))
           .build();
 
   // ------------------------------------------------------- staging sensor

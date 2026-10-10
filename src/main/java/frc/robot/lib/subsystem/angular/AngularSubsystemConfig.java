@@ -13,6 +13,17 @@ import lombok.Setter;
 public class AngularSubsystemConfig {
   private final String logKey;
 
+  /** Immutable mechanism speed cap for both real and simulated velocity commands. */
+  @Builder.Default
+  private final AngularVelocity maximumVelocity = RadiansPerSecond.of(Double.POSITIVE_INFINITY);
+
+  public AngularVelocity limitVelocity(AngularVelocity requested) {
+    double value = requested.in(RadiansPerSecond);
+    double maximum = maximumVelocity.in(RadiansPerSecond);
+    if (!Double.isFinite(value)) return RadiansPerSecond.of(0);
+    return RadiansPerSecond.of(Math.max(-maximum, Math.min(maximum, value)));
+  }
+
   private final CANBus bus;
 
   @Builder.Default @Setter private Angle positionTolerance = Radians.of(Double.POSITIVE_INFINITY);

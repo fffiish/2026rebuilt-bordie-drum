@@ -23,22 +23,67 @@ import lombok.Singular;
  *       choose and no {@code SignalIOManager} batching to join.
  *   <li><b>No {@code sensorId}.</b> A SPARK cannot fuse a remote CTRE CANcoder the way a TalonFX
  *       can. Absolute feedback would have to come from a SPARK-attached encoder instead.
- *   <li><b>One current limit, not two.</b> {@code smartCurrentLimit} is REV's single supply-side
- *       limit; {@code secondaryCurrentLimit} is the hard shutoff above it.
+ *   <li><b>Current limiting differs from CTRE supply/stator limits.</b> {@code smartCurrentLimit}
+ *       regulates motor phase current by reducing output voltage; {@code secondaryCurrentLimit}
+ *       briefly disables output when its threshold is exceeded.
  *   <li><b>{@code inverted} is a boolean</b> rather than a CTRE {@code InvertedValue}.
  * </ul>
  *
  * {@code neutralMode} stays a CTRE {@link NeutralModeValue} purely because {@link AngularIO}'s
- * interface uses it; the IO maps it to REV's {@code IdleMode}.
+ * interface uses it; the IO maps it to REV's {@code IdleMode}. The IO estimates supply-current
+ * telemetry from measured motor output current times absolute applied duty cycle.
  */
 @Builder
 @Getter
 public class AngularIOSparkFlexConfig {
   private final int masterId;
+
+  /** Motor-shaft speed cap, independent of profile tunables and output gearing. */
+  @Builder.Default
+  private final AngularVelocity maximumMotorVelocity = RPM.of(Double.POSITIVE_INFINITY);
+
   @Singular private final List<Integer> followerIds;
+
+  /** Optional per-motor cached telemetry; enable only for mechanisms being investigated. */
+  @Builder.Default private final boolean logFollowerTelemetry = false;
 
   /** Followers spin opposite the master (gearbox reverses them). */
   @Builder.Default private final boolean opposeMaster = false;
+
+  /**
+   * Follower CAN IDs that spin opposite the master, for mechanisms where only some followers are
+   * mirrored. A follower listed here is opposed even when {@link #opposeMaster} is false.
+   */
+  @Singular("opposedFollowerId")
+  private final List<Integer> opposedFollowerIds;
+
+  public boolean isFollowerOpposed(int followerId) {
+    return opposeMaster || opposedFollowerIds.contains(followerId);
+  }
+
+  /**
+   * Velocity filter on the motor's built-in encoder. The defaults (32 ms window, depth 8) match the
+   * SPARK's own and lag a fast flywheel enough to make velocity P oscillate; shorten them for
+   * high-speed mechanisms.
+   */
+  @Builder.Default private final int encoderMeasurementPeriodMs = 32;
+
+  @Builder.Default private final int encoderAverageDepth = 8;
+
+  /**
+   * Seconds for motor output (open loop and speed/position control) to ramp from zero to full; zero
+   * disables it. A mechanism commanded straight to full output draws its stall current in one step,
+   * which on a loaded battery can sag the bus far enough to brown out every controller on it.
+   */
+  @Builder.Default private final double rampRateSeconds = 0.0;
+
+  /**
+   * Let a controller that faulted or browned out be cleared and reconfigured while the robot is
+   * enabled, instead of staying off until the next disable. Only safe for mechanisms with no
+   * physical position reference to lose (a flywheel, a roller row): the arm must keep the
+   * disabled-only default, because a reset controller no longer knows where the arm is.
+   */
+  @Builder.Default private final boolean recoverWhileEnabled = false;
 
   @Builder.Default private final Angle resetAngle = Radians.of(0.0);
   @Builder.Default private final Angle softMinAngle = Radians.of(Double.NEGATIVE_INFINITY);
@@ -52,10 +97,13 @@ public class AngularIOSparkFlexConfig {
 
   @Builder.Default private final boolean inverted = false;
 
-  /** REV's smart (supply-side) current limit. */
+  /** REV's Smart Current Limit in motor phase amperes. */
   private final Current smartCurrentLimit;
 
-  /** Hard shutoff limit. Leave null to skip. */
+  /**
+   * Secondary overcurrent limit in amperes; briefly chops output above the threshold. Leave null to
+   * skip configuring it.
+   */
   private final Current secondaryCurrentLimit;
 
   @Builder.Default @Setter private NeutralModeValue neutralMode = NeutralModeValue.Brake;
@@ -69,9 +117,10 @@ public class AngularIOSparkFlexConfig {
   @Builder.Default @Setter private double kG = 0.0;
 
   /**
-   * A SPARK has no firmware gravity term, so the IO applies {@code kG} itself as an arbitrary
-   * feedforward — scaled by cos(angle) when this is {@code Arm_Cosine}, constant when {@code
-   * Elevator_Static}, and omitted when empty.
+   * Selects REV firmware gravity feedforward. {@code Arm_Cosine} maps {@code kG} volts to {@code
+   * kCos}, with {@code kCosRatio} converting feedback position to mechanism rotations; zero angle
+   * must be horizontal. {@code Elevator_Static} maps to constant {@code kG}. Empty disables both
+   * gravity terms.
    */
   @Builder.Default @Setter private Optional<GravityTypeValue> gravityType = Optional.empty();
 
