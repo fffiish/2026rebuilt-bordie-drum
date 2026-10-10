@@ -94,7 +94,8 @@ public class Intake extends VirtualSubsystem {
         () -> {
           heldRollers = null;
           intakeRollers.stopImmediately();
-          feederRollers.stopImmediately();
+          // A shot may be feeding through these same rollers; releasing intake must not stop it.
+          if (heldFeederVelocity == null) feederRollers.stopImmediately();
         },
         rollerOwner);
   }

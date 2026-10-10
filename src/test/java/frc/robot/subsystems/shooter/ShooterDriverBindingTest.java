@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 class ShooterDriverBindingTest {
   private static final class RecordingIO implements AngularIO {
     double requestedRps;
+    double requestedVolts;
     double measuredRps;
     double[] motorMeasuredRps = {};
     boolean allConnected = true;
@@ -49,6 +50,12 @@ class ShooterDriverBindingTest {
     public void stop() {
       stops++;
       requestedRps = 0;
+      requestedVolts = 0;
+    }
+
+    @Override
+    public void setOpenLoop(edu.wpi.first.units.measure.Voltage voltage) {
+      requestedVolts = voltage.in(Volts);
     }
 
     @Override
@@ -69,6 +76,7 @@ class ShooterDriverBindingTest {
 
   private static final class Fixture implements AutoCloseable {
     final boolean originalTuning = Constants.kTuningMode;
+    final boolean originalShooterExists = Constants.shooterHardwareExists;
     final CommandScheduler scheduler = CommandScheduler.getInstance();
     final RecordingIO flywheelIO = new RecordingIO();
     final RecordingIO indexerIO = new RecordingIO();
@@ -95,6 +103,7 @@ class ShooterDriverBindingTest {
       DriverStationSim.resetData();
       DriverStation.refreshData();
       Constants.kTuningMode = false;
+      Constants.shooterHardwareExists = true;
       scheduler.cancelAll();
       scheduler.getDefaultButtonLoop().clear();
       flywheel =
@@ -181,6 +190,7 @@ class ShooterDriverBindingTest {
       scheduler.getDefaultButtonLoop().clear();
       scheduler.unregisterAllSubsystems();
       Constants.kTuningMode = originalTuning;
+      Constants.shooterHardwareExists = originalShooterExists;
       LiveWindow.setEnabled(false);
       scheduler.enable();
       DriverStationSim.resetData();
@@ -313,6 +323,35 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.motorMeasuredRps = new double[] {40, 40, -39.49, -40};
       robot.tick();
       assertFalse(robot.shooter.atSpeed().getAsBoolean());
+      assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
+      assertEquals(0, robot.feederIO.requestedRps, 1e-9);
+    }
+  }
+
+  @Test
+  void feedersKeepRunningOnceStartedEvenIfFlywheelSpeedDropsUntilTriggerReleased() {
+    try (var robot = new Fixture(false)) {
+      robot.axis(0.8);
+      robot.flywheelIO.measuredRps = ShooterConstants.kFlywheelShooting.in(RotationsPerSecond);
+      robot.tick();
+      assertEquals(65, robot.indexerIO.requestedRps, 1e-9);
+      assertTrue(robot.feederIO.requestedRps > 0);
+
+      // Balls leaving dip the flywheel well out of tolerance, and the hood may fault; the gate is
+      // only for starting. Neither may stop the feeders.
+      robot.flywheelIO.measuredRps = 0;
+      robot.flywheelIO.allConnected = false;
+      robot.hoodConnected = false;
+      for (int i = 0; i < 200; i++) {
+        robot.advanceTicks(1);
+        assertFalse(robot.shooter.atSpeed().getAsBoolean());
+        assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
+        assertEquals(65, robot.indexerIO.requestedRps, 1e-9);
+        assertTrue(robot.feederIO.requestedRps > 0);
+      }
+
+      robot.axis(0);
+      assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
       assertEquals(0, robot.indexerIO.requestedRps, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
     }

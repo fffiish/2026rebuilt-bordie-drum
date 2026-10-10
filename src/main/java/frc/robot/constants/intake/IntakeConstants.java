@@ -157,6 +157,10 @@ public final class IntakeConstants {
           .outputAnglePerOutputRotation(Rotations.of(1.0))
           .smartCurrentLimit(Amps.of(60))
           .secondaryCurrentLimit(Amps.of(60))
+          // 35 hit 150 A and a gate-driver fault 150 ms after starting a shot. Ease in, and let a
+          // fault clear itself rather than leaving the floor rollers off until the next disable.
+          .rampRateSeconds(0.3)
+          .recoverWhileEnabled(true)
           .logFollowerTelemetry(true)
           .kP(0.01 / 12.0)
           .kV(0.12 / (2.0 * Math.PI)) // 0.12 V per rps, expressed as V per rad/s
@@ -215,6 +219,8 @@ public final class IntakeConstants {
           .outputAnglePerOutputRotation(Rotations.of(1.0))
           .smartCurrentLimit(Amps.of(80))
           .secondaryCurrentLimit(Amps.of(120))
+          .rampRateSeconds(0.3)
+          .recoverWhileEnabled(true)
           .kV(0.12 / (2.0 * Math.PI)) // 0.12 V per rps, expressed as V per rad/s
           .build();
 

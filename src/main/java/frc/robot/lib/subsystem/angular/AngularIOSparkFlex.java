@@ -107,6 +107,8 @@ public class AngularIOSparkFlex implements AngularIO {
       SparkFlexConfig followerConfig = new SparkFlexConfig();
       followerConfig
           .idleMode(idleMode(config.getNeutralMode()))
+          .openLoopRampRate(config.getRampRateSeconds())
+          .closedLoopRampRate(config.getRampRateSeconds())
           .follow(config.getMasterId(), config.isFollowerOpposed(config.getFollowerIds().get(i)));
       if (config.getSmartCurrentLimit() != null) {
         followerConfig.smartCurrentLimit((int) config.getSmartCurrentLimit().in(Amps));
@@ -180,7 +182,9 @@ public class AngularIOSparkFlex implements AngularIO {
 
     configuration
         .inverted(deviceConfig.isInverted())
-        .idleMode(idleMode(deviceConfig.getNeutralMode()));
+        .idleMode(idleMode(deviceConfig.getNeutralMode()))
+        .openLoopRampRate(deviceConfig.getRampRateSeconds())
+        .closedLoopRampRate(deviceConfig.getRampRateSeconds());
 
     if (deviceConfig.getSmartCurrentLimit() != null) {
       configuration.smartCurrentLimit((int) deviceConfig.getSmartCurrentLimit().in(Amps));
@@ -458,12 +462,14 @@ public class AngularIOSparkFlex implements AngularIO {
       Logger.recordOutput(key + "Connected", connection.isConnected());
       Logger.recordOutput(key + "PollTimestampSeconds", Timer.getFPGATimestamp());
     }
+    // A brownout WARNING alone does not latch the mechanism off. On a loaded battery the bus can
+    // dip under the SPARK's threshold for a few milliseconds without the controller rebooting, and
+    // latching on it stopped the feeders until the next disable. A real reboot still latches,
+    // because it sets hasReset and wipes the follower and current-limit settings.
     return faults.rawBits != 0
         || stickyFaults.rawBits != 0
         || warnings.hasReset
-        || warnings.brownout
-        || stickyWarnings.hasReset
-        || stickyWarnings.brownout;
+        || stickyWarnings.hasReset;
   }
 
   private static void setConnected(
@@ -786,7 +792,7 @@ public class AngularIOSparkFlex implements AngularIO {
 
   private void serviceConfiguration() {
     configurationState.service(
-        DriverStation.isDisabled(),
+        DriverStation.isDisabled() || deviceConfig.isRecoverWhileEnabled(),
         Timer.getFPGATimestamp(),
         () -> {
           stop();
@@ -810,6 +816,8 @@ public class AngularIOSparkFlex implements AngularIO {
               SparkFlexConfig followerConfig = new SparkFlexConfig();
               followerConfig
                   .idleMode(idleMode(deviceConfig.getNeutralMode()))
+                  .openLoopRampRate(deviceConfig.getRampRateSeconds())
+                  .closedLoopRampRate(deviceConfig.getRampRateSeconds())
                   .follow(
                       deviceConfig.getMasterId(),
                       deviceConfig.isFollowerOpposed(deviceConfig.getFollowerIds().get(i)));

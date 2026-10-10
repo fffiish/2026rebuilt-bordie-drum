@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.intake.IntakeConstants;
 import frc.robot.lib.command.CachedTrigger;
@@ -83,7 +84,8 @@ public class RobotSuperstructure {
     return shooter
         .set(ShooterState.kShootingNear)
         .alongWith(
-            Commands.waitUntil(shooter.atSpeed())
+            Commands.waitUntil(
+                    () -> !Constants.shooterHardwareExists || shooter.atSpeed().getAsBoolean())
                 .andThen(
                     indexer
                         .set(IndexerState.kFeeding)

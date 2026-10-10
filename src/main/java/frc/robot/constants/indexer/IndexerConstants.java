@@ -33,6 +33,7 @@ public final class IndexerConstants {
   public static final AngularVelocity kFeeding = kMaximumSpeed;
   public static final AngularVelocity kIntaking = kMaximumSpeed;
   public static final AngularVelocity kUnjamming = RPM.of(-6784.0 * 0.20);
+
   public static final double kRollerKV = 12.0 / RPM.of(6784.0).in(RadiansPerSecond);
   public static final double kRollerKP = 0.01 / 12.0;
 
@@ -44,8 +45,14 @@ public final class IndexerConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(80))
+          // Per motor. The smart limit must sit below the secondary one: with 80 over 60, the
+          // secondary limit chopped the output every cycle (the rapid stop/start) and a locked-in
+          // inrush still reached ~150 A, which dragged the bus to ~5.5 V and tripped a gate-driver
+          // fault on the SPARK.
+          .smartCurrentLimit(Amps.of(40))
           .secondaryCurrentLimit(Amps.of(60))
+          .rampRateSeconds(0.3) // output rises over 0.3 s, not in one step
+          .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
           .maximumMotorVelocity(kMaximumSpeed)
           .logFollowerTelemetry(true)
           .kP(kRollerKP)

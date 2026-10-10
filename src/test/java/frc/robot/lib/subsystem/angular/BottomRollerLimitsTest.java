@@ -86,11 +86,11 @@ class BottomRollerLimitsTest {
   }
 
   @Test
-  void bottomRollersUseEightyAmpsAndSixtyFiveRps() {
+  void bottomRollersUseFortyAmpsAndSixtyFiveRps() {
     var config = IndexerConstants.kSparkFlexConfig;
     assertEquals(36, config.getMasterId());
     assertEquals(List.of(22), config.getFollowerIds());
-    assertEquals(80, config.getSmartCurrentLimit().in(Amps));
+    assertEquals(40, config.getSmartCurrentLimit().in(Amps));
     assertEquals(60, config.getSecondaryCurrentLimit().in(Amps));
     assertEquals(3900, config.getMaximumMotorVelocity().in(RPM), 1e-9);
     assertEquals(SparkBase.ControlType.kVelocity, AngularIOSparkFlex.velocityControlType(config));

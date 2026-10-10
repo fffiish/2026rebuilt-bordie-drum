@@ -70,6 +70,21 @@ public class AngularIOSparkFlexConfig {
 
   @Builder.Default private final int encoderAverageDepth = 8;
 
+  /**
+   * Seconds for motor output (open loop and speed/position control) to ramp from zero to full; zero
+   * disables it. A mechanism commanded straight to full output draws its stall current in one step,
+   * which on a loaded battery can sag the bus far enough to brown out every controller on it.
+   */
+  @Builder.Default private final double rampRateSeconds = 0.0;
+
+  /**
+   * Let a controller that faulted or browned out be cleared and reconfigured while the robot is
+   * enabled, instead of staying off until the next disable. Only safe for mechanisms with no
+   * physical position reference to lose (a flywheel, a roller row): the arm must keep the
+   * disabled-only default, because a reset controller no longer knows where the arm is.
+   */
+  @Builder.Default private final boolean recoverWhileEnabled = false;
+
   @Builder.Default private final Angle resetAngle = Radians.of(0.0);
   @Builder.Default private final Angle softMinAngle = Radians.of(Double.NEGATIVE_INFINITY);
   @Builder.Default private final Angle softMaxAngle = Radians.of(Double.POSITIVE_INFINITY);

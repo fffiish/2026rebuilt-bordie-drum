@@ -60,6 +60,9 @@ public final class ShooterConstants {
           .smartCurrentLimit(Amps.of(40)) // per motor
           .secondaryCurrentLimit(Amps.of(60))
           .maximumMotorVelocity(kFlywheelMaximumSpeed)
+          // Four motors starting at once drew ~35-40 A each and pulled the bus to ~6.5 V; ease in.
+          .rampRateSeconds(0.4)
+          .recoverWhileEnabled(true) // a fault must not kill the drum until the next disable
           .encoderMeasurementPeriodMs(10)
           .encoderAverageDepth(2)
           .logFollowerTelemetry(true)

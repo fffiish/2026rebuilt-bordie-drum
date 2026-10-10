@@ -380,7 +380,13 @@ public class RobotContainer {
     bindHeadingReset(driverController.rightMidButton, drive);
 
     superstructure.bindIntakeTrigger(driverController.leftTrigger); // rollers only
-    driverController.rightTrigger.whileTrue(superstructure.shoot()); // agitate, raise, feed
+    // The trigger is analog with a 0.5 threshold, so a loose grip flickers across it. Without a
+    // falling-edge debounce, every flicker ends the shot, drops the flywheel to idle and makes the
+    // feeders wait for spin-up again.
+    driverController
+        .rightTrigger
+        .debounce(0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling)
+        .whileTrue(superstructure.shoot()); // agitate, raise, feed
     driverController.rightBumper.whileTrue(superstructure.outtake()); // rollers only
 
     superstructure.bindDeploymentTriggers();
