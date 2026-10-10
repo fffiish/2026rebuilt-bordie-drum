@@ -44,8 +44,11 @@ public final class IndexerConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(80))
-          .secondaryCurrentLimit(Amps.of(60))
+          // Smart limit must sit below the secondary. The secondary is a hard cutoff that briefly
+          // kills output; with it at 60 A under an 80 A smart limit, a loaded indexer tripped the
+          // cutoff before the smart limit ever regulated, and 36/22 stopped mid-run.
+          .smartCurrentLimit(Amps.of(60))
+          .secondaryCurrentLimit(Amps.of(80))
           .maximumMotorVelocity(kMaximumSpeed)
           .logFollowerTelemetry(true)
           .kP(kRollerKP)
