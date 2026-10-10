@@ -53,7 +53,7 @@ public class DriveConstants {
   public static LoggedTunableNumber MAX_SPEED = new LoggedTunableNumber("Drive/MAX", 1);
 
   /** Rotation is scaled to this fraction of the matching translation multiplier. */
-  private static final double ROTATION_RATIO = 0.55;
+  private static final double ROTATION_RATIO = 0.8;
 
   /*
    * These are methods, not constants, on purpose. They used to be `static final double` fields

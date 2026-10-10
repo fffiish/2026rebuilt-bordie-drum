@@ -58,9 +58,10 @@ public final class IndexerConstants {
           // Smart limit must sit below the secondary. The secondary is a hard cutoff that briefly
           // kills output; with it at 60 A under an 80 A smart limit, a loaded indexer tripped the
           // cutoff before the smart limit ever regulated, and 36/22 stopped mid-run.
-          // 40 A / 60 A: at 60 A each the pair sagged 36/22's supply to 5 V.
-          .smartCurrentLimit(Amps.of(40))
-          .secondaryCurrentLimit(Amps.of(60))
+          // 50 A / 70 A: at 3 V a stalled Vortex wants only ~53 A, so 50 A lets it deliver nearly
+          // full stall torque for jams of more than 3 balls, and 70 A keeps the cutoff clear.
+          .smartCurrentLimit(Amps.of(50))
+          .secondaryCurrentLimit(Amps.of(70))
           .rampRateSeconds(0.3) // output rises over 0.3 s, not in one step
           .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
           .maximumMotorVelocity(kMaximumSpeed)
