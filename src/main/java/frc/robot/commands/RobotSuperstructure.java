@@ -131,6 +131,15 @@ public class RobotSuperstructure {
   }
 
   /**
+   * Like {@link #outtake()}, but leaves the bottom rollers (36/22) and the flywheel stopped. Only
+   * the floor rollers and feeder reverse, clearing a clog behind the shooter while the FUEL already
+   * staged at the shooter stays put to be shot afterwards.
+   */
+  public Command clearBehindShooter() {
+    return intake.setRollers(IntakeRollerState.kEjecting);
+  }
+
+  /**
    * Registers everything PathPlanner/Choreo autos can reference by name. Called once from {@link
    * frc.robot.RobotContainer}'s constructor, before {@code AutoBuilder.buildAutoChooser()} reads
    * the deploy directory, so every name an {@code .auto} file mentions must be registered by the

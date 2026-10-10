@@ -368,6 +368,7 @@ public class RobotContainer {
     The arm deploys at the start of auto and stays down; only a shot raises it.
     - X: deploy intake arm (80 A, then 40 A)
     - B: retract intake arm to stowed (60 A, then 40 A)
+    - D-pad down: reverse floor rollers + feeder only; balls at the shooter stay for the next shot
     - A + right trigger: lower-power shot (5.7 V instead of 6.7 V); A alone does nothing
     - Y: reset field heading (point robot downfield first)
      */
@@ -390,6 +391,8 @@ public class RobotContainer {
         .and(driverController.buttonA)
         .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at 5.7 V
     driverController.rightBumper.whileTrue(superstructure.outtake()); // rollers only
+    // Hold D-pad down: outtake without 36/22 or the flywheel, so staged FUEL stays to be shot.
+    driverController.dPadDown.whileTrue(superstructure.clearBehindShooter());
 
     superstructure.bindDeploymentTriggers();
     SmartDashboard.putData(
