@@ -333,8 +333,7 @@ public class RobotContainer {
     /* DRIVE COMMANDS
     - Left joystick: translate
     - Right joystick: turn
-    - Hold X (real only): stop and move modules to X pattern to resist push
-    - Hold left bumper: turbo (see RobotSuperstructure#getDriveMultiplier)
+    - Full speed by default; hold left bumper for slow mode (see RobotSuperstructure#getDriveMultiplier)
     - Hold A: dynamically align heading & X position with the trench, you control forward speed
      */
     drive.setDefaultCommand(
@@ -366,18 +365,20 @@ public class RobotContainer {
                     * superstructure.getDriveMultiplier(false, driverController.leftBumper),
             drive::getPose));
 
-    /* DRIVER (single-controller scheme)
+    /* DRIVER
     - Left stick: translate            - Right stick: rotate
     - Left trigger: intake rollers     - Right trigger: agitate, raise arm, shoot
-    - Right bumper: outtake rollers    - Left bumper: turbo
+    - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
     - A: trench align                  - X: deploy intake arm (80 A, then 60 A)
-    - Start: reset field heading (point robot downfield first)
+
+    OPERATOR
+    - X: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
-    // downfield, away from your driver station, and press Start. On red, downfield is the
-    // opposite field direction, so the heading is set to 180 degrees rather than 0.
-    bindHeadingReset(driverController.rightMidButton, drive);
+    // downfield, away from your driver station, and the operator presses X. On red, downfield is
+    // the opposite field direction, so the heading is set to 180 degrees rather than 0.
+    bindHeadingReset(operatorController.buttonX, drive);
 
     superstructure.bindIntakeTrigger(driverController.leftTrigger); // rollers only
     // The trigger is analog with a 0.5 threshold, so a loose grip flickers across it. Without a

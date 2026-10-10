@@ -151,13 +151,13 @@ public class RobotSuperstructure {
    * for translation (x and y) and once for rotation — so it must be cheap and side-effect free.
    *
    * @param rotation true when scaling the rotation axis (rad/s), false for translation (m/s)
-   * @param turbo held to unlock full speed
+   * @param slow held to drop to slow mode; otherwise the robot drives at full speed
    */
-  public double getDriveMultiplier(boolean rotation, Trigger turbo) {
-    if (turbo.getAsBoolean()) {
-      return rotation ? DriveConstants.maxSpeedW() : DriveConstants.MAX_SPEED.get();
+  public double getDriveMultiplier(boolean rotation, Trigger slow) {
+    if (slow.getAsBoolean()) {
+      return rotation ? DriveConstants.transferSpeedW() : DriveConstants.TRANSFER_SPEED.get();
     }
-    return rotation ? DriveConstants.transferSpeedW() : DriveConstants.TRANSFER_SPEED.get();
+    return rotation ? DriveConstants.maxSpeedW() : DriveConstants.MAX_SPEED.get();
   }
 
   /**
