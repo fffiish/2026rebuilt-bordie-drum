@@ -294,7 +294,15 @@ public class AngularSubsystem extends RegisteredSubsystem {
 
   /** Changes the current limit at runtime. Requires nothing, so it can run beside a motion. */
   public Command setCurrentLimit(Current limit) {
-    return Commands.runOnce(() -> io.setCurrentLimit(limit));
+    return Commands.runOnce(() -> applyCurrentLimit(limit));
+  }
+
+  /**
+   * Applies a current limit immediately, outside the command system. Use from {@code finallyDo} so
+   * a temporary limit is always undone, even when the command that raised it is interrupted.
+   */
+  public void applyCurrentLimit(Current limit) {
+    io.setCurrentLimit(limit);
   }
 
   public Command setNeutralModeBrake() {

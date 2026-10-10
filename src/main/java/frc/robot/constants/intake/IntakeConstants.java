@@ -53,8 +53,18 @@ public final class IntakeConstants {
 
   // ----- current limits -----
 
-  /** Pivot current limit. Applies at all times, including while deploying. */
-  public static final Current kPivotCurrentLimit = Amps.of(60);
+  /** Pivot current limit for everything except deploying — holding, agitating, raising to shoot. */
+  public static final Current kPivotCurrentLimit = Amps.of(40);
+
+  /**
+   * Pivot current limit while deploying (X, auto start, teleop enable). Breaking the hopper and
+   * intake free takes more than ordinary motion. Raised only for the deploy itself, then dropped
+   * back to {@link #kPivotCurrentLimit}.
+   */
+  public static final Current kPivotDeployCurrentLimit = Amps.of(80);
+
+  /** Drop back to the normal limit after this long even if the arm has not reported arriving. */
+  public static final Time kPivotDeployTimeout = Seconds.of(2.0); // TODO(bringup)
 
   /** How close counts as "arrived" when sequencing arm moves. */
   public static final Angle kPivotArrivalTolerance = Degrees.of(5.0); // TODO(bringup)

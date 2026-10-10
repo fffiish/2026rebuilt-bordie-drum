@@ -140,12 +140,28 @@ public class Intake extends VirtualSubsystem {
   }
 
   /**
-   * Puts the arm down for the match and makes down its resting position. Runs at the pivot's normal
-   * current limit ({@link IntakeConstants#kPivotCurrentLimit}) — there is deliberately no higher
-   * limit for deploying.
+   * Puts the arm down for the match and makes down its resting position.
+   *
+   * <p>Deploying runs at {@link IntakeConstants#kPivotDeployCurrentLimit} (80 A), because breaking
+   * the hopper and intake free costs more than ordinary motion. Once the arm arrives — or after
+   * {@link IntakeConstants#kPivotDeployTimeout} — it drops back to {@link
+   * IntakeConstants#kPivotCurrentLimit} (40 A), which is what shooting and agitating run at.
+   *
+   * <p>The drop back is in {@code finallyDo}, so it happens even if the deploy is interrupted or
+   * the robot is disabled mid-deploy. Without that, an interrupted deploy would leave the pivot at
+   * 80 A for the rest of the match.
+   *
+   * <p>Waits on the measured angle rather than {@code atAngle()}: the latter reports against the
+   * previous goal for a loop after the target changes, and would read "arrived" instantly.
    */
   public Command deploy() {
-    return Commands.runOnce(() -> restingPivot = IntakePivotState.kDeployed);
+    return Commands.sequence(
+            Commands.runOnce(
+                () -> pivot.applyCurrentLimit(IntakeConstants.kPivotDeployCurrentLimit)),
+            Commands.runOnce(() -> restingPivot = IntakePivotState.kDeployed),
+            Commands.waitUntil(() -> isPivotNear(IntakePivotState.kDeployed))
+                .withTimeout(IntakeConstants.kPivotDeployTimeout))
+        .finallyDo(() -> pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit));
   }
 
   /**
