@@ -36,9 +36,9 @@ public final class IndexerConstants {
   public static final AngularVelocity kUnjamming = RPM.of(-6784.0 * 0.20);
 
   // 36/22 run open loop at a fixed voltage; the velocity loop oscillated on this mechanism.
-  public static final Voltage kFeedingVoltage = Volts.of(2.0);
-  public static final Voltage kIntakingVoltage = Volts.of(2.0);
-  public static final Voltage kUnjammingVoltage = Volts.of(-2.0);
+  public static final Voltage kFeedingVoltage = Volts.of(3.0);
+  public static final Voltage kIntakingVoltage = Volts.of(2.5);
+  public static final Voltage kUnjammingVoltage = Volts.of(-2.5);
 
   // Baselines from the 10-10 shooter captures: kV matches the measured flywheel (same motor),
   // kS covers belt/roller friction. SPARK P is duty per rad/s: 0.01 / 12 is 0.01 V per rad/s,
