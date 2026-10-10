@@ -335,7 +335,6 @@ public class RobotContainer {
     - Left joystick: translate
     - Right joystick: turn
     - Full speed by default; hold left bumper for slow mode (see RobotSuperstructure#getDriveMultiplier)
-    - Hold A: dynamically align heading & X position with the trench, you control forward speed
      */
     // Field-centric (driver-oriented), standard WPILib signs: stick forward drives away from the
     // driver station, stick left drives left, right stick left turns counter-clockwise.
@@ -360,25 +359,13 @@ public class RobotContainer {
     // instead, press Back once (enabled or not) so the code knows. Do this before pressing X.
     driverController.leftMidButton.onTrue(intake.markArmDeployed());
 
-    // A alone trench-aligns. With the right trigger it is the low-power shot modifier instead.
-    driverController
-        .buttonA
-        .and(driverController.rightTrigger.negate())
-        .whileTrue(
-            DriveCommands.joystickDriveThroughTrench(
-                drive,
-                () ->
-                    driverController.getLeftStickY()
-                        * superstructure.getDriveMultiplier(false, driverController.leftBumper),
-                drive::getPose));
-
     /* DRIVER
     - Left stick: translate            - Right stick: rotate
     - Left trigger: intake rollers     - Right trigger: agitate, raise arm, shoot
     - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
-    - A: trench align                  - X: deploy intake arm (80 A, then 60 A)
-    - A + right trigger: lower-power shot (5.7 V instead of 6.3 V)
+    - X: deploy intake arm (80 A, then 60 A)
+    - A + right trigger: lower-power shot (5.7 V instead of 6.3 V); A alone does nothing
     - Y: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
