@@ -155,7 +155,7 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(40))
+          .smartCurrentLimit(Amps.of(60))
           .secondaryCurrentLimit(Amps.of(60))
           .logFollowerTelemetry(true)
           .kP(0.01 / 12.0)
