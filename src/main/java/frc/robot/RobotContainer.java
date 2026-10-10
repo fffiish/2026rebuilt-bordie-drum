@@ -371,14 +371,12 @@ public class RobotContainer {
     - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
     - A: trench align                  - X: deploy intake arm (80 A, then 60 A)
-
-    OPERATOR
-    - X: reset field heading (point robot downfield first)
+    - Y: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
-    // downfield, away from your driver station, and the operator presses X. On red, downfield is
+    // downfield, away from your driver station, and the driver presses Y. On red, downfield is
     // the opposite field direction, so the heading is set to 180 degrees rather than 0.
-    bindHeadingReset(operatorController.buttonX, drive);
+    bindHeadingReset(driverController.buttonY, drive);
 
     superstructure.bindIntakeTrigger(driverController.leftTrigger); // rollers only
     // The trigger is analog with a 0.5 threshold, so a loose grip flickers across it. Without a
