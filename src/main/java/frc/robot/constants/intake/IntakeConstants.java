@@ -143,7 +143,7 @@ public final class IntakeConstants {
 
   public static final int kFeederFollowerId = 35; // confirmed: "Feeder #35"
 
-  public static final AngularVelocity kFeederIntaking = RotationsPerSecond.of(15.0);
+  public static final AngularVelocity kFeederIntaking = RotationsPerSecond.of(50.0);
   public static final AngularVelocity kFeederEjecting =
       RotationsPerSecond.of(-40.0); // TODO(bringup)
 
@@ -171,7 +171,7 @@ public final class IntakeConstants {
           .supplyCurrentLimit(Amps.of(60))
           .statorCurrentLimit(Amps.of(60))
           .kV(0.12) // TODO(bringup)
-          // Sim-only starting profile: three seconds to the 15 rps forward goal.
+          // Sim-only starting profile: 10 seconds to the unverified 50 rps goal.
           .acceleration(RotationsPerSecondPerSecond.of(5.0))
           .build();
 
@@ -181,7 +181,7 @@ public final class IntakeConstants {
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
           .kP(0.01 / 12.0)
-          .kV(0.12 / (2.0 * Math.PI)) // 1.8 V feedforward at the 15 rps target
+          .kV(0.12 / (2.0 * Math.PI)) // 6 V feedforward at the 50 rps target
           .build(); // TODO(bringup): tune kS/kV/kP against the real rollers
 
   public static final AngularSubsystemConfig kFeederSubsystemConfigSim =

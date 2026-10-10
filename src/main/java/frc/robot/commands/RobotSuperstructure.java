@@ -71,7 +71,7 @@ public class RobotSuperstructure {
    * it is pressed:
    *
    * <ul>
-   *   <li><b>Spin-up.</b> The flywheel immediately targets 30 rps.
+   *   <li><b>Spin-up.</b> The flywheel immediately targets 40 rps.
    *   <li><b>The shot.</b> Once flywheel speed is within tolerance, the bottom rollers and feeder
    *       start together. The arm shuffles to shake FUEL toward the indexer, then raises and holds.
    * </ul>

@@ -29,7 +29,7 @@ public final class IndexerConstants {
   public static final int kMasterId = 36; // confirmed: "Shooter #36"
   public static final int kFollowerId = 22; // confirmed: "Shooter #22"
 
-  public static final AngularVelocity kMaximumSpeed = RotationsPerSecond.of(32.0);
+  public static final AngularVelocity kMaximumSpeed = RotationsPerSecond.of(65.0);
   public static final AngularVelocity kFeeding = kMaximumSpeed;
   public static final AngularVelocity kIntaking = kMaximumSpeed;
   public static final AngularVelocity kUnjamming = RPM.of(-6784.0 * 0.20);
@@ -44,7 +44,7 @@ public final class IndexerConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(60))
+          .smartCurrentLimit(Amps.of(80))
           .secondaryCurrentLimit(Amps.of(60))
           .maximumMotorVelocity(kMaximumSpeed)
           .logFollowerTelemetry(true)

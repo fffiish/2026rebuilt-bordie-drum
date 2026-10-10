@@ -17,7 +17,7 @@ class HardwareMergeConfigurationTest {
     assertEquals(118.0, pivot.getResetAngle().in(Degrees), 1e-12);
     assertEquals(118.0, pivot.getSoftMaxAngle().in(Degrees), 1e-12);
     assertEquals(0.0, pivot.getSoftMinAngle().in(Degrees), 1e-12);
-    assertEquals(60.0, pivot.getSmartCurrentLimit().in(Amps), 1e-12);
+    assertEquals(40.0, pivot.getSmartCurrentLimit().in(Amps), 1e-12);
     assertEquals(80.0, IntakeConstants.kPivotDeployCurrentLimit.in(Amps), 1e-12);
     assertEquals(120.0, pivot.getSecondaryCurrentLimit().in(Amps), 1e-12);
     assertEquals(2.0, pivot.getKP(), 1e-12);

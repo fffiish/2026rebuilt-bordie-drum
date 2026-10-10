@@ -42,21 +42,21 @@ class BottomRollerLimitsTest {
   }
 
   @Test
-  void mainDrumAndItsThreeFollowersAreCappedAtThirtyRps() {
+  void mainDrumAndItsThreeFollowersAreCappedAtFortyRps() {
     var config = ShooterConstants.kFlywheelSparkFlexConfig;
     assertEquals(39, config.getMasterId());
     assertEquals(List.of(34, 26, 29), config.getFollowerIds());
-    assertEquals(30, config.getMaximumMotorVelocity().in(RotationsPerSecond), 1e-9);
-    assertEquals(30, ShooterConstants.kFlywheelShooting.in(RotationsPerSecond), 1e-9);
-    assertEquals(30, ShooterConstants.kFlywheelShootingFar.in(RotationsPerSecond), 1e-9);
+    assertEquals(40, config.getMaximumMotorVelocity().in(RotationsPerSecond), 1e-9);
+    assertEquals(40, ShooterConstants.kFlywheelShooting.in(RotationsPerSecond), 1e-9);
+    assertEquals(40, ShooterConstants.kFlywheelShootingFar.in(RotationsPerSecond), 1e-9);
     assertEquals(20, ShooterConstants.kFlywheelEjecting.in(RotationsPerSecond), 1e-9);
     assertEquals(
-        30,
+        40,
         AngularIOSparkFlex.limitMotorVelocity(config, RotationsPerSecond.of(95))
             .in(RotationsPerSecond),
         1e-9);
     assertEquals(
-        -30,
+        -40,
         AngularIOSparkFlex.limitMotorVelocity(config, RotationsPerSecond.of(-95))
             .in(RotationsPerSecond),
         1e-9);
@@ -65,7 +65,7 @@ class BottomRollerLimitsTest {
             ShooterConstants.kFlywheelSubsystemConfigReal,
             ShooterConstants.kFlywheelSubsystemConfigSim)) {
       assertEquals(
-          30, subsystem.limitVelocity(RotationsPerSecond.of(95)).in(RotationsPerSecond), 1e-9);
+          40, subsystem.limitVelocity(RotationsPerSecond.of(95)).in(RotationsPerSecond), 1e-9);
     }
   }
 
@@ -86,21 +86,21 @@ class BottomRollerLimitsTest {
   }
 
   @Test
-  void bottomRollersUseSixtyAmpsAndThirtyTwoRps() {
+  void bottomRollersUseEightyAmpsAndSixtyFiveRps() {
     var config = IndexerConstants.kSparkFlexConfig;
     assertEquals(36, config.getMasterId());
     assertEquals(List.of(22), config.getFollowerIds());
-    assertEquals(60, config.getSmartCurrentLimit().in(Amps));
+    assertEquals(80, config.getSmartCurrentLimit().in(Amps));
     assertEquals(60, config.getSecondaryCurrentLimit().in(Amps));
-    assertEquals(1920, config.getMaximumMotorVelocity().in(RPM), 1e-9);
+    assertEquals(3900, config.getMaximumMotorVelocity().in(RPM), 1e-9);
     assertEquals(SparkBase.ControlType.kVelocity, AngularIOSparkFlex.velocityControlType(config));
     assertTrue(config.getKP() > 0);
     assertTrue(config.isFollowerOpposed(22));
     assertEquals(12, config.getKV() * RPM.of(6784).in(RadiansPerSecond), 1e-9);
-    assertEquals(32, IndexerConstants.kFeeding.in(RotationsPerSecond), 1e-9);
-    assertEquals(32, IndexerConstants.kIntaking.in(RotationsPerSecond), 1e-9);
+    assertEquals(65, IndexerConstants.kFeeding.in(RotationsPerSecond), 1e-9);
+    assertEquals(65, IndexerConstants.kIntaking.in(RotationsPerSecond), 1e-9);
     assertEquals(
-        32,
+        65,
         AngularIOSparkFlex.limitMotorVelocity(config, IndexerConstants.kFeeding)
             .in(RotationsPerSecond),
         1e-9);
@@ -112,7 +112,7 @@ class BottomRollerLimitsTest {
     assertEquals(60, feeder.getSecondaryCurrentLimit().in(Amps));
     assertTrue(feeder.getKP() > 0);
     assertTrue(feeder.isFollowerOpposed(35));
-    assertEquals(15, IntakeConstants.kFeederIntaking.in(RotationsPerSecond), 1e-9);
+    assertEquals(50, IntakeConstants.kFeederIntaking.in(RotationsPerSecond), 1e-9);
   }
 
   @Test
@@ -123,8 +123,8 @@ class BottomRollerLimitsTest {
             .maximumMotorVelocity(IndexerConstants.kMaximumSpeed)
             .motorRotationsPerOutputRotations(2)
             .build();
-    assertEquals(960, AngularIOSparkFlex.limitMotorVelocity(config, RPM.of(6000)).in(RPM), 1e-9);
-    assertEquals(-960, AngularIOSparkFlex.limitMotorVelocity(config, RPM.of(-6000)).in(RPM), 1e-9);
+    assertEquals(1950, AngularIOSparkFlex.limitMotorVelocity(config, RPM.of(6000)).in(RPM), 1e-9);
+    assertEquals(-1950, AngularIOSparkFlex.limitMotorVelocity(config, RPM.of(-6000)).in(RPM), 1e-9);
     assertEquals(300, AngularIOSparkFlex.limitMotorVelocity(config, RPM.of(300)).in(RPM), 1e-9);
     assertEquals(0, AngularIOSparkFlex.limitMotorVelocity(config, RPM.of(Double.NaN)).in(RPM));
     var unlimited = AngularIOSparkFlexConfig.builder().masterId(39).build();
@@ -136,8 +136,8 @@ class BottomRollerLimitsTest {
   void subsystemCapAppliesToRealAndSim() {
     for (var config :
         List.of(IndexerConstants.kSubsystemConfigReal, IndexerConstants.kSubsystemConfigSim)) {
-      assertEquals(1920, config.limitVelocity(RPM.of(6000)).in(RPM), 1e-9);
-      assertEquals(-1920, config.limitVelocity(RPM.of(-6000)).in(RPM), 1e-9);
+      assertEquals(3900, config.limitVelocity(RPM.of(6000)).in(RPM), 1e-9);
+      assertEquals(-3900, config.limitVelocity(RPM.of(-6000)).in(RPM), 1e-9);
       assertEquals(0, config.limitVelocity(RPM.of(0)).in(RPM));
     }
   }

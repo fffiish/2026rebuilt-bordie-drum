@@ -118,7 +118,7 @@ class IntakeDriverBindingTest {
   }
 
   @Test
-  void deployRequestsEightyThenSixtyAfterMeasuredArrival() {
+  void deployRequestsEightyThenFortyAfterMeasuredArrival() {
     try (var f = new IntakeRollerCommandTest.Fixture()) {
       var deploy = f.intake.deployOnce();
       deploy.schedule();
@@ -129,12 +129,12 @@ class IntakeDriverBindingTest {
       f.pivotIO.measuredDegrees = 0;
       f.tick();
       assertFalse(deploy.isScheduled());
-      assertEquals(List.of(80.0, 60.0), f.pivotIO.currentLimits);
+      assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
     }
   }
 
   @Test
-  void deployRestoresSixtyAfterTwoSecondTimeoutWithoutArrival() {
+  void deployRestoresFortyAfterTwoSecondTimeoutWithoutArrival() {
     try (var f = new IntakeRollerCommandTest.Fixture()) {
       var deploy = f.intake.deployOnce();
       deploy.schedule();
@@ -143,26 +143,44 @@ class IntakeDriverBindingTest {
       assertEquals(List.of(80.0), f.pivotIO.currentLimits);
       f.ticks(15);
       assertFalse(deploy.isScheduled());
-      assertEquals(List.of(80.0, 60.0), f.pivotIO.currentLimits);
+      assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
       assertTrue(f.intake.isDeployed());
     }
   }
 
   @Test
-  void cancelledDeployKeepsExistingEightyAmpRequestAndDeployedRestingState() {
+  void cancelledDeployRestoresFortyAndKeepsDeployedRestingState() {
     try (var f = new IntakeRollerCommandTest.Fixture()) {
       var deploy = f.intake.deployOnce();
       deploy.schedule();
       f.tick();
       deploy.cancel();
       f.ticks(110);
-      assertEquals(List.of(80.0), f.pivotIO.currentLimits);
+      assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
       assertTrue(f.intake.isDeployed());
       var repeat = f.intake.deployOnce();
       repeat.schedule();
       f.tick();
       assertFalse(repeat.isScheduled());
+      assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
+    }
+  }
+
+  @Test
+  void disablingDuringDeployRestoresFortyAndDoesNotResumeTheBoost() {
+    try (var f = new IntakeRollerCommandTest.Fixture()) {
+      var deploy = f.intake.deployOnce();
+      deploy.schedule();
+      f.tick();
+      assertTrue(deploy.isScheduled());
       assertEquals(List.of(80.0), f.pivotIO.currentLimits);
+      DriverStationSim.setEnabled(false);
+      f.tick();
+      assertFalse(deploy.isScheduled());
+      assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
+      DriverStationSim.setEnabled(true);
+      f.tick();
+      assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
     }
   }
 
@@ -179,14 +197,14 @@ class IntakeDriverBindingTest {
         f.tick();
         f.tick();
         assertTrue(f.intake.isDeployed());
-        assertEquals(List.of(80.0, 60.0), f.pivotIO.currentLimits);
+        assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
         if (runAuto) {
           DriverStationSim.setEnabled(false);
           f.tick();
           DriverStationSim.setAutonomous(false);
           DriverStationSim.setEnabled(true);
           f.tick();
-          assertEquals(List.of(80.0, 60.0), f.pivotIO.currentLimits);
+          assertEquals(List.of(80.0, 40.0), f.pivotIO.currentLimits);
         }
       }
     }

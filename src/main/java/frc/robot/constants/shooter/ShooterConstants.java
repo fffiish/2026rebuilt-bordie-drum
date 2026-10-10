@@ -32,7 +32,7 @@ public final class ShooterConstants {
   public static final int kFlywheelFollowerIdC = 29; // confirmed: "Shooter #29"
 
   public static final AngularVelocity kFlywheelIdle = RotationsPerSecond.of(0.0);
-  public static final AngularVelocity kFlywheelMaximumSpeed = RotationsPerSecond.of(30.0);
+  public static final AngularVelocity kFlywheelMaximumSpeed = RotationsPerSecond.of(40.0);
   public static final AngularVelocity kFlywheelShooting = kFlywheelMaximumSpeed;
   public static final AngularVelocity kFlywheelShootingFar = kFlywheelMaximumSpeed;
   public static final AngularVelocity kFlywheelEjecting =
@@ -83,7 +83,7 @@ public final class ShooterConstants {
           .logKey("ShooterFlywheel")
           .maximumVelocity(kFlywheelMaximumSpeed)
           .bus(RobotConstants.kRioBus)
-          .velocityTolerance(RotationsPerSecond.of(0.5)) // gates feeding near the 30 rps target
+          .velocityTolerance(RotationsPerSecond.of(0.5)) // gates feeding near the 40 rps target
           .kP(kFlywheelKP)
           .kV(kFlywheelKV)
           .build();
