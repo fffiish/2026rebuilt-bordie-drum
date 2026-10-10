@@ -166,6 +166,22 @@ public class Intake extends VirtualSubsystem {
   }
 
   /**
+   * Folds the arm back to stowed and makes stowed its resting position, the reverse of {@link
+   * #deploy()}. Runs at {@link IntakeConstants#kPivotRetractCurrentLimit} (60 A) until the arm
+   * arrives or {@link IntakeConstants#kPivotRetractTimeout} passes, then drops back to {@link
+   * IntakeConstants#kPivotCurrentLimit}; {@code finallyDo} covers interruption. X deploys it again.
+   */
+  public Command retract() {
+    return Commands.sequence(
+            Commands.runOnce(
+                () -> pivot.applyCurrentLimit(IntakeConstants.kPivotRetractCurrentLimit)),
+            Commands.runOnce(() -> restingPivot = IntakePivotState.kStowed),
+            Commands.waitUntil(() -> isPivotNear(IntakePivotState.kStowed))
+                .withTimeout(IntakeConstants.kPivotRetractTimeout))
+        .finallyDo(() -> pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit));
+  }
+
+  /**
    * Declares that the arm is <em>down right now</em>, for a robot that was powered on with the arm
    * out instead of folded.
    *

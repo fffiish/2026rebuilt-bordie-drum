@@ -66,6 +66,12 @@ public final class IntakeConstants {
   /** Drop back to the normal limit after this long even if the arm has not reported arriving. */
   public static final Time kPivotDeployTimeout = Seconds.of(2.0); // TODO(bringup)
 
+  /** Pivot current limit while retracting the arm back to stowed (driver B). */
+  public static final Current kPivotRetractCurrentLimit = Amps.of(60);
+
+  /** Drop back to the normal limit after this long even if the retract has not arrived. */
+  public static final Time kPivotRetractTimeout = Seconds.of(2.0); // TODO(bringup)
+
   /** How close counts as "arrived" when sequencing arm moves. */
   public static final Angle kPivotArrivalTolerance = Degrees.of(5.0); // TODO(bringup)
 

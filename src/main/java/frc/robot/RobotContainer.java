@@ -354,6 +354,8 @@ public class RobotContainer {
     // X deploys the intake arm at the higher deploy current limit, then drops back to the normal
     // limit once it arrives. This is the deploy path while testing; auto deploys it on its own.
     driverController.buttonX.onTrue(intake.deploy());
+    // B folds the arm back to stowed at 60 A, then drops back to the normal limit. X redeploys.
+    driverController.buttonB.onTrue(intake.retract());
 
     // The robot assumes the arm is folded at power-on. If it was powered on with the arm down
     // instead, press Back once (enabled or not) so the code knows. Do this before pressing X.
@@ -364,7 +366,8 @@ public class RobotContainer {
     - Left trigger: intake rollers     - Right trigger: agitate, raise arm, shoot
     - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
-    - X: deploy intake arm (80 A, then 60 A)
+    - X: deploy intake arm (80 A, then 40 A)
+    - B: retract intake arm to stowed (60 A, then 40 A)
     - A + right trigger: lower-power shot (5.7 V instead of 6.7 V); A alone does nothing
     - Y: reset field heading (point robot downfield first)
      */
