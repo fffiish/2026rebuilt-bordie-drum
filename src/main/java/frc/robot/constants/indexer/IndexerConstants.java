@@ -45,12 +45,11 @@ public final class IndexerConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          // Per motor. The smart limit must sit below the secondary one: with 80 over 60, the
-          // secondary limit chopped the output every cycle (the rapid stop/start) and a locked-in
-          // inrush still reached ~150 A, which dragged the bus to ~5.5 V and tripped a gate-driver
-          // fault on the SPARK.
-          .smartCurrentLimit(Amps.of(40))
-          .secondaryCurrentLimit(Amps.of(60))
+          // Smart limit must sit below the secondary. The secondary is a hard cutoff that briefly
+          // kills output; with it at 60 A under an 80 A smart limit, a loaded indexer tripped the
+          // cutoff before the smart limit ever regulated, and 36/22 stopped mid-run.
+          .smartCurrentLimit(Amps.of(60))
+          .secondaryCurrentLimit(Amps.of(80))
           .rampRateSeconds(0.3) // output rises over 0.3 s, not in one step
           .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
           .maximumMotorVelocity(kMaximumSpeed)
