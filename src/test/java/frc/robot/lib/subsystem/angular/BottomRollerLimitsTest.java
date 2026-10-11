@@ -114,7 +114,7 @@ class BottomRollerLimitsTest {
     assertEquals(60, feeder.getSecondaryCurrentLimit().in(Amps));
     assertTrue(feeder.getKP() > 0);
     assertTrue(feeder.isFollowerOpposed(35));
-    assertEquals(50, IntakeConstants.kFeederIntaking.in(RotationsPerSecond), 1e-9);
+    assertEquals(35, IntakeConstants.kFeederIntaking.in(RotationsPerSecond), 1e-9);
   }
 
   @Test

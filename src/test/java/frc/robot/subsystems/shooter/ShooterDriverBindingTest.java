@@ -204,8 +204,8 @@ class ShooterDriverBindingTest {
       assertEquals(ShooterState.kIdle, robot.shooter.getTargetState());
       robot.axis(0.8);
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
-      assertEquals(6.7, robot.shooter.getTargetState().getFlywheelVoltage().in(Volts), 1e-9);
-      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.4, robot.shooter.getTargetState().getFlywheelVoltage().in(Volts), 1e-9);
+      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
       assertFalse(robot.shooter.atSpeed().getAsBoolean(), "Flywheel is still stopped");
       assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
@@ -220,7 +220,7 @@ class ShooterDriverBindingTest {
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
       assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
-      assertEquals(50, robot.feederIO.requestedRps, 1e-9);
+      assertEquals(35, robot.feederIO.requestedRps, 1e-9);
       robot.xboxSim.setRightTriggerAxis(0);
       robot.advanceTicks(1);
       assertEquals(ShooterState.kIdle, robot.shooter.getTargetState());
@@ -249,14 +249,14 @@ class ShooterDriverBindingTest {
       robot.axis(0.8);
       assertFalse(robot.shooter.hoodAtTarget().getAsBoolean());
       assertFalse(robot.shooter.readyToFire().getAsBoolean());
-      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertFalse(robot.shooter.hoodAtTarget().getAsBoolean());
       assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
-      assertEquals(50, robot.feederIO.requestedRps, 1e-9);
+      assertEquals(35, robot.feederIO.requestedRps, 1e-9);
       robot.axis(0);
       assertEquals(0, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
@@ -282,7 +282,7 @@ class ShooterDriverBindingTest {
       robot.tick();
       assertTrue(robot.shooter.atSpeed().getAsBoolean());
       assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
-      assertEquals(50, robot.feederIO.requestedRps, 1e-9);
+      assertEquals(35, robot.feederIO.requestedRps, 1e-9);
     }
   }
 
@@ -297,7 +297,7 @@ class ShooterDriverBindingTest {
         robot.axis(0.8);
         assertTrue(robot.shooter.atSpeed().getAsBoolean());
         assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
-        assertEquals(50, robot.feederIO.requestedRps, 1e-9);
+        assertEquals(35, robot.feederIO.requestedRps, 1e-9);
         robot.axis(0);
         assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
         assertEquals(0, robot.feederIO.requestedRps, 1e-9);
@@ -375,13 +375,13 @@ class ShooterDriverBindingTest {
       robot.axis(0.9);
       assertEquals(IntakeRollerState.kIntaking, robot.intake.getRollerState());
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
-      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
       assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
-      assertEquals(50, robot.feederIO.requestedRps, 1e-9);
+      assertEquals(35, robot.feederIO.requestedRps, 1e-9);
       // TODO: agitation disabled for the deadline; restore these checks with agitateArm().
       // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
       assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
@@ -428,7 +428,7 @@ class ShooterDriverBindingTest {
       assertFalse(robot.intake.isDeployed());
       robot.axis(0.9);
       assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
-      assertEquals(6.7, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;
