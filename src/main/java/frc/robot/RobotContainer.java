@@ -363,7 +363,7 @@ public class RobotContainer {
 
     /* DRIVER
     - Left stick: translate            - Right stick: rotate
-    - Left trigger: intake rollers     - Right trigger: agitate, raise arm, shoot
+    - Left trigger: intake rollers     - Right trigger: raise arm, shoot
     - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
     - X: deploy intake arm (80 A, then 40 A)
@@ -386,7 +386,7 @@ public class RobotContainer {
             0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling);
     shootHeld
         .and(driverController.buttonA.negate())
-        .whileTrue(superstructure.shoot()); // agitate, raise, feed at 6.7 V
+        .whileTrue(superstructure.shoot()); // raise, feed at 6.7 V (agitation disabled)
     shootHeld
         .and(driverController.buttonA)
         .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at 5.7 V

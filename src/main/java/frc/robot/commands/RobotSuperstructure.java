@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants;
 import frc.robot.constants.DriveConstants;
-import frc.robot.constants.intake.IntakeConstants;
+// import frc.robot.constants.intake.IntakeConstants; // only agitateArm() used it
 import frc.robot.lib.command.CachedTrigger;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.IndexerState;
@@ -74,7 +74,7 @@ public class RobotSuperstructure {
    * <ul>
    *   <li><b>Spin-up.</b> The flywheel immediately runs at its open-loop shooting voltage.
    *   <li><b>The shot.</b> Once flywheel speed is within tolerance, the bottom rollers and feeder
-   *       start together. The arm shuffles to shake FUEL toward the indexer, then raises and holds.
+   *       start together. The arm raises and holds (agitation is commented out for now).
    * </ul>
    *
    * <p>Releasing the trigger cancels both, and because the arm's resting position is down, it
@@ -96,24 +96,27 @@ public class RobotSuperstructure {
                         .set(IndexerState.kFeeding)
                         .alongWith(
                             intake.feedShooter(),
-                            Commands.sequence(
-                                agitateArm(), intake.setPivot(IntakePivotState.kRaised)))));
+                            // TODO: agitation disabled for the deadline; restore by uncommenting.
+                            // Commands.sequence(
+                            //     agitateArm(), intake.setPivot(IntakePivotState.kRaised))
+                            intake.setPivot(IntakePivotState.kRaised))));
   }
 
-  /**
-   * A slow up/down shuffle of the arm. Built fresh on each call because a WPILib command instance
-   * cannot appear in two compositions, so the steps cannot be shared between cycles.
-   */
-  private Command agitateArm() {
-    int cycles = IntakeConstants.kAgitateCycles;
-    double dwell = IntakeConstants.kAgitateDwell.in(edu.wpi.first.units.Units.Seconds);
-    Command[] strokes = new Command[cycles * 2];
-    for (int i = 0; i < cycles; i++) {
-      strokes[2 * i] = intake.setPivot(IntakePivotState.kAgitateHigh).withTimeout(dwell);
-      strokes[2 * i + 1] = intake.setPivot(IntakePivotState.kAgitateLow).withTimeout(dwell);
-    }
-    return Commands.sequence(strokes);
-  }
+  // TODO: agitation disabled for the deadline; restore together with the call in shoot().
+  // /**
+  //  * A slow up/down shuffle of the arm. Built fresh on each call because a WPILib command
+  //  * instance cannot appear in two compositions, so the steps cannot be shared between cycles.
+  //  */
+  // private Command agitateArm() {
+  //   int cycles = IntakeConstants.kAgitateCycles;
+  //   double dwell = IntakeConstants.kAgitateDwell.in(edu.wpi.first.units.Units.Seconds);
+  //   Command[] strokes = new Command[cycles * 2];
+  //   for (int i = 0; i < cycles; i++) {
+  //     strokes[2 * i] = intake.setPivot(IntakePivotState.kAgitateHigh).withTimeout(dwell);
+  //     strokes[2 * i + 1] = intake.setPivot(IntakePivotState.kAgitateLow).withTimeout(dwell);
+  //   }
+  //   return Commands.sequence(strokes);
+  // }
 
   /** Puts the arm down once per match. Safe to call more than once. */
   public Command deployIntake() {

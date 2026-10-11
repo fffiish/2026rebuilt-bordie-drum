@@ -382,7 +382,9 @@ class ShooterDriverBindingTest {
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
       assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(50, robot.feederIO.requestedRps, 1e-9);
-      assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
+      // TODO: agitation disabled for the deadline; restore these checks with agitateArm().
+      // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
+      assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
       List<IntakePivotState> states = new ArrayList<>();
       states.add(robot.intake.getPivotState());
       for (int i = 0; i < 140; i++) {
@@ -390,16 +392,17 @@ class ShooterDriverBindingTest {
         var state = robot.intake.getPivotState();
         if (states.get(states.size() - 1) != state) states.add(state);
       }
-      assertEquals(
-          List.of(
-              IntakePivotState.kAgitateHigh,
-              IntakePivotState.kAgitateLow,
-              IntakePivotState.kAgitateHigh,
-              IntakePivotState.kAgitateLow,
-              IntakePivotState.kAgitateHigh,
-              IntakePivotState.kAgitateLow,
-              IntakePivotState.kRaised),
-          states);
+      // assertEquals(
+      //     List.of(
+      //         IntakePivotState.kAgitateHigh,
+      //         IntakePivotState.kAgitateLow,
+      //         IntakePivotState.kAgitateHigh,
+      //         IntakePivotState.kAgitateLow,
+      //         IntakePivotState.kAgitateHigh,
+      //         IntakePivotState.kAgitateLow,
+      //         IntakePivotState.kRaised),
+      //     states);
+      assertEquals(List.of(IntakePivotState.kRaised), states);
       assertEquals(IntakeRollerState.kIntaking, robot.intake.getRollerState());
       assertTrue(robot.pickupIO.requestedRps > 0);
       assertTrue(robot.feederIO.requestedRps > 0);
@@ -412,7 +415,8 @@ class ShooterDriverBindingTest {
       assertEquals(0, robot.pickupIO.requestedRps);
       assertEquals(0, robot.feederIO.requestedRps);
       robot.axis(0.9);
-      assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
+      // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
+      assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
       robot.axis(0);
       assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
     }
@@ -429,7 +433,8 @@ class ShooterDriverBindingTest {
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
-      assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
+      // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
+      assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
       robot.axis(0);
       assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
     }
