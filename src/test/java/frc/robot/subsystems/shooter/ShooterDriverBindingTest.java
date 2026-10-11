@@ -380,12 +380,13 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
-      assertEquals(3.0, robot.indexerIO.requestedVolts, 1e-9);
+      // 36/22 are held off while the floor intake rollers run, even during a shot.
+      assertEquals(0.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(50, robot.feederIO.requestedRps, 1e-9);
       assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
       List<IntakePivotState> states = new ArrayList<>();
       states.add(robot.intake.getPivotState());
-      for (int i = 0; i < 140; i++) {
+      for (int i = 0; i < 320; i++) {
         robot.advanceTicks(1);
         var state = robot.intake.getPivotState();
         if (states.get(states.size() - 1) != state) states.add(state);

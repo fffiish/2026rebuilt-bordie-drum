@@ -40,13 +40,23 @@ public final class IntakeConstants {
 
   /** Top of the agitation stroke. Deliberately small — this is a shake, not a lift. */
   public static final Angle kPivotAgitateHigh =
-      kPivotDeployed.plus(Degrees.of(30.0)); // raised from 20 at the driver's request
+      kPivotDeployed.plus(Degrees.of(80.0)); // full 0-80 degree sweep
 
   /** Bottom of the agitation stroke. */
   public static final Angle kPivotAgitateLow = kPivotDeployed;
 
-  /** How long the arm dwells at each end of a stroke. "Slowly" per the driver's request. */
-  public static final Time kAgitateDwell = Seconds.of(0.35); // TODO(bringup)
+  /**
+   * How fast the arm sweeps during agitation: 15 rps at the motor, which is 0.25 rps (90 deg/s) at
+   * the arm through the 60:1 reduction. Enforced by slewing the goal in {@code Intake}, so the
+   * pivot's normal motion profile (deploy, retract, raise) is untouched.
+   */
+  public static final AngularVelocity kAgitateSpeed = RotationsPerSecond.of(15.0 / 60.0);
+
+  /**
+   * How long each stroke is given: the 80 degree sweep at {@link #kAgitateSpeed} takes about 0.9 s,
+   * plus a little margin for the arm to arrive.
+   */
+  public static final Time kAgitateDwell = Seconds.of(1.0);
 
   /** Number of complete up-down cycles before the arm raises to shoot. */
   public static final int kAgitateCycles = 3; // TODO(bringup)
@@ -149,6 +159,15 @@ public final class IntakeConstants {
 
   public static final int kFeederFollowerId = 35; // confirmed: "Feeder #35"
 
+  /** Feeder smart current limit (per motor) when nothing is reducing it. */
+  public static final Current kFeederCurrentLimit = Amps.of(60);
+
+  /** Feeder limit is lowered by this much while the floor intake rollers are running. */
+  public static final Current kFeederIntakeCurrentReduction = Amps.of(4);
+
+  /** Feeder limit is lowered by this much while the arm is agitating. Stacks with the above. */
+  public static final Current kFeederAgitateCurrentReduction = Amps.of(3);
+
   public static final AngularVelocity kFeederIntaking = RotationsPerSecond.of(50.0);
   public static final AngularVelocity kFeederEjecting =
       RotationsPerSecond.of(-40.0); // TODO(bringup)
@@ -161,7 +180,7 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(60))
+          .smartCurrentLimit(kFeederCurrentLimit)
           .secondaryCurrentLimit(Amps.of(60))
           // 35 hit 150 A and a gate-driver fault 150 ms after starting a shot. Ease in, and let a
           // fault clear itself rather than leaving the floor rollers off until the next disable.

@@ -1,10 +1,14 @@
 package frc.robot.subsystems.intake;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -41,13 +45,19 @@ public class Intake extends VirtualSubsystem {
   private AngularVelocity heldFeederVelocity = null;
   private final VirtualSubsystem feederOwner = new VirtualSubsystem();
 
+  /** Arm goal fed to the pivot; trails the target at the agitation speed while agitating. */
+  private Angle slewedPivotGoal = null;
+
+  private double lastPivotGoalTime = 0.0;
+  private double appliedFeederLimitAmps = IntakeConstants.kFeederCurrentLimit.in(Amps);
+
   public Intake(
       AngularSubsystem pivot, AngularSubsystem intakeRollers, AngularSubsystem feederRollers) {
     this.pivot = pivot;
     this.intakeRollers = intakeRollers;
     this.feederRollers = feederRollers;
 
-    pivot.setDefaultCommand(pivot.holdAtGoal(() -> getPivotState().getAngle()));
+    pivot.setDefaultCommand(pivot.holdAtGoal(this::getPivotGoal));
     intakeRollers.setDefaultCommand(
         intakeRollers.velocity(() -> getRollerState().getIntakeRollerVelocity()));
     feederRollers.setDefaultCommand(
@@ -72,6 +82,44 @@ public class Intake extends VirtualSubsystem {
   /** The arm position currently in force: whatever is being held, else the resting position. */
   public IntakePivotState getPivotState() {
     return heldPivot != null ? heldPivot : restingPivot;
+  }
+
+  /** True while the arm is doing the shuffle that settles FUEL toward the indexer. */
+  public boolean isAgitating() {
+    return heldPivot == IntakePivotState.kAgitateHigh || heldPivot == IntakePivotState.kAgitateLow;
+  }
+
+  /**
+   * The goal handed to the pivot. Normally the target itself; while agitating it moves toward the
+   * target at {@link IntakeConstants#kAgitateSpeed} so the sweep is slow without reprofiling the
+   * motor (which would stop it mid-shot).
+   */
+  private Angle getPivotGoal() {
+    Angle target = getPivotState().getAngle();
+    double now = Timer.getFPGATimestamp();
+    if (!isAgitating() || slewedPivotGoal == null) {
+      slewedPivotGoal = target;
+    } else {
+      double dt = MathUtil.clamp(now - lastPivotGoalTime, 0.0, 0.1);
+      double step = IntakeConstants.kAgitateSpeed.in(DegreesPerSecond) * dt;
+      double current = slewedPivotGoal.in(Degrees);
+      double error = target.in(Degrees) - current;
+      slewedPivotGoal = Degrees.of(current + MathUtil.clamp(error, -step, step));
+    }
+    lastPivotGoalTime = now;
+    return slewedPivotGoal;
+  }
+
+  /** Feeder (28/35) current limit: lower while the floor rollers run and while agitating. */
+  private void updateFeederCurrentLimit() {
+    double limit = IntakeConstants.kFeederCurrentLimit.in(Amps);
+    if (getRollerState() == IntakeRollerState.kIntaking) {
+      limit -= IntakeConstants.kFeederIntakeCurrentReduction.in(Amps);
+    }
+    if (isAgitating()) limit -= IntakeConstants.kFeederAgitateCurrentReduction.in(Amps);
+    if (limit == appliedFeederLimitAmps) return;
+    appliedFeederLimitAmps = limit;
+    feederRollers.applyCurrentLimit(Amps.of(limit));
   }
 
   public IntakeRollerState getRollerState() {
@@ -107,6 +155,8 @@ public class Intake extends VirtualSubsystem {
 
   @Override
   public void periodic() {
+    updateFeederCurrentLimit();
+    Logger.recordOutput("Intake/FeederCurrentLimitAmps", appliedFeederLimitAmps);
     Logger.recordOutput("Intake/TargetState", getPivotState().name());
     Logger.recordOutput("Intake/TargetPivotState", getPivotState().name());
     Logger.recordOutput("Intake/TargetRollerState", getRollerState().name());
