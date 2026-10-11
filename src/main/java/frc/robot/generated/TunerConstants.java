@@ -29,12 +29,9 @@ public class TunerConstants {
   // for drive and steer now live in ModuleIOSpark.
   // ---------------------------------------------------------------------------------------------
 
-  // The stator current at which the wheels start to slip;
+  // Drive motor smart current limit (all four modules), also the slip current PathPlanner uses.
   // This needs to be tuned to your individual robot
-  private static final Current kSlipCurrent = Amps.of(60);
-  // TODO(bringup): a one-off override for a specific slipping module on another robot.
-  // Decide deliberately whether you want it; otherwise match kSlipCurrent.
-  private static final Current kBackRightSlipCurrent = Amps.of(25);
+  private static final Current kSlipCurrent = Amps.of(45);
 
   // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
   // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
@@ -208,16 +205,15 @@ public class TunerConstants {
           TalonFXConfiguration, TalonFXConfiguration, CANcoderConfiguration>
       BackRight =
           ConstantCreator.createModuleConstants(
-                  kBackRightSteerMotorId,
-                  kBackRightDriveMotorId,
-                  kBackRightEncoderId,
-                  kBackRightEncoderOffset,
-                  kBackRightXPos,
-                  kBackRightYPos,
-                  kBackRightDriveMotorInverted,
-                  kBackRightSteerMotorInverted,
-                  kBackRightEncoderInverted)
-              .withSlipCurrent(kBackRightSlipCurrent);
+              kBackRightSteerMotorId,
+              kBackRightDriveMotorId,
+              kBackRightEncoderId,
+              kBackRightEncoderOffset,
+              kBackRightXPos,
+              kBackRightYPos,
+              kBackRightDriveMotorInverted,
+              kBackRightSteerMotorInverted,
+              kBackRightEncoderInverted);
 
   /** Swerve Drive class utilizing CTR Electronics' Phoenix 6 API with the selected device types. */
   public static class TunerSwerveDrivetrain extends SwerveDrivetrain<TalonFX, TalonFX, CANcoder> {
