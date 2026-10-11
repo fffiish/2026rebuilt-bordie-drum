@@ -149,9 +149,9 @@ public final class IntakeConstants {
 
   public static final int kFeederFollowerId = 35; // confirmed: "Feeder #35"
 
-  public static final AngularVelocity kFeederIntaking = RotationsPerSecond.of(50.0);
+  public static final AngularVelocity kFeederIntaking = RotationsPerSecond.of(35.0);
   public static final AngularVelocity kFeederEjecting =
-      RotationsPerSecond.of(-40.0); // TODO(bringup)
+      RotationsPerSecond.of(-35.0); // TODO(bringup)
 
   public static final AngularIOSparkFlexConfig kFeederSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
@@ -212,7 +212,7 @@ public final class IntakeConstants {
   public static final int kIntakeRollerFollowerId = 37; // confirmed: "Intake right"
 
   public static final AngularVelocity kIntakeRollerIntaking =
-      RotationsPerSecond.of(50.0); // TODO(bringup)
+      RotationsPerSecond.of(40.0); // TODO(bringup)
   public static final AngularVelocity kIntakeRollerEjecting =
       RotationsPerSecond.of(-40.0); // TODO(bringup)
 
@@ -224,8 +224,8 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(80))
-          .secondaryCurrentLimit(Amps.of(120))
+          .smartCurrentLimit(Amps.of(60))
+          .secondaryCurrentLimit(Amps.of(80))
           .rampRateSeconds(0.3)
           .recoverWhileEnabled(true)
           .kV(0.12 / (2.0 * Math.PI)) // 0.12 V per rps, expressed as V per rad/s
