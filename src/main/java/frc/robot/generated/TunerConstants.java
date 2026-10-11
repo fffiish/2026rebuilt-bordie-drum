@@ -31,7 +31,7 @@ public class TunerConstants {
 
   // Drive motor smart current limit (all four modules), also the slip current PathPlanner uses.
   // This needs to be tuned to your individual robot
-  private static final Current kSlipCurrent = Amps.of(45);
+  private static final Current kSlipCurrent = Amps.of(50);
 
   // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
   // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
