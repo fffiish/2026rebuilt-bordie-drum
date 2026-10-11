@@ -63,7 +63,7 @@ public final class IntakeConstants {
    * Pivot current limit during the slow raise only; back to {@link #kPivotCurrentLimit} after.
    * Raise this if the arm stalls partway up with FUEL on it.
    */
-  public static final Current kPivotAgitateCurrentLimit = Amps.of(40); // TODO(bringup)
+  public static final Current kPivotAgitateCurrentLimit = Amps.of(60);
 
   // ----- current limits -----
 
