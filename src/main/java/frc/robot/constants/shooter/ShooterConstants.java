@@ -35,6 +35,10 @@ public final class ShooterConstants {
   // Measured 10-10: holding 242 rad/s took 4.46 V with no balls. Used only to
   // translate the old voltage presets into provisional speed targets, not as feedforward.
   public static final double kFlywheelKV = 0.0184;
+  // User-provided total rotating inertia about the drum axis: 6.5 lb*in^2.
+  // Includes the entire rotating system; 1:1 motor/drum gearing is still assumed.
+  public static final MomentOfInertia kFlywheelMOI =
+      KilogramSquareMeters.of(6.5 * 0.45359237 * 0.0254 * 0.0254);
   public static final AngularVelocity kFlywheelIdle = RadiansPerSecond.of(0.0);
   public static final AngularVelocity kFlywheelShooting = RadiansPerSecond.of(6.4 / kFlywheelKV);
   public static final AngularVelocity kFlywheelShootingSoft =
@@ -79,7 +83,7 @@ public final class ShooterConstants {
       AngularIOSimConfig.builder()
           .motor(DCMotor.getNeoVortex(4)) // NEO Vortex, confirmed from CAD
           .numMotors(4)
-          .moi(KilogramSquareMeters.of(0.012)) // TODO(bringup): real flywheel inertia matters here
+          .moi(kFlywheelMOI)
           .motorRotationsPerOutputRotations(1.0)
           .supplyCurrentLimit(Amps.of(40))
           .statorCurrentLimit(Amps.of(60))

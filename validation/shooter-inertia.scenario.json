@@ -1,0 +1,57 @@
+{
+  "id": "shooter-corrected-inertia-delay",
+  "description": "144 production-controller scenarios: 6.5 lb*in^2, four Vortex motors, coast, ideal 37 A phase limiting, 1:1 gearing. Sweep filter period/depth (100/64,10/2,5/1), normal/soft targets, 12/8 V, CAN phase 0/10 ms, added command delay 0/20 ms, calibrated drag scale 0.5/1/1.5. Each run has 7 s spin-up/steady operation, a synthetic 20% speed loss, 1 s recovery, and stop.",
+  "mode": "teleop",
+  "duration_seconds": 8.1,
+  "tags": [
+    "shooter",
+    "bang-bang",
+    "physics",
+    "delay-characterization"
+  ],
+  "runner": {
+    "command": [
+      "bash",
+      "gradlew",
+      "test",
+      "--tests",
+      "frc.robot.subsystems.shooter.ShooterInertiaSimulationTest",
+      "--console=plain"
+    ],
+    "working_directory": ".",
+    "timeout_seconds": 120
+  },
+  "checks": [
+    {
+      "id": "startup",
+      "description": "First production atSpeed assertion (80% threshold), not sustained settling.",
+      "field": "ready_seconds",
+      "assertion": "maximum",
+      "maximum": 2
+    },
+    {
+      "id": "steady-speed",
+      "description": "All sampled true-speed values from 2 to 7 seconds within 90\u2013110% target.",
+      "field": "true_rpm / target_rpm",
+      "assertion": "range",
+      "minimum": 0.9,
+      "maximum": 1.1,
+      "start_seconds": 2,
+      "end_seconds": 7
+    },
+    {
+      "id": "recovery",
+      "description": "First true-speed crossing of 90% target after synthetic loss; not sustained settling.",
+      "field": "recovery_seconds",
+      "assertion": "maximum",
+      "maximum": 1
+    },
+    {
+      "id": "stop",
+      "description": "Zero request within one scheduler cycle, zero modeled motor current after queued delay clears.",
+      "field": "stop_pass",
+      "assertion": "equals",
+      "expected": true
+    }
+  ]
+}
