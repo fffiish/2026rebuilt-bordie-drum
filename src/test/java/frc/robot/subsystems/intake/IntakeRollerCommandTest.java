@@ -192,6 +192,72 @@ class IntakeRollerCommandTest {
   }
 
   @Test
+  void feederUsesTwentyAmpLimitOnlyWhileIntakingAndOuttakeRaisesRollerLimit() {
+    try (var f = new Fixture()) {
+      var limits = f.feederIO.currentLimits;
+      var pickup = f.intake.setRollers(IntakeRollerState.kIntaking);
+      pickup.schedule();
+      f.tick();
+      assertEquals(20.0, limits.get(limits.size() - 1), 1e-9);
+
+      // A shot while intaking gets the full limit, and intaking alone drops back to 20 A after.
+      var shot = f.intake.feedShooter();
+      shot.schedule();
+      f.tick();
+      assertEquals(60.0, limits.get(limits.size() - 1), 1e-9);
+      shot.cancel();
+      assertEquals(20.0, limits.get(limits.size() - 1), 1e-9);
+
+      pickup.cancel();
+      assertEquals(60.0, limits.get(limits.size() - 1), 1e-9);
+
+      // Ejecting never sees the low feeder limit, and raises the intake rollers by 7 A.
+      var rollerLimits = f.pickupIO.currentLimits;
+      var eject = f.intake.setRollers(IntakeRollerState.kEjecting);
+      eject.schedule();
+      f.tick();
+      assertEquals(60.0, limits.get(limits.size() - 1), 1e-9);
+      assertEquals(67.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
+      eject.cancel();
+      assertEquals(60.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
+    }
+  }
+
+  @Test
+  void slowRaiseMovesTheArmGoalSteadilyThenHoldsAndRestoresTheLimit() {
+    try (var f = new Fixture()) {
+      f.intake.setPersistentPivot(IntakePivotState.kDeployed).initialize();
+      f.pivotIO.measuredDegrees = IntakeConstants.kPivotDeployed.in(Degrees);
+      f.tick();
+      var raise = f.intake.raiseSlowly(IntakePivotState.kRaised, Seconds.of(2.0));
+      raise.schedule();
+      f.ticks(1);
+      assertEquals(
+          IntakeConstants.kPivotAgitateCurrentLimit.in(Amps),
+          f.pivotIO.currentLimits.get(f.pivotIO.currentLimits.size() - 1),
+          1e-9);
+
+      // Halfway through the 2 s raise, the goal is about halfway from deployed (0) to raised (90).
+      f.ticks(49);
+      double halfway = Math.toDegrees(f.pivotIO.requestedAngleRadians);
+      assertTrue(halfway > 35 && halfway < 55, "goal at 1 s was " + halfway);
+
+      // After the raise time it holds at raised.
+      f.ticks(75);
+      assertEquals(90.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 1e-6);
+
+      raise.cancel();
+      f.tick();
+      assertEquals(
+          IntakeConstants.kPivotCurrentLimit.in(Amps),
+          f.pivotIO.currentLimits.get(f.pivotIO.currentLimits.size() - 1),
+          1e-9);
+      assertEquals(IntakePivotState.kDeployed, f.intake.getPivotState());
+      assertEquals(0.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 1e-6);
+    }
+  }
+
+  @Test
   void diagnosticAccessAndDirectStopRefreshBothRollerGroupsWithoutScheduling() {
     try (var f = new Fixture()) {
       var pickup = f.superstructure.intakeFuel();

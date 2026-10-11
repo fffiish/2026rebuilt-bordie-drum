@@ -45,7 +45,7 @@ class HardwareMergeConfigurationTest {
     assertFalse(flywheel.isFollowerOpposed(34));
     assertTrue(flywheel.isFollowerOpposed(26));
     assertTrue(flywheel.isFollowerOpposed(29));
-    assertEquals(40.0, flywheel.getSmartCurrentLimit().in(Amps), 1e-12);
+    assertEquals(37.0, flywheel.getSmartCurrentLimit().in(Amps), 1e-12);
     assertEquals(60.0, flywheel.getSecondaryCurrentLimit().in(Amps), 1e-12);
     assertEquals(10, flywheel.getEncoderMeasurementPeriodMs());
     assertEquals(2, flywheel.getEncoderAverageDepth());

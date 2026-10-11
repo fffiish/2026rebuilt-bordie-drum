@@ -2,9 +2,12 @@ package frc.robot.subsystems.intake;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Time;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -37,6 +40,10 @@ public class Intake extends VirtualSubsystem {
 
   private IntakePivotState restingPivot = IntakePivotState.kStowed;
   private IntakePivotState heldPivot = null;
+
+  /** While a slow raise runs, the arm aims here instead of straight at {@link #heldPivot}. */
+  private Angle rampedPivotGoal = null;
+
   private IntakeRollerState heldRollers = null;
   private AngularVelocity heldFeederVelocity = null;
   private final VirtualSubsystem feederOwner = new VirtualSubsystem();
@@ -47,7 +54,9 @@ public class Intake extends VirtualSubsystem {
     this.intakeRollers = intakeRollers;
     this.feederRollers = feederRollers;
 
-    pivot.setDefaultCommand(pivot.holdAtGoal(() -> getPivotState().getAngle()));
+    pivot.setDefaultCommand(
+        pivot.holdAtGoal(
+            () -> rampedPivotGoal != null ? rampedPivotGoal : getPivotState().getAngle()));
     intakeRollers.setDefaultCommand(
         intakeRollers.velocity(() -> getRollerState().getIntakeRollerVelocity()));
     feederRollers.setDefaultCommand(
@@ -61,12 +70,28 @@ public class Intake extends VirtualSubsystem {
   /** Feed during a shot without starting the independent floor pickup rollers. */
   public Command feedShooter() {
     return Commands.startEnd(
-        () -> heldFeederVelocity = IntakeConstants.kFeederIntaking,
+        () -> {
+          heldFeederVelocity = IntakeConstants.kFeederIntaking;
+          updateFeederCurrentLimit();
+        },
         () -> {
           heldFeederVelocity = null;
           feederRollers.stopImmediately();
+          updateFeederCurrentLimit();
         },
         feederOwner);
+  }
+
+  /**
+   * TEMPORARY: the feeder runs at the low intaking limit only while intaking without a shot; a shot
+   * (or anything else) gets the normal limit.
+   */
+  private void updateFeederCurrentLimit() {
+    boolean intakingOnly = heldRollers == IntakeRollerState.kIntaking && heldFeederVelocity == null;
+    feederRollers.applyCurrentLimit(
+        intakingOnly
+            ? IntakeConstants.kFeederIntakingCurrentLimit
+            : IntakeConstants.kFeederCurrentLimit);
   }
 
   /** The arm position currently in force: whatever is being held, else the resting position. */
@@ -87,15 +112,55 @@ public class Intake extends VirtualSubsystem {
     return Commands.startEnd(() -> heldPivot = state, () -> heldPivot = null, pivotOwner);
   }
 
+  /**
+   * Like {@link #setPivot}, but the arm travels from wherever it is to {@code state} steadily over
+   * {@code duration} instead of at full speed, then holds there. Runs at {@link
+   * IntakeConstants#kPivotAgitateCurrentLimit}; {@code finallyDo} restores the normal limit and
+   * sends the arm back to its resting position on release.
+   */
+  public Command raiseSlowly(IntakePivotState state, Time duration) {
+    Timer timer = new Timer();
+    Angle[] start = new Angle[1];
+    return Commands.startRun(
+            () -> {
+              start[0] = pivot.getAngle();
+              rampedPivotGoal = start[0];
+              heldPivot = state;
+              timer.restart();
+              pivot.applyCurrentLimit(IntakeConstants.kPivotAgitateCurrentLimit);
+            },
+            () -> {
+              double fraction = Math.min(1.0, timer.get() / duration.in(Seconds));
+              rampedPivotGoal = start[0].plus(state.getAngle().minus(start[0]).times(fraction));
+            },
+            pivotOwner)
+        .finallyDo(
+            () -> {
+              rampedPivotGoal = null;
+              heldPivot = null;
+              pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit);
+            });
+  }
+
   /** Runs the rollers at {@code state} while scheduled, then stops them. Does not move the arm. */
   public Command setRollers(IntakeRollerState state) {
     return Commands.startEnd(
-        () -> heldRollers = state,
+        () -> {
+          heldRollers = state;
+          updateFeederCurrentLimit();
+          // Outtake gets a higher intake roller limit; everything else uses the normal one.
+          intakeRollers.applyCurrentLimit(
+              state == IntakeRollerState.kEjecting
+                  ? IntakeConstants.kIntakeRollerEjectingCurrentLimit
+                  : IntakeConstants.kIntakeRollerCurrentLimit);
+        },
         () -> {
           heldRollers = null;
           intakeRollers.stopImmediately();
           // A shot may be feeding through these same rollers; releasing intake must not stop it.
           if (heldFeederVelocity == null) feederRollers.stopImmediately();
+          updateFeederCurrentLimit();
+          intakeRollers.applyCurrentLimit(IntakeConstants.kIntakeRollerCurrentLimit);
         },
         rollerOwner);
   }

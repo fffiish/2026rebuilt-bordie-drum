@@ -51,6 +51,20 @@ public final class IntakeConstants {
   /** Number of complete up-down cycles before the arm raises to shoot. */
   public static final int kAgitateCycles = 3; // TODO(bringup)
 
+  // ----- slow raise: replaces the up/down shake during a shot -----
+
+  /**
+   * How long the arm takes to rise from where it is to raised during a shot. Moving the goal a
+   * little each loop keeps the arm slow and steady instead of jerking, so it needs less current.
+   */
+  public static final Time kAgitateRaiseTime = Seconds.of(2.5); // TODO(bringup)
+
+  /**
+   * Pivot current limit during the slow raise only; back to {@link #kPivotCurrentLimit} after.
+   * Raise this if the arm stalls partway up with FUEL on it.
+   */
+  public static final Current kPivotAgitateCurrentLimit = Amps.of(40); // TODO(bringup)
+
   // ----- current limits -----
 
   /** Pivot current limit for everything except deploying — holding, agitating, raising to shoot. */
@@ -153,6 +167,15 @@ public final class IntakeConstants {
   public static final AngularVelocity kFeederEjecting =
       RotationsPerSecond.of(-35.0); // TODO(bringup)
 
+  /** Feeder smart current limit per motor, e.g. while feeding a shot. */
+  public static final Current kFeederCurrentLimit = Amps.of(60);
+
+  /**
+   * TEMPORARY: feeder smart current limit while only intaking (not shooting), so feeder plus floor
+   * rollers do not overload the battery. Back to {@link #kFeederCurrentLimit} otherwise.
+   */
+  public static final Current kFeederIntakingCurrentLimit = Amps.of(20);
+
   public static final AngularIOSparkFlexConfig kFeederSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
           .masterId(kFeederMasterId)
@@ -161,7 +184,7 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(60))
+          .smartCurrentLimit(kFeederCurrentLimit)
           .secondaryCurrentLimit(Amps.of(60))
           // 35 hit 150 A and a gate-driver fault 150 ms after starting a shot. Ease in, and let a
           // fault clear itself rather than leaving the floor rollers off until the next disable.
@@ -216,6 +239,13 @@ public final class IntakeConstants {
   public static final AngularVelocity kIntakeRollerEjecting =
       RotationsPerSecond.of(-40.0); // TODO(bringup)
 
+  /** Intake roller smart current limit per motor (intaking). */
+  public static final Current kIntakeRollerCurrentLimit = Amps.of(60);
+
+  /** Intake roller smart current limit while ejecting (outtake): 7 A above the normal limit. */
+  public static final Current kIntakeRollerEjectingCurrentLimit =
+      kIntakeRollerCurrentLimit.plus(Amps.of(7));
+
   public static final AngularIOSparkFlexConfig kIntakeRollerSparkFlexConfig =
       AngularIOSparkFlexConfig.builder()
           .masterId(kIntakeRollerMasterId)
@@ -224,7 +254,7 @@ public final class IntakeConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(60))
+          .smartCurrentLimit(kIntakeRollerCurrentLimit)
           .secondaryCurrentLimit(Amps.of(80))
           .rampRateSeconds(0.3)
           .recoverWhileEnabled(true)

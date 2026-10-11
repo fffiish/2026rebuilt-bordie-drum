@@ -69,7 +69,7 @@ public final class ShooterConstants {
           .inverted(false) // TODO(bringup)
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
-          .smartCurrentLimit(Amps.of(40)) // per motor
+          .smartCurrentLimit(Amps.of(37)) // per motor; lowered 3 A from 40 to ease battery load
           .secondaryCurrentLimit(Amps.of(60))
           .maximumMotorVelocity(kFlywheelMaximumSpeed)
           // Four motors starting at once drew ~35-40 A each and pulled the bus to ~6.5 V; ease in.
