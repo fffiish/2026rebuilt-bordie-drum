@@ -75,7 +75,8 @@ public class RobotSuperstructure {
    *   <li><b>Spin-up.</b> The flywheel immediately runs at its open-loop shooting voltage.
    *   <li><b>The shot.</b> Once flywheel speed is within tolerance, the bottom rollers and feeder
    *       start together. The arm rises slowly to raised over {@link
-   *       IntakeConstants#kAgitateRaiseTime}, settling FUEL toward the indexer, then holds.
+   *       IntakeConstants#kAgitateRaiseTime}, settling FUEL toward the indexer, then holds. In
+   *       autonomous the arm is not moved at all.
    * </ul>
    *
    * <p>Releasing the trigger cancels both, and because the arm's resting position is down, it
@@ -101,8 +102,12 @@ public class RobotSuperstructure {
                             // Commands.sequence(
                             //     agitateArm(), intake.setPivot(IntakePivotState.kRaised))
                             // Agitation is now one slow, steady raise to the shooting position.
-                            intake.raiseSlowly(
-                                IntakePivotState.kRaised, IntakeConstants.kAgitateRaiseTime))));
+                            // No agitation in autonomous: the arm stays down while it shoots.
+                            Commands.either(
+                                Commands.none(),
+                                intake.raiseSlowly(
+                                    IntakePivotState.kRaised, IntakeConstants.kAgitateRaiseTime),
+                                DriverStation::isAutonomous))));
   }
 
   // Old up/down shake, replaced by Intake#raiseSlowly; kept commented for reference.

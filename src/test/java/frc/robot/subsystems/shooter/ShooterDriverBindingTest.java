@@ -423,6 +423,25 @@ class ShooterDriverBindingTest {
   }
 
   @Test
+  void shotInAutonomousFeedsButDoesNotAgitateTheArm() {
+    try (var robot = new Fixture(false)) {
+      robot.intake.setPersistentPivot(IntakePivotState.kDeployed).initialize();
+      DriverStationSim.setAutonomous(true);
+      robot.tick();
+      assertTrue(DriverStation.isAutonomousEnabled());
+      robot.axis(0.9);
+      robot.flywheelIO.measuredRps = 60;
+      robot.tick();
+      assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
+      assertTrue(robot.feederIO.requestedRps > 0);
+      for (int i = 0; i < 200; i++) {
+        robot.advanceTicks(1);
+        assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
+      }
+    }
+  }
+
+  @Test
   void shootingWithoutDeploymentSpinsFlywheelAndWaitsBeforeMovingArm() {
     try (var robot = new Fixture(true)) {
       assertFalse(robot.intake.isDeployed());
