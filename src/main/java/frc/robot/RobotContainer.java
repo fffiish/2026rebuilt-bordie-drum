@@ -89,6 +89,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * its commands in {@link RobotSuperstructure#registerAutoCommands()}.
  */
 public class RobotContainer {
+  private static final String SHOOT_PRELOAD_AUTO_KEY = "Auto/Shoot Preload";
+
   // Controller
   private final Joysticks driverController = new Joysticks(0);
   private final Joysticks operatorController = new Joysticks(1);
@@ -421,6 +423,8 @@ public class RobotContainer {
 
   private void logInit() {
     SmartDashboard.putData("Field", field);
+    // Shows as a toggle in Shuffleboard; setDefaultBoolean keeps a value the drive team already set.
+    SmartDashboard.setDefaultBoolean(SHOOT_PRELOAD_AUTO_KEY, true);
 
     Logger.recordOutput(
         "Poses/AprilTagField", VisionConstants.kAprilTagField.values().toArray(new Pose3d[0]));
@@ -490,7 +494,11 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    // Toggle on the dashboard; when off, auto does nothing.
+    if (SmartDashboard.getBoolean(SHOOT_PRELOAD_AUTO_KEY, true)) {
+      return superstructure.shootPreloadAuto();
+    }
+    return Commands.none();
   }
 
   // -------------------------------------------------------------------------

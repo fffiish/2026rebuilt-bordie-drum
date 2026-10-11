@@ -140,6 +140,15 @@ public class RobotSuperstructure {
   }
 
   /**
+   * Autonomous routine that only shoots the preloaded FUEL from where the robot starts. Runs for
+   * the whole autonomous period (the scheduler cancels it when auto ends), long enough to empty
+   * all 8 balls.
+   */
+  public Command shootPreloadAuto() {
+    return shoot().withTimeout(15.0);
+  }
+
+  /**
    * Registers everything PathPlanner/Choreo autos can reference by name. Called once from {@link
    * frc.robot.RobotContainer}'s constructor, before {@code AutoBuilder.buildAutoChooser()} reads
    * the deploy directory, so every name an {@code .auto} file mentions must be registered by the
