@@ -7,6 +7,7 @@ import frc.robot.lib.subsystem.VirtualSubsystem;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
 import frc.robot.lib.subsystem.sensor.canrange.CANRangeSubsystem;
 import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystem;
+import java.util.function.BooleanSupplier;
 
 /**
  * The wheel row that pulls FUEL out of the passive hopper and stages it at the shooter throat.
@@ -29,6 +30,7 @@ public class Indexer extends VirtualSubsystem {
   private final CurrentSensorSubsystem jamSensor;
 
   private IndexerState targetState = kDefaultState;
+  private BooleanSupplier inhibit = () -> false;
 
   public Indexer(
       AngularSubsystem rollers, CANRangeSubsystem stagedSensor, CurrentSensorSubsystem jamSensor) {
@@ -36,7 +38,19 @@ public class Indexer extends VirtualSubsystem {
     this.stagedSensor = stagedSensor;
     this.jamSensor = jamSensor;
 
-    rollers.setDefaultCommand(rollers.openLoop(() -> targetState.getVoltage()));
+    rollers.setDefaultCommand(
+        rollers.openLoop(
+            () ->
+                inhibit.getAsBoolean()
+                    ? IndexerState.kIdle.getVoltage()
+                    : targetState.getVoltage()));
+  }
+
+  /**
+   * While {@code inhibit} is true the bottom rollers (30/8) output nothing, whatever is commanded.
+   */
+  public void setInhibit(BooleanSupplier inhibit) {
+    this.inhibit = inhibit;
   }
 
   /** Holds {@code state} while scheduled, then falls back to idle. Bind with {@code whileTrue}. */

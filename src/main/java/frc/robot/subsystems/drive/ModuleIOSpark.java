@@ -305,7 +305,7 @@ public class ModuleIOSpark implements ModuleIO {
     config
         .inverted(constants.SteerMotorInverted)
         .idleMode(SparkBaseConfig.IdleMode.kBrake)
-        .smartCurrentLimit(27);
+        .smartCurrentLimit(26);
 
     double radiansPerMotorRotation = 2.0 * Math.PI / constants.SteerMotorGearRatio;
     config.encoder.positionConversionFactor(radiansPerMotorRotation);

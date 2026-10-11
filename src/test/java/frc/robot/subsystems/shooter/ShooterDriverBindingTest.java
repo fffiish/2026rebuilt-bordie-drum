@@ -380,7 +380,8 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
-      assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
+      // Bottom rollers (30/8) are held off while the floor intake rollers run, even in a shot.
+      assertEquals(0.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(35, robot.feederIO.requestedRps, 1e-9);
       // TODO: agitation disabled for the deadline; restore these checks with agitateArm().
       // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
