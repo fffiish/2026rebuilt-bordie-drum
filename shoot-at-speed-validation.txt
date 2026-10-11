@@ -1,0 +1,244 @@
+'indentWithSpaces' is deprecated, use 'leadingTabsToSpaces' in your gradle build script instead.
+'indentWithSpaces' is deprecated, use 'leadingTabsToSpaces' in your gradle build script instead.
+> Task :processResources NO-SOURCE
+> Task :downloadDepsPreemptively
+> Task :extractReleaseNative UP-TO-DATE
+> Task :processTestResources NO-SOURCE
+> Task :spotlessInternalRegisterDependencies UP-TO-DATE
+> Task :spotlessGroovyGradle UP-TO-DATE
+> Task :generateTestEffectiveLombokConfig
+> Task :spotlessGroovyGradleCheck UP-TO-DATE
+> Task :spotlessJava
+> Task :spotlessJavaCheck
+> Task :spotlessMisc UP-TO-DATE
+> Task :spotlessMiscCheck UP-TO-DATE
+> Task :spotlessCheck
+> Task :generateEffectiveLombokConfig
+> Task :compileJava UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :jar UP-TO-DATE
+> Task :compileTestJava
+> Task :testClasses
+HAL Extensions: No extensions found
+[phoenix] CANbus Connected: sim
+[phoenix] CANbus Network Up: sim
+
+> Task :test
+
+ShooterDriverBindingTest > rightBumperInterruptsBothTriggersAndReleaseStopsOuttake() PASSED
+
+ShooterDriverBindingTest > releasingDuringSpinUpCancelsThePendingShot() PASSED
+
+ShooterDriverBindingTest > aStoppedOrDisconnectedFollowerKeepsTheShotWaiting() PASSED
+
+ShooterDriverBindingTest > xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTest() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+ShooterDriverBindingTest > xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTest() PASSED
+
+ShooterDriverBindingTest > diagnosticCancellationStopsHeldCommandsAndRetainsDirectDiagnosticAccess() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+ShooterDriverBindingTest > diagnosticCancellationStopsHeldCommandsAndRetainsDirectDiagnosticAccess() PASSED
+
+ShooterDriverBindingTest > shootingWithoutDeploymentSpinsFlywheelAndWaitsBeforeMovingArm() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+ShooterDriverBindingTest > shootingWithoutDeploymentSpinsFlywheelAndWaitsBeforeMovingArm() PASSED
+
+ShooterDriverBindingTest > simultaneousTriggersShootImmediatelyWhileArmAgitatesAndIntakeContinues() PASSED
+
+ShooterDriverBindingTest > xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTeleop() PASSED
+
+ShooterDriverBindingTest > rightTriggerStartsBottomRollersAndFeederEvenWhenHoodIsNotReady() PASSED
+
+SparkConnectionMonitorTest > invalidValuesCannotReportAHealthyDevice() PASSED
+
+SparkConnectionMonitorTest > perThreadErrorsAreCapturedBeforeAnotherDeviceReadClearsThem() PASSED
+
+SparkConnectionMonitorTest > disconnectStaysVisibleDespiteLaterHealthyReadsAndRecoversNextCycle() PASSED
+
+SparkConnectionMonitorTest > emptyCyclesDoNotReportAConnectionOrRequestDeviceData() PASSED
+
+AngularConfigurationStateTest > controllerFaultLosesReferenceAndReconfigurationNeverReseedsIt() PASSED
+
+AngularConfigurationStateTest > enabledNeverAppliesOrAcknowledgesPendingConfiguration() PASSED
+
+AngularConfigurationStateTest > exceptionOrInvalidRequestCannotLeaveOldConfigurationMarkedReady() PASSED
+
+AngularConfigurationStateTest > failedAcknowledgementRetriesOnlyDisabledAndAtBoundedRate() PASSED
+
+AngularIOSimTest > stopReportsZeroAppliedOutputAfterRunningWithCurrentLimits() PASSED
+
+AngularIOSimTest > rollerProfileAcceleratesAndLiveStaticFeedforwardChangesDirection() PASSED
+
+AngularIOSimTest > reverseOutputReportsPositiveBatteryDrawAndRespectsBatteryAndDutyLimits() PASSED
+
+AngularIOSimTest > currentLimitedAppliedVoltageDiffersFromRequestedVoltage() PASSED
+
+AngularIOSimTest > gravityRejectsMissingLengthAndIntakeSimHasExplicitGeometryAndRollerProfiles() PASSED
+
+AngularIOSimTest > gravityEnabledArmFallsAndReplacingAngleSupplierChangesGravityDirection() PASSED
+
+AngularIOSimTest > zeroBatteryDoesNotProduceNanCurrentOrVoltage() PASSED
+
+AngularSparkTuningTest > staticGravityAndNoGravityDoNotEnableAnArmCosine() PASSED
+
+AngularSparkTuningTest > completeGainApiPreservesLegacyIoCompatibility() PASSED
+
+AngularSparkTuningTest > convertedFirmwareGainsIncludeStaticFrictionAndGravityInsideOutputRange() PASSED
+
+AngularSparkVelocityModeTest > zeroAccelerationUsesPlainVelocityDespitePositiveCruiseVelocity() PASSED
+
+AngularSparkVelocityModeTest > positiveAccelerationEnablesMaxMotionWithoutRequiringCruiseVelocity() PASSED
+
+AngularSparkVelocityModeTest > plainVelocityReferenceIsTheGoalAndNeverReadsMaxMotionTelemetry() PASSED
+
+AngularSparkVelocityModeTest > negativeAndNonfiniteAccelerationAreRejected() PASSED
+
+AngularSparkVelocityModeTest > profileChangesDoNotChangeReferenceUntilAnotherVelocityCommandSelectsTheMode() PASSED
+
+AngularSparkVelocityModeTest > anUnconfiguredRollerUsesPlainVelocityControl() PASSED
+
+AngularSubsystemTuningTest > diagnosticRefreshForwardsStaticGainPreservesDeviceProfileAndNeverStows() PASSED
+
+BottomRollerLimitsTest > subsystemCapAppliesToRealAndSim() PASSED
+
+BottomRollerLimitsTest > mainDrumAndItsThreeFollowersAreCappedAtThirtyRps() PASSED
+
+BottomRollerLimitsTest > mirroredFlywheelEncodersAreComparedInTheSameMechanismDirection() PASSED
+
+BottomRollerLimitsTest > hardwareClampsBothDirectionsAndConvertsMotorSpeedThroughGearing() PASSED
+
+BottomRollerLimitsTest > bottomRollersUseSixtyAmpsAndTwentyPercentVortexSpeed() PASSED
+
+BottomRollerLimitsTest > mechanismMotorIdsHaveExactlyOneControllerOwner() PASSED
+
+HardwareMergeConfigurationTest > intakeControlCurrentLimitsPreserveCalibratedHardwareAndGains() PASSED
+
+HardwareMergeConfigurationTest > mergedAgitationStaysWithinCalibratedPivotTravel() PASSED
+
+HardwareMergeConfigurationTest > shooterRetainsMirroredFollowersAndBringupSettings() PASSED
+
+DriveDiagnosticPolicyTest > oldCrossingsExpireAndGrowthOrBadTimeTrips() PASSED
+
+DriveDiagnosticPolicyTest > timingRequiresEnoughFreshFastSamples() PASSED
+
+DriveDiagnosticPolicyTest > timingRejectsBothSlowMedianAndTailAndRecoversWithRollingWindow() PASSED
+
+DriveDiagnosticPolicyTest > wrapsCrossBoundaryWithoutLongRotation() PASSED
+
+DriveDiagnosticPolicyTest > cancellationRequiresReleaseBeforeRestart() PASSED
+
+DriveDiagnosticPolicyTest > oscillationIgnoresSmallNoiseButTripsOnFourLargeCrossingsAndLatches() PASSED
+
+DriveDiagnosticPolicyTest > heldButtonNeverStartsAcrossEnableOrFaultRecovery() PASSED
+
+DriveDiagnosticPolicyTest > pulseStopsAtEitherLimitAndInvalidData() PASSED
+
+HeadingResetBindingTest > startResetsOnlyHeadingForEveryAllianceWhileEnabledOrDisabled() PASSED
+
+ModuleDiagnosticTest > equalDiagnosticVelocityBypassesOptimizationAndCosineScaling() PASSED
+
+ModuleDiagnosticTest > halfTurnOptimizationReversesSpeedButPreservesTravelDirection() PASSED
+
+ModuleDiagnosticTest > voltageRequestsAndLimitConfigurationForwardWithoutPolarityChanges() PASSED
+
+ModuleDiagnosticTest > steeringOnlyAndStopExplicitlyZeroDriveAndBothOpenLoopOutputs() PASSED
+
+ModulePolarityRegressionTest > calibratedModuleIdsOffsetsAndDrivePolaritiesStayTogether() PASSED
+
+ModulePolarityRegressionTest > gainAndDiagnosticRangeChangesReassertBothInversionValuesWithoutTouchingEncoders() PASSED
+
+ModuleTurnSeedCadenceTest > failedBootAndDisabledAttemptsWaitOneSecondBeforeRetrying() PASSED
+
+ModuleTurnSeedCadenceTest > sharedBudgetSpreadsAllFourModulesAcrossLoopsWithoutStarvation() PASSED
+
+ModuleTurnSeedCadenceTest > missingControllerCannotDelayAHealthyModulesRetry() PASSED
+
+ModuleTurnSeedCadenceTest > enabledUnconfiguredMissingAndMovingControllersDoNotConsumeTheBudget() PASSED
+
+RemoteDiagnosticPolicyTest > heartbeatAcceptsFreshInclusiveBoundaryAndRejectsStaleOrFuture() PASSED
+
+RemoteDiagnosticPolicyTest > heldRequestDoesNotRepeatAndOlderRequestsNeverStart() PASSED
+
+RemoteDiagnosticPolicyTest > heartbeatRejectsNegativeNonfiniteAndInvalidMaxAge() PASSED
+
+RemoteDiagnosticPolicyTest > invalidNoncesCannotActivateOrAdvanceTheGate() PASSED
+
+RemoteDiagnosticPolicyTest > disabledOrFaultedRequestsAreConsumedBeforeRecovery() PASSED
+
+IntakeDiagnosticPolicyTest > requestsEnforceAllIndependentHardLimits() PASSED
+
+IntakeDiagnosticPolicyTest > enabledChangesCannotReleaseOrSelectIsolation() PASSED
+
+IntakeDiagnosticPolicyTest > explicitStopStaysLatchedAcrossDisableUntilClearedWhileDisabled() PASSED
+
+IntakeDiagnosticPolicyTest > pulseStopsAtTravelLimitAndOnOppositeDirection() PASSED
+
+IntakeDiagnosticPolicyTest > verifiedHardstopAllowsOnlyBoundedInwardFeedback() PASSED
+
+IntakeDiagnosticPolicyTest > stepsCannotTargetOrOvershootOutsideVerifiedInterior() PASSED
+
+IntakeDiagnosticPolicyTest > oldCalibrationOrRemoteRequestCannotStartAfterEnable() PASSED
+
+IntakeDiagnosticPolicyTest > freshnessConnectionConfigurationAndCurrentAreRequired() PASSED
+
+IntakeDiagnosticPolicyTest > deadmanHeldBeforePreparationCannotStartAndCancellationRequiresRelease() PASSED
+
+IntakeDiagnosticPolicyTest > watchdogStopsWithoutWaitingForMainLoop() PASSED
+
+IntakeDiagnosticPolicyTest > startupSeedIsNotAnInteriorPositionStartingPoint() PASSED
+
+IntakeDiagnosticPolicyTest > timingMustRequalifyFollowingModeOrClockDiscontinuity() PASSED
+
+IntakeDiagnosticsWatchdogTest > notifierStopsWhileMainInputReadIsBlockedAndResumeCannotReissueOutput() PASSED
+
+IntakeDriverBindingTest > xboxRollersRetainStowedOrDeployedPivotAndStopOnReleaseAndRepress() PASSED
+
+IntakeDriverBindingTest > enabledTestUsesNormalXboxControlsWithoutAutomaticallyDeploying() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+IntakeDriverBindingTest > enabledTestUsesNormalXboxControlsWithoutAutomaticallyDeploying() PASSED
+
+IntakeDriverBindingTest > explicitTestDeployRequiresEnabledTestWithoutSelectedDiagnostic() PASSED
+
+IntakeDriverBindingTest > disableStopsRollersAndRequiresAnotherTriggerEdge() PASSED
+
+IntakeDriverBindingTest > autonomousThenTeleopDeploysOnlyOnceAndPracticeTeleopAlsoDeploys() PASSED
+
+IntakeDriverBindingTest > persistentStowAllowsLaterExplicitRedeployWithoutChangingRollers() PASSED
+
+IntakeDriverBindingTest > deployRestoresSixtyAfterTwoSecondTimeoutWithoutArrival() PASSED
+
+IntakeDriverBindingTest > cancelledDeployKeepsExistingEightyAmpRequestAndDeployedRestingState() PASSED
+
+IntakeDriverBindingTest > deployRequestsEightyThenSixtyAfterMeasuredArrival() PASSED
+
+IntakeReferenceUnitsTest > confirmedStowedReferenceEqualsConfiguredLimitExactly() PASSED
+
+IntakeRollerCommandTest > diagnosticAccessAndDirectStopRefreshBothRollerGroupsWithoutScheduling() PASSED
+
+IntakeRollerCommandTest > rollerAndPivotCommandsRunIndependentlyAndReleaseStopsBothRollerGroups() PASSED
+
+IntakeRollerCommandTest > outtakeInterruptsIntakeReversesIndexerAndLeavesPivotPositionAlone() PASSED
+
+> Task :assemble UP-TO-DATE
+> Task :check
+> Task :build
+
+[Incubating] Problems report is available at: file:///C:/Users/otgra/.codex/worktrees/merge-10-9/FRC-Bordie/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.3.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 4s
+15 actionable tasks: 7 executed, 8 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.0/userguide/configuration_cache_enabling.html

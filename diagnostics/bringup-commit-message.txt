@@ -1,0 +1,7 @@
+Restore intake controls and configure shooter bring-up
+
+Enable normal Xbox commands in Test mode unless explicit diagnostics are selected. Correct intake pivot reference and controller units, set pivot/pickup current settings to 80 A, and add acknowledged configuration recovery and warm-redeploy reference preservation.
+
+Set flywheel current settings to 80 A, add initial real flywheel/indexer gains, correct shooter P units, and qualify readiness against current target speed. Add optional per-motor telemetry and controller/input recording tools.
+
+Validation: 71 Java tests, 12 Python diagnostic-tool tests, jar build and source formatting check passed. The physical shooter direction issue remains unresolved; corrected P scaling and per-motor logging are not deployed. No speed ramp is implemented.

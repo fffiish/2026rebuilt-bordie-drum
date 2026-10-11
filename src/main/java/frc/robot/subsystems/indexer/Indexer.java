@@ -18,6 +18,10 @@ import frc.robot.lib.subsystem.sensor.currentsensor.CurrentSensorSubsystem;
  * #jammed()}.
  */
 public class Indexer extends VirtualSubsystem {
+  public void stopImmediately() {
+    rollers.stopImmediately();
+  }
+
   private static final IndexerState kDefaultState = IndexerState.kIdle;
 
   private final AngularSubsystem rollers;
@@ -32,12 +36,18 @@ public class Indexer extends VirtualSubsystem {
     this.stagedSensor = stagedSensor;
     this.jamSensor = jamSensor;
 
-    rollers.setDefaultCommand(rollers.velocity(() -> targetState.getVelocity()));
+    rollers.setDefaultCommand(rollers.openLoop(() -> targetState.getVoltage()));
   }
 
   /** Holds {@code state} while scheduled, then falls back to idle. Bind with {@code whileTrue}. */
   public Command set(IndexerState state) {
-    return Commands.startEnd(() -> targetState = state, () -> targetState = kDefaultState, this);
+    return Commands.startEnd(
+        () -> targetState = state,
+        () -> {
+          targetState = kDefaultState;
+          rollers.stopImmediately();
+        },
+        this);
   }
 
   /** Latches {@code state} and finishes immediately. For auto sequences. */

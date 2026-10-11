@@ -1,0 +1,173 @@
+{
+  "/AdvantageKit/Timestamp": [
+    [
+      1660413057,
+      1660413057
+    ],
+    [
+      1660777379,
+      1660777379
+    ],
+    [
+      1661156263,
+      1661156263
+    ],
+    [
+      1661528580,
+      1661528580
+    ],
+    [
+      1661893904,
+      1661893904
+    ],
+    [
+      1662275199,
+      1662275199
+    ],
+    [
+      1662652488,
+      1662652488
+    ],
+    [
+      1663024990,
+      1663024990
+    ],
+    [
+      1663381966,
+      1663381966
+    ],
+    [
+      1663770106,
+      1663770106
+    ],
+    [
+      1664118939,
+      1664118939
+    ],
+    [
+      1664489698,
+      1664489698
+    ],
+    [
+      1664865002,
+      1664865002
+    ],
+    [
+      1665229620,
+      1665229620
+    ],
+    [
+      1665594759,
+      1665594759
+    ]
+  ],
+  "/AdvantageKit/DriverStation/Enabled": [
+    [
+      152909855,
+      false
+    ]
+  ],
+  "/AdvantageKit/AngularSubsystems/ShooterFlywheel/DeviceConnectedStatuses": [
+    [
+      15064675,
+      [
+        {
+          "connected": true,
+          "id": 39
+        },
+        {
+          "connected": true,
+          "id": 34
+        },
+        {
+          "connected": true,
+          "id": 26
+        },
+        {
+          "connected": true,
+          "id": 29
+        }
+      ]
+    ]
+  ],
+  "/AdvantageKit/AngularSubsystems/IntakeRollers/DeviceConnectedStatuses": [
+    [
+      768920703,
+      [
+        {
+          "connected": true,
+          "id": 2
+        },
+        {
+          "connected": false,
+          "id": 37
+        }
+      ]
+    ]
+  ],
+  "/AdvantageKit/Drive/Gyro/Connected": [
+    [
+      1659315714,
+      false
+    ],
+    [
+      1662275199,
+      true
+    ],
+    [
+      1663770106,
+      false
+    ],
+    [
+      1665594759,
+      true
+    ]
+  ],
+  "/AdvantageKit/AngularSubsystems/Feeder/DeviceConnectedStatuses": [
+    [
+      15064675,
+      [
+        {
+          "connected": true,
+          "id": 28
+        },
+        {
+          "connected": true,
+          "id": 35
+        }
+      ]
+    ]
+  ],
+  "/AdvantageKit/Hood/ControllerConnected": [
+    [
+      15064675,
+      false
+    ]
+  ],
+  "/AdvantageKit/AngularSubsystems/IntakePivot/DeviceConnectedStatuses": [
+    [
+      15064675,
+      [
+        {
+          "connected": true,
+          "id": 21
+        }
+      ]
+    ]
+  ],
+  "/AdvantageKit/AngularSubsystems/Indexer/DeviceConnectedStatuses": [
+    [
+      15064675,
+      [
+        {
+          "connected": true,
+          "id": 36
+        },
+        {
+          "connected": true,
+          "id": 22
+        }
+      ]
+    ]
+  ]
+}

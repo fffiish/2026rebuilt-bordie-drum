@@ -1,0 +1,4 @@
+{"topic": "/AdvantageKit/DriverStation/DSAttached", "value": true, "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/DriverStation/Enabled", "value": false, "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/DriverStation/Test", "value": true, "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+Saved C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\build\diagnostics\feeder-60amp-can-status.json

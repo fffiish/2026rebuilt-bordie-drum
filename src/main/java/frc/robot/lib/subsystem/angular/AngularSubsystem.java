@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -111,42 +112,7 @@ public class AngularSubsystem extends RegisteredSubsystem {
       afterIO = Timer.getFPGATimestamp();
     }
 
-    LoggedTunableNumber.ifChanged(
-        hashCode(),
-        () -> {
-          config.setKP(kPTunable.get());
-          config.setKI(kITunable.get());
-          config.setKD(kDTunable.get());
-          config.setKV(kVTunable.get());
-          config.setKG(kGTunable.get());
-          config.setKS(kSTunable.get());
-          io.setPIDVG(
-              kPTunable.get(), kITunable.get(), kDTunable.get(), kVTunable.get(), kGTunable.get());
-        },
-        kPTunable,
-        kITunable,
-        kDTunable,
-        kVTunable,
-        kGTunable);
-    LoggedTunableNumber.ifChanged(
-        hashCode(),
-        () -> {
-          config.setCruiseVelocity(RadiansPerSecond.of(cruiseVelocityTunable.get()));
-          config.setAcceleration(RadiansPerSecondPerSecond.of(accelerationTunable.get()));
-          io.setConstraints(
-              RadiansPerSecond.of(cruiseVelocityTunable.get()),
-              RadiansPerSecondPerSecond.of(accelerationTunable.get()));
-        },
-        cruiseVelocityTunable,
-        accelerationTunable);
-    LoggedTunableNumber.ifChanged(
-        hashCode(),
-        () -> config.setPositionTolerance(Radians.of(positionToleranceTunable.get())),
-        positionToleranceTunable);
-    LoggedTunableNumber.ifChanged(
-        hashCode(),
-        () -> config.setVelocityTolerance(RadiansPerSecond.of(velocityToleranceTunable.get())),
-        velocityToleranceTunable);
+    updateTunables();
 
     if (outputMode == kOpenLoop) {
       isAtAngle = false;
@@ -189,7 +155,56 @@ public class AngularSubsystem extends RegisteredSubsystem {
       double end = Timer.getFPGATimestamp();
       accumulatedInputUpdateMS += (afterIO - start) * 1000.0;
       accumulatedSubsystemCodeMS += (end - afterIO) * 1000.0;
+      Logger.recordOutput(
+          "Timing/AngularSubsystems/" + logKey + "/InputUpdateMS", (afterIO - start) * 1000.0);
     }
+  }
+
+  private void updateTunables() {
+    LoggedTunableNumber.ifChanged(
+        hashCode(),
+        () -> {
+          config.setKP(kPTunable.get());
+          config.setKI(kITunable.get());
+          config.setKD(kDTunable.get());
+          config.setKV(kVTunable.get());
+          config.setKG(kGTunable.get());
+          config.setKS(kSTunable.get());
+          io.setGains(
+              kPTunable.get(),
+              kITunable.get(),
+              kDTunable.get(),
+              kSTunable.get(),
+              kVTunable.get(),
+              kGTunable.get());
+        },
+        kPTunable,
+        kITunable,
+        kDTunable,
+        kVTunable,
+        kGTunable,
+        kSTunable);
+    LoggedTunableNumber.ifChanged(
+        hashCode(),
+        () -> {
+          // Unspecified zero defaults must not erase usable device profile limits.
+          if (cruiseVelocityTunable.get() <= 0.0 || accelerationTunable.get() <= 0.0) return;
+          config.setCruiseVelocity(RadiansPerSecond.of(cruiseVelocityTunable.get()));
+          config.setAcceleration(RadiansPerSecondPerSecond.of(accelerationTunable.get()));
+          io.setConstraints(
+              RadiansPerSecond.of(cruiseVelocityTunable.get()),
+              RadiansPerSecondPerSecond.of(accelerationTunable.get()));
+        },
+        cruiseVelocityTunable,
+        accelerationTunable);
+    LoggedTunableNumber.ifChanged(
+        hashCode(),
+        () -> config.setPositionTolerance(Radians.of(positionToleranceTunable.get())),
+        positionToleranceTunable);
+    LoggedTunableNumber.ifChanged(
+        hashCode(),
+        () -> config.setVelocityTolerance(RadiansPerSecond.of(velocityToleranceTunable.get())),
+        velocityToleranceTunable);
   }
 
   public static void recordAndResetTiming() {
@@ -210,7 +225,8 @@ public class AngularSubsystem extends RegisteredSubsystem {
   public Command velocity(AngularVelocity angVel) {
     // Only set angle once, run until canceled.
     return parallel(
-        sequence(runOnce(() -> io.setVelocity(angVel)), idle()), setOutputMode(kVelocity));
+        sequence(runOnce(() -> io.setVelocity(config.limitVelocity(angVel))), idle()),
+        setOutputMode(kVelocity));
   }
 
   public Command angle(Supplier<Angle> angle) {
@@ -226,7 +242,8 @@ public class AngularSubsystem extends RegisteredSubsystem {
 
   public Command velocity(Supplier<AngularVelocity> angVel) {
     // Set angle every loop, run until canceled.
-    return parallel(run(() -> io.setVelocity(angVel.get())), setOutputMode(kVelocity));
+    return parallel(
+        run(() -> io.setVelocity(config.limitVelocity(angVel.get()))), setOutputMode(kVelocity));
   }
 
   public Command openLoop(Voltage voltage) {
@@ -242,6 +259,12 @@ public class AngularSubsystem extends RegisteredSubsystem {
 
   public Command stop() {
     return runOnce(io::stop);
+  }
+
+  /** Immediate stop for the isolated drivetrain Test path; requires no scheduler. */
+  public void stopImmediately() {
+    outputMode = kOpenLoop;
+    io.stop();
   }
 
   public Command holdAtCall() {
@@ -267,6 +290,19 @@ public class AngularSubsystem extends RegisteredSubsystem {
 
   public Command resetAngle(Supplier<Angle> angle) {
     return Commands.runOnce(() -> io.resetAngle(angle.get()));
+  }
+
+  /** Changes the current limit at runtime. Requires nothing, so it can run beside a motion. */
+  public Command setCurrentLimit(Current limit) {
+    return Commands.runOnce(() -> applyCurrentLimit(limit));
+  }
+
+  /**
+   * Applies a current limit immediately, outside the command system. Use from {@code finallyDo} so
+   * a temporary limit is always undone, even when the command that raised it is interrupted.
+   */
+  public void applyCurrentLimit(Current limit) {
+    io.setCurrentLimit(limit);
   }
 
   public Command setNeutralModeBrake() {
@@ -324,5 +360,127 @@ public class AngularSubsystem extends RegisteredSubsystem {
   public boolean areAllDevicesConnected() {
     return Arrays.stream(inputs.deviceConnectedStatuses)
         .allMatch(DeviceConnectedStatus::isConnected);
+  }
+
+  public boolean areAllMotorsAtVelocity(AngularVelocity target, AngularVelocity tolerance) {
+    double desired = target.in(RadiansPerSecond);
+    double allowed = tolerance.in(RadiansPerSecond);
+    return areAllDevicesConnected()
+        && Double.isFinite(desired)
+        && Double.isFinite(allowed)
+        && allowed >= 0
+        && Math.abs(inputs.velocity.in(RadiansPerSecond) - desired) <= allowed
+        // The leader establishes commanded direction. Mirrored follower encoder polarity does
+        // not establish mechanism direction, so compare follower speed magnitudes.
+        && Arrays.stream(inputs.motorVelocitiesRadiansPerSecond)
+            .allMatch(
+                value ->
+                    Double.isFinite(value)
+                        && Math.abs(Math.abs(value) - Math.abs(desired)) <= allowed);
+  }
+
+  /** Every connected motor is spinning forward at {@code minimum} or faster. */
+  public boolean areAllMotorsAtLeast(AngularVelocity minimum) {
+    double floor = minimum.in(RadiansPerSecond);
+    return areAllDevicesConnected()
+        && Double.isFinite(floor)
+        && inputs.velocity.in(RadiansPerSecond) >= floor
+        // Mirrored followers report opposite encoder polarity, so compare magnitudes.
+        && Arrays.stream(inputs.motorVelocitiesRadiansPerSecond)
+            .allMatch(value -> Double.isFinite(value) && Math.abs(value) >= floor);
+  }
+
+  /** Test mode bypasses the scheduler. Refresh actual IO without running any default command. */
+  public void diagnosticRefresh() {
+    if (DriverStation.isDisabled()) updateTunables();
+    io.updateInputs(inputs);
+    Logger.processInputs(String.format("AngularSubsystems/%s", logKey), inputs);
+  }
+
+  public void diagnosticStop() {
+    stopImmediately();
+  }
+
+  public void diagnosticSetOpenLoop(Voltage voltage) {
+    outputMode = kOpenLoop;
+    io.setOpenLoop(voltage);
+  }
+
+  public void diagnosticSetAngle(Angle angle) {
+    outputMode = kClosedLoop;
+    io.setAngle(angle);
+  }
+
+  public boolean diagnosticSetOutputLimit(double duty) {
+    return DriverStation.isDisabled()
+        && Double.isFinite(duty)
+        && duty > 0.0
+        && duty <= 1.0
+        && io.diagnosticSetOutputLimit(duty);
+  }
+
+  public boolean diagnosticCalibrateReference(Angle angle) {
+    return DriverStation.isDisabled()
+        && Double.isFinite(angle.in(Radians))
+        && io.diagnosticCalibrateReference(angle);
+  }
+
+  public boolean diagnosticConfigReady() {
+    return inputs.configReady && !inputs.configPending;
+  }
+
+  public double diagnosticTimestampSeconds() {
+    return inputs.sampleTimestampSeconds;
+  }
+
+  public boolean diagnosticConnected() {
+    return areAllDevicesConnected()
+        && (inputs.deviceConnectedStatuses.length > 0
+            || (Constants.currentMode == Constants.Mode.SIM
+                && Double.isFinite(inputs.sampleTimestampSeconds)));
+  }
+
+  public Angle diagnosticAngle() {
+    return inputs.angle;
+  }
+
+  public AngularVelocity diagnosticVelocity() {
+    return inputs.velocity;
+  }
+
+  public Voltage diagnosticAppliedVolts() {
+    return inputs.appliedVolts;
+  }
+
+  public Voltage diagnosticBusVolts() {
+    return inputs.busVolts;
+  }
+
+  public Current diagnosticStatorCurrent() {
+    return inputs.statorCurrent;
+  }
+
+  public double diagnosticOutputLimit() {
+    return inputs.readbackOutputLimit;
+  }
+
+  public double diagnosticMinimumAngleRadians() {
+    return inputs.readbackMinimumAngleRadians;
+  }
+
+  public double diagnosticMaximumAngleRadians() {
+    return inputs.readbackMaximumAngleRadians;
+  }
+
+  public boolean diagnosticReferenceValid() {
+    return inputs.referenceValid;
+  }
+
+  public double diagnosticMaxTemperatureCelsius() {
+    return Arrays.stream(inputs.motorTemperatures).max().orElse(Double.NaN);
+  }
+
+  public AngularIO.AngularIOInputs diagnosticInputs() {
+    return inputs;
   }
 }

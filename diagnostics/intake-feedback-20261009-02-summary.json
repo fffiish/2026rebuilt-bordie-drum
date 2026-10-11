@@ -1,0 +1,17 @@
+{
+  "run_nonce": 1,
+  "new_program_instance": true,
+  "requested_voltage": -0.2,
+  "requested_duration_sec": 0.1,
+  "passed": false,
+  "reason": "Completed time-limited pulse; net encoder movement below0.1degree feedback-pass criterion",
+  "start_degrees": 117.99999833106995,
+  "final_degrees": 117.99162983894348,
+  "delta_degrees": -0.00836849212647186,
+  "minimum_degrees": 117.98493504524231,
+  "peak_current_amps": 8.241758346557617,
+  "minimum_applied_volts": -0.19990419382121516,
+  "final_volts": 0.0,
+  "operator_observation": "Free to pivot; no visible movement; disabled after run",
+  "separate_stop_verified": true
+}

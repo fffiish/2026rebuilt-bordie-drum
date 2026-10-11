@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.constants.shooter.ShooterConstants;
+import frc.robot.lib.subsystem.SparkConnectionMonitor;
 
 /**
  * Hood IO for a SPARK MAX on CAN driving the pair of PA-14P actuators, with their potentiometers on
@@ -29,6 +30,7 @@ import frc.robot.constants.shooter.ShooterConstants;
  */
 public class HoodIOSparkMax implements HoodIO {
   private final SparkMax actuators;
+  private final SparkConnectionMonitor controllerConnection;
 
   private boolean extendCommanded = false;
 
@@ -39,12 +41,22 @@ public class HoodIOSparkMax implements HoodIO {
     config
         .idleMode(SparkBaseConfig.IdleMode.kBrake)
         .smartCurrentLimit((int) ShooterConstants.kHoodCurrentLimit.in(Amps));
+    config
+        .signals
+        .appliedOutputAlwaysOn(true)
+        .appliedOutputPeriodMs(20)
+        .busVoltageAlwaysOn(true)
+        .outputCurrentAlwaysOn(true);
 
+    // Restore startup acknowledgements after earlier monitors selected global nonblocking reads.
+    actuators.setCANTimeout(100);
+    actuators.setCANMaxRetries(5);
     actuators.clearFaults();
     actuators.configure(
         config,
         SparkBase.ResetMode.kResetSafeParameters,
         SparkBase.PersistMode.kNoPersistParameters);
+    controllerConnection = new SparkConnectionMonitor(actuators);
 
     setExtended(false);
   }
@@ -56,10 +68,16 @@ public class HoodIOSparkMax implements HoodIO {
     inputs.positionNormalized = 0.0;
     inputs.sensorVolts = 0.0;
 
-    inputs.controllerConnected = actuators.getFirmwareVersion() != 0;
+    controllerConnection.beginCycle();
     inputs.extendCommanded = extendCommanded;
-    inputs.appliedVolts = actuators.getAppliedOutput() * actuators.getBusVoltage();
+    double dutyCycle = actuators.getAppliedOutput();
+    controllerConnection.checkLastError(dutyCycle);
+    double busVoltage = actuators.getBusVoltage();
+    controllerConnection.checkLastError(busVoltage);
+    inputs.appliedVolts = dutyCycle * busVoltage;
     inputs.currentAmps = actuators.getOutputCurrent();
+    controllerConnection.checkLastError(inputs.currentAmps);
+    inputs.controllerConnected = controllerConnection.isConnected();
   }
 
   @Override

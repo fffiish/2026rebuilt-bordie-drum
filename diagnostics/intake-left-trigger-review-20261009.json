@@ -1,0 +1,73 @@
+{
+  "requested_behavior": "Left trigger deploys pivot and runs pickup/feeder rollers plus existing indexer; release stows and stops rollers",
+  "implementation": "RobotContainer uses RobotSuperstructure.bindIntakeTrigger -> existing intakeFuel command",
+  "isolated_source": "C:\\Users\\otgra\\source\\bordie-intake-calibration",
+  "main_source": "C:\\Users\\otgra\\2026rebuilt-bordie-drum",
+  "test_results": {
+    "isolated_java": {
+      "tests": 68,
+      "failures": 0,
+      "errors": 0
+    },
+    "main_java": {
+      "tests": 83,
+      "failures": 0,
+      "errors": 0,
+      "excluded_checks": [
+        "spotlessApply",
+        "verifyConfigurationCoverage"
+      ]
+    },
+    "python": {
+      "tests": 12,
+      "failures": 0
+    },
+    "main_configuration_inventory": "check fails while concurrent configuration task changes source inventory"
+  },
+  "review": "Astra independent review found no concrete regression",
+  "changes": [
+    "deploying LT binding restored",
+    "release immediately stops pickup and feeder rollers",
+    "plain velocity PID for unspecified zero acceleration; MAXMotion when positive; invalid acceleration rejects and stops",
+    "reference telemetry follows commanded velocity mode",
+    "logs intake target and scheduler inhibition reason"
+  ],
+  "build_artifact": "C:\\Users\\otgra\\source\\bordie-intake-calibration\\build\\libs\\bordie-intake-calibration.jar",
+  "build_sha256": "234f6d514cff88ee8105398b5d65449b8cfaeb1b3a38e3a17101d8d0134c0222",
+  "deployment": "Deployed isolated corrected build to10.18.99.2 while fresh DriverStation disabled; local andremoteSHA256match",
+  "hardware_proof": "Deployment/reference/zero-output readback verified; physical LT press/hold/release behavior not yet verified",
+  "current_hardware_limits": [
+    "Test mode does not execute normal Xbox bindings",
+    "Real intake gains remain zero pending calibration",
+    "Deployment angle0degrees remains unmeasured",
+    "Intake diagnostic isolation rearmed for next pivot pulse; normal Xbox bindings remain paused until explicit disabled deprepare"
+  ],
+  "robot_last_verified_state": {
+    "enabled": false,
+    "test": true,
+    "diagnostics_selected": false,
+    "active": false,
+    "pivot_degrees": 117.99999833106995,
+    "pivot_volts": 0.0,
+    "pivot_velocity_rad_per_sec": 0.0,
+    "pivot_output_cap": 1.0,
+    "pivot_configuration_ready": true,
+    "pivot_kP": 0.0,
+    "pivot_kV": 0.0,
+    "scheduler_active": false,
+    "inhibit_reason": "Test mode runs diagnostics; use Teleop for Xbox controls"
+  },
+  "committed": false,
+  "pushed": false,
+  "deployment_recording": "C:\\Users\\otgra\\OneDrive\\Documents\\ChatGPT\\FRC-Bordie\\diagnostics\\intake-left-trigger-afterdeploy-20261009.json",
+  "calibration_next_step": {
+    "state": "prepared; no activation",
+    "mode": "FEEDBACK",
+    "volts": -0.2,
+    "duration_seconds": 0.1,
+    "current_cutoff_amps": 10,
+    "reference_degrees": 118,
+    "diagnostic_preparation": true,
+    "awaiting": "Operator enable Test and observation of physical inward motion"
+  }
+}

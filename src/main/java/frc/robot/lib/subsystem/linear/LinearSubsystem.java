@@ -170,6 +170,8 @@ public class LinearSubsystem extends RegisteredSubsystem {
       double end = Timer.getFPGATimestamp();
       accumulatedInputUpdateMS += (afterIO - start) * 1000.0;
       accumulatedSubsystemCodeMS += (end - afterIO) * 1000.0;
+      Logger.recordOutput(
+          "Timing/LinearSubsystems/" + logKey + "/InputUpdateMS", (afterIO - start) * 1000.0);
     }
   }
 

@@ -1,0 +1,1563 @@
+{
+  "/AdvantageKit/Drive/Module0/DriveAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/DriveConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/DriveCurrentAmps": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/DrivePositionRad": {
+    "samples": 1,
+    "last": -136.4878692626953,
+    "span_seconds": 0.0,
+    "min": -136.4878692626953,
+    "median": -136.4878692626953,
+    "max": -136.4878692626953,
+    "mean": -136.4878692626953,
+    "p95": -136.4878692626953
+  },
+  "/AdvantageKit/Drive/Module0/DriveVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/OdometryDrivePositionsRad": {
+    "samples": 1,
+    "last": [
+      -136.4878692626953
+    ],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/OdometryTimestamps": {
+    "samples": 56,
+    "last": [
+      1568.301956
+    ],
+    "span_seconds": 20.0
+  },
+  "/AdvantageKit/Drive/Module0/OdometryTurnPositions": {
+    "samples": 2,
+    "last": {
+      "hex": "00000040fc22fb3f"
+    },
+    "span_seconds": 13.390999999999622
+  },
+  "/AdvantageKit/Drive/Module0/TurnAbsolutePosition": {
+    "samples": 23,
+    "last": {
+      "hex": "f6a26fc1b31cfb3f"
+    },
+    "span_seconds": 19.64099999999962
+  },
+  "/AdvantageKit/Drive/Module0/TurnAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/TurnConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/TurnCurrentAmps": {
+    "samples": 44,
+    "last": 0.03663003817200661,
+    "span_seconds": 19.64099999999962,
+    "min": 0.0,
+    "median": 0.09157509356737137,
+    "max": 0.32967033982276917,
+    "mean": 0.10073260336437008,
+    "p95": 0.21978022158145905
+  },
+  "/AdvantageKit/Drive/Module0/TurnEncoderConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module0/TurnPosition": {
+    "samples": 2,
+    "last": {
+      "hex": "00000040fc22fb3f"
+    },
+    "span_seconds": 13.390999999999622
+  },
+  "/AdvantageKit/Drive/Module0/TurnVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/DriveAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/DriveConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/DriveCurrentAmps": {
+    "samples": 40,
+    "last": 0.03663003817200661,
+    "span_seconds": 20.0,
+    "min": 0.0,
+    "median": 0.03663003817200661,
+    "max": 0.32967033982276917,
+    "mean": 0.08424908705055714,
+    "p95": 0.25641027092933655
+  },
+  "/AdvantageKit/Drive/Module1/DrivePositionRad": {
+    "samples": 1,
+    "last": -241.17800903320312,
+    "span_seconds": 0.0,
+    "min": -241.17800903320312,
+    "median": -241.17800903320312,
+    "max": -241.17800903320312,
+    "mean": -241.17800903320312,
+    "p95": -241.17800903320312
+  },
+  "/AdvantageKit/Drive/Module1/DriveVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/OdometryDrivePositionsRad": {
+    "samples": 1,
+    "last": [
+      -241.17800903320312
+    ],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/OdometryTimestamps": {
+    "samples": 56,
+    "last": [
+      1568.304405
+    ],
+    "span_seconds": 20.0
+  },
+  "/AdvantageKit/Drive/Module1/OdometryTurnPositions": {
+    "samples": 1,
+    "last": {
+      "hex": "000000203425fb3f"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/TurnAbsolutePosition": {
+    "samples": 16,
+    "last": {
+      "hex": "b4a283f43325fb3f"
+    },
+    "span_seconds": 20.0
+  },
+  "/AdvantageKit/Drive/Module1/TurnAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/TurnConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/TurnCurrentAmps": {
+    "samples": 8,
+    "last": 0.0,
+    "span_seconds": 18.54699999999957,
+    "min": 0.0,
+    "median": 0.03663003817200661,
+    "max": 0.10989011079072952,
+    "mean": 0.045787546783685684,
+    "p95": 0.10989011079072952
+  },
+  "/AdvantageKit/Drive/Module1/TurnEncoderConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/TurnPosition": {
+    "samples": 1,
+    "last": {
+      "hex": "000000203425fb3f"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module1/TurnVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/DriveAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/DriveConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/DriveCurrentAmps": {
+    "samples": 26,
+    "last": 0.0,
+    "span_seconds": 17.063000000000102,
+    "min": 0.0,
+    "median": 0.018315019086003304,
+    "max": 0.21978022158145905,
+    "mean": 0.04085658032160539,
+    "p95": 0.10989011079072952
+  },
+  "/AdvantageKit/Drive/Module2/DrivePositionRad": {
+    "samples": 1,
+    "last": -245.12850952148438,
+    "span_seconds": 0.0,
+    "min": -245.12850952148438,
+    "median": -245.12850952148438,
+    "max": -245.12850952148438,
+    "mean": -245.12850952148438,
+    "p95": -245.12850952148438
+  },
+  "/AdvantageKit/Drive/Module2/DriveVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/OdometryDrivePositionsRad": {
+    "samples": 1,
+    "last": [
+      -245.12850952148438
+    ],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/OdometryTimestamps": {
+    "samples": 56,
+    "last": [
+      1568.306872
+    ],
+    "span_seconds": 20.0
+  },
+  "/AdvantageKit/Drive/Module2/OdometryTurnPositions": {
+    "samples": 1,
+    "last": {
+      "hex": "000000003558fb3f"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/TurnAbsolutePosition": {
+    "samples": 19,
+    "last": {
+      "hex": "5c0242273558fb3f"
+    },
+    "span_seconds": 17.79699999999957
+  },
+  "/AdvantageKit/Drive/Module2/TurnAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/TurnConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/TurnCurrentAmps": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/TurnEncoderConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/TurnPosition": {
+    "samples": 1,
+    "last": {
+      "hex": "000000003558fb3f"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module2/TurnVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/DriveAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/DriveConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/DriveCurrentAmps": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/DrivePositionRad": {
+    "samples": 1,
+    "last": -244.6582794189453,
+    "span_seconds": 0.0,
+    "min": -244.6582794189453,
+    "median": -244.6582794189453,
+    "max": -244.6582794189453,
+    "mean": -244.6582794189453,
+    "p95": -244.6582794189453
+  },
+  "/AdvantageKit/Drive/Module3/DriveVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/OdometryDrivePositionsRad": {
+    "samples": 1,
+    "last": [
+      -244.6582794189453
+    ],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/OdometryTimestamps": {
+    "samples": 56,
+    "last": [
+      1568.311992
+    ],
+    "span_seconds": 20.0
+  },
+  "/AdvantageKit/Drive/Module3/OdometryTurnPositions": {
+    "samples": 2,
+    "last": {
+      "hex": "00000060e276fb3f"
+    },
+    "span_seconds": 13.04699999999957
+  },
+  "/AdvantageKit/Drive/Module3/TurnAbsolutePosition": {
+    "samples": 15,
+    "last": {
+      "hex": "52912ae42a7dfb3f"
+    },
+    "span_seconds": 20.0
+  },
+  "/AdvantageKit/Drive/Module3/TurnAppliedVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/TurnConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/TurnCurrentAmps": {
+    "samples": 49,
+    "last": 0.21978022158145905,
+    "span_seconds": 20.0,
+    "min": 0.0,
+    "median": 0.07326007634401321,
+    "max": 0.25641027092933655,
+    "mean": 0.09792928420463387,
+    "p95": 0.21978022158145905
+  },
+  "/AdvantageKit/Drive/Module3/TurnEncoderConnected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Drive/Module3/TurnPosition": {
+    "samples": 2,
+    "last": {
+      "hex": "00000060e276fb3f"
+    },
+    "span_seconds": 13.04699999999957
+  },
+  "/AdvantageKit/Drive/Module3/TurnVelocityRadPerSec": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/DriverStation/AllianceStation": {
+    "samples": 1,
+    "last": 1,
+    "span_seconds": 0.0,
+    "min": 1,
+    "median": 1,
+    "max": 1,
+    "mean": 1,
+    "p95": 1
+  },
+  "/AdvantageKit/DriverStation/Autonomous": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/DSAttached": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/EmergencyStop": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Enabled": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/EventName": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/FMSAttached": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/GameSpecificMessage": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick0/AxisTypes": {
+    "samples": 1,
+    "last": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick0/AxisValues": {
+    "samples": 1,
+    "last": [
+      -0.0078125,
+      -0.0078125,
+      0.0,
+      0.0,
+      0.0,
+      -0.03125
+    ],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick0/ButtonCount": {
+    "samples": 1,
+    "last": 16,
+    "span_seconds": 0.0,
+    "min": 16,
+    "median": 16,
+    "max": 16,
+    "mean": 16,
+    "p95": 16
+  },
+  "/AdvantageKit/DriverStation/Joystick0/ButtonValues": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick0/Name": {
+    "samples": 1,
+    "last": "Controller (Xbox One For Windows)",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick0/POVs": {
+    "samples": 1,
+    "last": [
+      -1
+    ],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick0/Type": {
+    "samples": 1,
+    "last": 1,
+    "span_seconds": 0.0,
+    "min": 1,
+    "median": 1,
+    "max": 1,
+    "mean": 1,
+    "p95": 1
+  },
+  "/AdvantageKit/DriverStation/Joystick0/Xbox": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/AxisTypes": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/AxisValues": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/ButtonCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/ButtonValues": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/Name": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/POVs": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/Type": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick1/Xbox": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/AxisTypes": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/AxisValues": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/ButtonCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/ButtonValues": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/Name": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/POVs": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/Type": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick2/Xbox": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/AxisTypes": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/AxisValues": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/ButtonCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/ButtonValues": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/Name": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/POVs": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/Type": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick3/Xbox": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/AxisTypes": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/AxisValues": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/ButtonCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/ButtonValues": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/Name": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/POVs": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/Type": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick4/Xbox": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/AxisTypes": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/AxisValues": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/ButtonCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/ButtonValues": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/Name": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/POVs": {
+    "samples": 1,
+    "last": [],
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/Type": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Joystick5/Xbox": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/DriverStation/MatchNumber": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/MatchTime": {
+    "samples": 1,
+    "last": -1.0,
+    "span_seconds": 0.0,
+    "min": -1.0,
+    "median": -1.0,
+    "max": -1.0,
+    "mean": -1.0,
+    "p95": -1.0
+  },
+  "/AdvantageKit/DriverStation/MatchType": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/ReplayNumber": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/DriverStation/Test": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Hood/AppliedVolts": {
+    "samples": 1,
+    "last": NaN,
+    "span_seconds": 0.0,
+    "min": NaN,
+    "median": NaN,
+    "max": NaN,
+    "mean": NaN,
+    "p95": NaN
+  },
+  "/AdvantageKit/Hood/Connected": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Hood/ControllerConnected": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Hood/CurrentAmps": {
+    "samples": 1,
+    "last": -3.2525440474273637e-06,
+    "span_seconds": 0.0,
+    "min": -3.2525440474273637e-06,
+    "median": -3.2525440474273637e-06,
+    "max": -3.2525440474273637e-06,
+    "mean": -3.2525440474273637e-06,
+    "p95": -3.2525440474273637e-06
+  },
+  "/AdvantageKit/Hood/ExtendCommanded": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/Hood/PositionNormalized": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/Hood/SensorVolts": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/RealMetadata/BuildDate": {
+    "samples": 1,
+    "last": "2026-10-08 23:23:05 EDT",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealMetadata/GitBranch": {
+    "samples": 1,
+    "last": "encoder",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealMetadata/GitDate": {
+    "samples": 1,
+    "last": "2026-10-08 23:04:10 EDT",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealMetadata/GitDirty": {
+    "samples": 1,
+    "last": "Uncommitted changes",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealMetadata/GitSHA": {
+    "samples": 1,
+    "last": "2772495388301aa161092cdaadf7122eb1c75786",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealMetadata/ProjectName": {
+    "samples": 1,
+    "last": "2026rebuilt-bordie-drum",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealOutputs/AngularSubsystems/Feeder/AtAngle": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealOutputs/AngularSubsystems/Indexer/AtAngle": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealOutputs/AngularSubsystems/IntakePivot/AtAngle": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealOutputs/AngularSubsystems/IntakeRollers/AtAngle": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealOutputs/AngularSubsystems/ShooterFlywheel/AtAngle": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/RealOutputs/Timing/AllianceCheckerMS": {
+    "samples": 37,
+    "last": 0.03700000002027082,
+    "span_seconds": 19.64099999999962,
+    "min": 0.03699999979289714,
+    "median": 0.05499999997482519,
+    "max": 0.779000000193264,
+    "mean": 0.09132432433648933,
+    "p95": 0.26000000002568413
+  },
+  "/AdvantageKit/RealOutputs/Timing/AngularSubsystems/InputUpdateMS": {
+    "samples": 56,
+    "last": 178.0269999999291,
+    "span_seconds": 20.0,
+    "min": 169.99199999986558,
+    "median": 177.74550000001454,
+    "max": 185.90700000027027,
+    "mean": 178.10714285714977,
+    "p95": 184.46000000017193
+  },
+  "/AdvantageKit/RealOutputs/Timing/AngularSubsystems/SubsystemCodeMS": {
+    "samples": 56,
+    "last": 0.5190000001675799,
+    "span_seconds": 20.0,
+    "min": 0.37200000019765866,
+    "median": 0.5000000001018634,
+    "max": 1.485000000002401,
+    "mean": 0.6089107142770445,
+    "p95": 1.2440000000424334
+  },
+  "/AdvantageKit/RealOutputs/Timing/Drive/InputUpdateMS": {
+    "samples": 56,
+    "last": 14.190999999982523,
+    "span_seconds": 20.0,
+    "min": 10.109999999940555,
+    "median": 14.301999999929649,
+    "max": 22.22299999993993,
+    "mean": 14.994714285709929,
+    "p95": 20.794999999907304
+  },
+  "/AdvantageKit/RealOutputs/Timing/Drive/SubsystemCodeMS": {
+    "samples": 56,
+    "last": 0.8900000000267028,
+    "span_seconds": 20.0,
+    "min": 0.853000000006432,
+    "median": 1.1309999999866704,
+    "max": 3.4319999999752326,
+    "mean": 1.4259821428603507,
+    "p95": 2.690000000029613
+  },
+  "/AdvantageKit/RealOutputs/Timing/LinearSubsystems/InputUpdateMS": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/RealOutputs/Timing/LinearSubsystems/SubsystemCodeMS": {
+    "samples": 1,
+    "last": 0.0,
+    "span_seconds": 0.0,
+    "min": 0.0,
+    "median": 0.0,
+    "max": 0.0,
+    "mean": 0.0,
+    "p95": 0.0
+  },
+  "/AdvantageKit/RealOutputs/Timing/SignalIOUpdateMS": {
+    "samples": 18,
+    "last": 0.01799999995455437,
+    "span_seconds": 20.0,
+    "min": 0.0,
+    "median": 0.008999999977277184,
+    "max": 0.03700000002027082,
+    "mean": 0.010111111110846751,
+    "p95": 0.01900000006571645
+  },
+  "/AdvantageKit/RealOutputs/Timing/SuperstructureVisualizerMS": {
+    "samples": 53,
+    "last": 0.5380000000059226,
+    "span_seconds": 20.0,
+    "min": 0.2220000001216249,
+    "median": 0.29700000004595495,
+    "max": 1.2609999998858257,
+    "mean": 0.44103773584452627,
+    "p95": 1.1320000000978325
+  },
+  "/AdvantageKit/RealOutputs/Timing/Vision/InputUpdateMS": {
+    "samples": 54,
+    "last": 0.29700000004595495,
+    "span_seconds": 19.64099999999962,
+    "min": 0.2220000001216249,
+    "median": 0.3150000000005093,
+    "max": 1.2429999999312713,
+    "mean": 0.38409259259761136,
+    "p95": 0.7039999998141866
+  },
+  "/AdvantageKit/RealOutputs/Timing/Vision/SubsystemCodeMS": {
+    "samples": 51,
+    "last": 0.20399999993969686,
+    "span_seconds": 20.0,
+    "min": 0.20399999993969686,
+    "median": 0.2230000000054133,
+    "max": 1.3539999999920838,
+    "mean": 0.34441176471684193,
+    "p95": 0.7419999999456195
+  },
+  "/AdvantageKit/SystemStats/3v3Rail/Active": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/3v3Rail/Current": {
+    "samples": 39,
+    "last": 0.02552587890625,
+    "span_seconds": 19.64099999999962,
+    "min": 0.023705078125,
+    "median": 0.0249189453125,
+    "max": 0.0273466796875,
+    "mean": 0.02509013171073718,
+    "p95": 0.0261328125
+  },
+  "/AdvantageKit/SystemStats/3v3Rail/CurrentFaults": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/3v3Rail/Voltage": {
+    "samples": 49,
+    "last": 3.2811376953125,
+    "span_seconds": 20.0,
+    "min": 3.278744140625,
+    "median": 3.2811376953125,
+    "max": 3.2847280273437502,
+    "mean": 3.2811376953125,
+    "p95": 3.2835312500000002
+  },
+  "/AdvantageKit/SystemStats/5vRail/Active": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/5vRail/Current": {
+    "samples": 50,
+    "last": 0.063298828125,
+    "span_seconds": 20.0,
+    "min": 0.057938476562499994,
+    "median": 0.0628115234375,
+    "max": 0.07401953124999999,
+    "mean": 0.06465353515625,
+    "p95": 0.07401953124999999
+  },
+  "/AdvantageKit/SystemStats/5vRail/CurrentFaults": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/5vRail/Voltage": {
+    "samples": 46,
+    "last": 5.0785712890625,
+    "span_seconds": 20.0,
+    "min": 5.07129345703125,
+    "median": 5.0785712890625,
+    "max": 5.084393554687501,
+    "mean": 5.078065005095109,
+    "p95": 5.081482421875
+  },
+  "/AdvantageKit/SystemStats/6vRail/Active": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/6vRail/Current": {
+    "samples": 35,
+    "last": 0.031766601562499996,
+    "span_seconds": 19.64099999999962,
+    "min": 0.029048828124999995,
+    "median": 0.031766601562499996,
+    "max": 0.0372021484375,
+    "mean": 0.031883077566964284,
+    "p95": 0.034484375
+  },
+  "/AdvantageKit/SystemStats/6vRail/CurrentFaults": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/6vRail/Voltage": {
+    "samples": 42,
+    "last": 5.99396240234375,
+    "span_seconds": 19.64099999999962,
+    "min": 5.98710791015625,
+    "median": 5.99053515625,
+    "max": 5.995676025390625,
+    "mean": 5.990657557896205,
+    "p95": 5.99396240234375
+  },
+  "/AdvantageKit/SystemStats/BatteryCurrent": {
+    "samples": 42,
+    "last": 0.39915283203125,
+    "span_seconds": 20.0,
+    "min": 0.36586767578125,
+    "median": 0.37418896484375,
+    "max": 0.39915283203125,
+    "mean": 0.37617022414434526,
+    "p95": 0.38251025390625004
+  },
+  "/AdvantageKit/SystemStats/BatteryVoltage": {
+    "samples": 43,
+    "last": 11.260599853515625,
+    "span_seconds": 19.64099999999962,
+    "min": 11.24175244140625,
+    "median": 11.260599853515625,
+    "max": 11.273164794921875,
+    "mean": 11.261038165425145,
+    "p95": 11.273164794921875
+  },
+  "/AdvantageKit/SystemStats/BrownedOut": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/BrownoutVoltage": {
+    "samples": 1,
+    "last": 6.75,
+    "span_seconds": 0.0,
+    "min": 6.75,
+    "median": 6.75,
+    "max": 6.75,
+    "mean": 6.75,
+    "p95": 6.75
+  },
+  "/AdvantageKit/SystemStats/CANBus/OffCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/CANBus/ReceiveErrorCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/CANBus/TransmitErrorCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/CANBus/TxFullCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/CANBus/Utilization": {
+    "samples": 3,
+    "last": 0.5661792159080505,
+    "span_seconds": 13.780999999999949,
+    "min": 0.5610091686248779,
+    "median": 0.5661792159080505,
+    "max": 0.6204130053520203,
+    "mean": 0.5825337966283163,
+    "p95": 0.5661792159080505
+  },
+  "/AdvantageKit/SystemStats/CPUTempCelsius": {
+    "samples": 48,
+    "last": 52.04675903320316,
+    "span_seconds": 20.0,
+    "min": 51.431555175781284,
+    "median": 52.04675903320316,
+    "max": 52.78500366210943,
+    "mean": 52.085209274292026,
+    "p95": 52.538922119140636
+  },
+  "/AdvantageKit/SystemStats/Comments": {
+    "samples": 1,
+    "last": "",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/CommsDisableCount": {
+    "samples": 1,
+    "last": 0,
+    "span_seconds": 0.0,
+    "min": 0,
+    "median": 0,
+    "max": 0,
+    "mean": 0,
+    "p95": 0
+  },
+  "/AdvantageKit/SystemStats/EpochTimeMicros": {
+    "samples": 56,
+    "last": 1791517765519054,
+    "span_seconds": 20.0,
+    "min": 1791517745275414,
+    "median": 1791517755435263.5,
+    "max": 1791517765519054,
+    "mean": 1791517755418959.5,
+    "p95": 1791517764420959
+  },
+  "/AdvantageKit/SystemStats/FPGAButton": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/FPGARevision": {
+    "samples": 1,
+    "last": 37748736,
+    "span_seconds": 0.0,
+    "min": 37748736,
+    "median": 37748736,
+    "max": 37748736,
+    "mean": 37748736,
+    "p95": 37748736
+  },
+  "/AdvantageKit/SystemStats/FPGAVersion": {
+    "samples": 1,
+    "last": 8228,
+    "span_seconds": 0.0,
+    "min": 8228,
+    "median": 8228,
+    "max": 8228,
+    "mean": 8228,
+    "p95": 8228
+  },
+  "/AdvantageKit/SystemStats/NTClients/Dashboard@1/Connected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/Dashboard@1/IPAddress": {
+    "samples": 1,
+    "last": "10.18.99.202",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/Dashboard@1/ProtocolVersion": {
+    "samples": 1,
+    "last": {
+      "hex": "00000401"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/Dashboard@1/RemotePort": {
+    "samples": 1,
+    "last": 1848,
+    "span_seconds": 0.0,
+    "min": 1848,
+    "median": 1848,
+    "max": 1848,
+    "mean": 1848,
+    "p95": 1848
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/Connected": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/IPAddress": {
+    "samples": 1,
+    "last": "10.18.99.202",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/ProtocolVersion": {
+    "samples": 1,
+    "last": {
+      "hex": "00000400"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/RemotePort": {
+    "samples": 1,
+    "last": 36220,
+    "span_seconds": 0.0,
+    "min": 36220,
+    "median": 36220,
+    "max": 36220,
+    "mean": 36220,
+    "p95": 36220
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/Connected": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/IPAddress": {
+    "samples": 1,
+    "last": "10.18.99.202",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/ProtocolVersion": {
+    "samples": 1,
+    "last": {
+      "hex": "00000400"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/RemotePort": {
+    "samples": 1,
+    "last": 34423,
+    "span_seconds": 0.0,
+    "min": 34423,
+    "median": 34423,
+    "max": 34423,
+    "mean": 34423,
+    "p95": 34423
+  },
+  "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/Connected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/IPAddress": {
+    "samples": 1,
+    "last": "10.18.99.202",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/ProtocolVersion": {
+    "samples": 1,
+    "last": {
+      "hex": "00000400"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/RemotePort": {
+    "samples": 1,
+    "last": 1072,
+    "span_seconds": 0.0,
+    "min": 1072,
+    "median": 1072,
+    "max": 1072,
+    "mean": 1072,
+    "p95": 1072
+  },
+  "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/Connected": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/IPAddress": {
+    "samples": 1,
+    "last": "10.18.99.200",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/ProtocolVersion": {
+    "samples": 1,
+    "last": {
+      "hex": "00000401"
+    },
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/RemotePort": {
+    "samples": 1,
+    "last": 50990,
+    "span_seconds": 0.0,
+    "min": 50990,
+    "median": 50990,
+    "max": 50990,
+    "mean": 50990,
+    "p95": 50990
+  },
+  "/AdvantageKit/SystemStats/RSLState": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/SerialNumber": {
+    "samples": 1,
+    "last": "0326423F",
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/SystemActive": {
+    "samples": 1,
+    "last": false,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/SystemTimeValid": {
+    "samples": 1,
+    "last": true,
+    "span_seconds": 0.0
+  },
+  "/AdvantageKit/SystemStats/TeamNumber": {
+    "samples": 1,
+    "last": 1899,
+    "span_seconds": 0.0,
+    "min": 1899,
+    "median": 1899,
+    "max": 1899,
+    "mean": 1899,
+    "p95": 1899
+  },
+  "/AdvantageKit/Timestamp": {
+    "samples": 56,
+    "last": 1568295891,
+    "span_seconds": 20.0,
+    "min": 1548042426,
+    "median": 1558208558.5,
+    "max": 1568295891,
+    "mean": 1558188206.5892856,
+    "p95": 1567194317
+  }
+}

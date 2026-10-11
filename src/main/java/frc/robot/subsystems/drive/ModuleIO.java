@@ -18,6 +18,10 @@ public interface ModuleIO {
     public double driveVelocityRadPerSec = 0.0;
     public double driveAppliedVolts = 0.0;
     public double driveCurrentAmps = 0.0;
+    public double driveMotorRpm = 0.0;
+    public boolean driveStatusHealthy = false;
+    // REVLib 2026 does not expose the status-frame timestamp. NaN means unknown, not fresh.
+    public double driveSensorAgeSec = Double.NaN;
 
     public boolean turnConnected = false;
     public boolean turnEncoderConnected = false;
@@ -26,6 +30,21 @@ public interface ModuleIO {
     public double turnVelocityRadPerSec = 0.0;
     public double turnAppliedVolts = 0.0;
     public double turnCurrentAmps = 0.0;
+    public double turnMotorRpm = 0.0;
+    public boolean turnStatusHealthy = false;
+    public double turnSensorAgeSec = Double.NaN;
+    public double absoluteSensorAgeSec = Double.POSITIVE_INFINITY;
+    public double statusFrameTimeoutSec = 0.1;
+    public boolean turnSeeded = false;
+    public boolean configurationHealthy = false;
+    public boolean diagnosticLimitsApplied = false;
+    public double appliedDriveKp = Double.NaN;
+    public double appliedDriveKv = Double.NaN;
+    public double appliedTurnKp = Double.NaN;
+    public double appliedTurnKd = Double.NaN;
+    public boolean appliedDriveInverted = false;
+    public boolean appliedTurnInverted = false;
+    public double snapshotTimestampSec = 0.0;
 
     public double[] odometryTimestamps = new double[] {};
     public double[] odometryDrivePositionsRad = new double[] {};
@@ -46,4 +65,7 @@ public interface ModuleIO {
 
   /** Run the turn motor to the specified rotation. */
   public default void setTurnPosition(Rotation2d rotation) {}
+
+  /** Apply bounded diagnostic closed-loop outputs while disabled. */
+  public default void setDiagnosticLimits(boolean active) {}
 }

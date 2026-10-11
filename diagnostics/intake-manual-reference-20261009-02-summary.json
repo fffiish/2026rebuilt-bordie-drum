@@ -1,0 +1,11 @@
+{
+  "operator_observation": "Arm moved away from118degree stowedstop byhand andheld, DSdisabled",
+  "first_degrees": 117.99497723579405,
+  "last_degrees": 100.76088309288025,
+  "minimum_degrees": 100.76088309288025,
+  "maximum_degrees": 117.99497723579405,
+  "max_abs_voltage": 0.0,
+  "enabled_observed": false,
+  "samples": 4487,
+  "conclusion": "Physical coupling and inward-negative encoder direction observed; angular scale uses operator-confirmed60to1 and118degree datum, not an independent manual-angle measurement"
+}

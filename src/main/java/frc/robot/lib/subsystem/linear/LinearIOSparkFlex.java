@@ -16,6 +16,7 @@ import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.lib.subsystem.DeviceConnectedStatus;
+import frc.robot.lib.subsystem.SparkConnectionMonitor;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public class LinearIOSparkFlex implements LinearIO {
   private final List<SparkFlex> followers;
   private final RelativeEncoder encoder;
   private final SparkClosedLoopController controller;
+  private final SparkConnectionMonitor masterConnection;
+  private final List<SparkConnectionMonitor> followerConnections;
 
   private final LinearIOSparkFlexConfig deviceConfig;
 
@@ -70,15 +73,22 @@ public class LinearIOSparkFlex implements LinearIO {
       if (config.getSmartCurrentLimit() != null) {
         followerConfig.smartCurrentLimit((int) config.getSmartCurrentLimit().in(Amps));
       }
+      followerConfig.signals.motorTemperatureAlwaysOn(true).motorTemperaturePeriodMs(100);
       ok &= applyConfig(follower, followerConfig);
     }
     configurationsNotAppliedAlert.set(!ok);
 
     encoder.setPosition(toOutputRotations(config.getResetLength()));
+    masterConnection = new SparkConnectionMonitor(master);
+    followerConnections = followers.stream().map(SparkConnectionMonitor::new).toList();
     lastVelocityTimestamp = Timer.getFPGATimestamp();
   }
 
   private static boolean applyConfig(SparkFlex spark, SparkBaseConfig config) {
+    // REV request settings are global; earlier IO constructors may already have selected runtime
+    // nonblocking reads. Restore acknowledged startup writes before configuring this device.
+    spark.setCANTimeout(100);
+    spark.setCANMaxRetries(5);
     spark.clearFaults();
     return spark.configure(
             config,
@@ -119,6 +129,19 @@ public class LinearIOSparkFlex implements LinearIO {
     double gearing = deviceConfig.getMotorRotationsPerOutputRotations();
     configuration.encoder.positionConversionFactor(1.0 / gearing);
     configuration.encoder.velocityConversionFactor(1.0 / (gearing * 60.0));
+    configuration
+        .signals
+        .primaryEncoderPositionAlwaysOn(true)
+        .primaryEncoderPositionPeriodMs(20)
+        .primaryEncoderVelocityAlwaysOn(true)
+        .primaryEncoderVelocityPeriodMs(20)
+        .appliedOutputAlwaysOn(true)
+        .appliedOutputPeriodMs(20)
+        .busVoltageAlwaysOn(true)
+        .outputCurrentAlwaysOn(true)
+        .motorTemperatureAlwaysOn(true)
+        .maxMotionSetpointPositionAlwaysOn(true)
+        .maxMotionSetpointPositionPeriodMs(20);
 
     configuration.closedLoop.pid(
         deviceConfig.getKP() * distancePerRotation(),
@@ -150,8 +173,11 @@ public class LinearIOSparkFlex implements LinearIO {
 
   @Override
   public void updateInputs(LinearIOInputs inputs) {
+    masterConnection.beginCycle();
     double outputRotations = encoder.getPosition();
+    masterConnection.checkLastError(outputRotations);
     double outputRotationsPerSec = encoder.getVelocity();
+    masterConnection.checkLastError(outputRotationsPerSec);
 
     inputs.length = Meters.of(outputRotations * distancePerRotation());
     inputs.velocity = MetersPerSecond.of(outputRotationsPerSec * distancePerRotation());
@@ -167,8 +193,12 @@ public class LinearIOSparkFlex implements LinearIO {
     inputs.acceleration = MetersPerSecondPerSecond.of(accelerationMetersPerSecSq);
 
     double dutyCycle = master.getAppliedOutput();
+    masterConnection.checkLastError(dutyCycle);
     double outputCurrent = master.getOutputCurrent();
-    inputs.appliedVolts = Volts.of(dutyCycle * master.getBusVoltage());
+    masterConnection.checkLastError(outputCurrent);
+    double busVoltage = master.getBusVoltage();
+    masterConnection.checkLastError(busVoltage);
+    inputs.appliedVolts = Volts.of(dutyCycle * busVoltage);
     inputs.statorCurrent = Amps.of(outputCurrent);
     // Estimated: a SPARK reports no separate supply current.
     inputs.supplyCurrent = Amps.of(outputCurrent * Math.abs(dutyCycle));
@@ -176,28 +206,38 @@ public class LinearIOSparkFlex implements LinearIO {
     int deviceCount = followers.size() + 1;
     inputs.motorTemperatures = new double[deviceCount];
     inputs.motorTemperatures[0] = master.getMotorTemperature();
+    masterConnection.checkLastError(inputs.motorTemperatures[0]);
     for (int i = 0; i < followers.size(); i++) {
+      followerConnections.get(i).beginCycle();
       inputs.motorTemperatures[i + 1] = followers.get(i).getMotorTemperature();
+      followerConnections.get(i).checkLastError(inputs.motorTemperatures[i + 1]);
     }
 
     if (inputs.deviceConnectedStatuses.length != deviceCount) {
       inputs.deviceConnectedStatuses = new DeviceConnectedStatus[deviceCount];
     }
-    setConnected(inputs, 0, master, deviceConfig.getMasterId());
-    for (int i = 0; i < followers.size(); i++) {
-      setConnected(inputs, i + 1, followers.get(i), deviceConfig.getFollowerIds().get(i));
-    }
-
     inputs.neutralMode = deviceConfig.getNeutralMode();
     inputs.IOOutputMode = this.outputMode;
     inputs.goal = this.goal.orElse(Meters.of(0.0));
-    inputs.reference = Meters.of(controller.getMAXMotionSetpointPosition() * distancePerRotation());
+    if (this.outputMode == kClosedLoop) {
+      inputs.reference =
+          Meters.of(controller.getMAXMotionSetpointPosition() * distancePerRotation());
+      masterConnection.checkLastError(inputs.reference.in(Meters));
+    } else {
+      inputs.reference = Meters.of(0.0);
+    }
+    setConnected(inputs, 0, masterConnection.isConnected(), deviceConfig.getMasterId());
+    for (int i = 0; i < followers.size(); i++) {
+      setConnected(
+          inputs,
+          i + 1,
+          followerConnections.get(i).isConnected(),
+          deviceConfig.getFollowerIds().get(i));
+    }
   }
 
-  /** A disconnected SPARK reports firmware version 0, which is the cheap liveness check. */
   private static void setConnected(
-      LinearIOInputs inputs, int index, SparkFlex spark, int deviceId) {
-    boolean connected = spark.getFirmwareVersion() != 0;
+      LinearIOInputs inputs, int index, boolean connected, int deviceId) {
     if (inputs.deviceConnectedStatuses[index] == null) {
       inputs.deviceConnectedStatuses[index] = new DeviceConnectedStatus(connected, deviceId);
     } else {

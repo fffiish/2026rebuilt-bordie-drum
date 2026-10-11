@@ -76,9 +76,21 @@ public class Module {
 
   /** Runs the module with the specified setpoint state. Mutates the state to optimize it. */
   public void runSetpoint(SwerveModuleState state) {
+    double requestedSpeedForDirection = state.speedMetersPerSecond;
+    Logger.recordOutput("Drive/Module" + index + "/RequestedSpeed", state.speedMetersPerSecond);
+    Logger.recordOutput("Drive/Module" + index + "/RequestedAngle", state.angle);
     // Optimize velocity setpoint
     state.optimize(getAngle());
     state.cosineScale(inputs.turnPosition);
+    Logger.recordOutput(
+        "Drive/Module" + index + "/DriveDirectionReversedByOptimization",
+        state.speedMetersPerSecond != 0.0
+            && Math.signum(state.speedMetersPerSecond) != Math.signum(requestedSpeedForDirection));
+    Logger.recordOutput("Drive/Module" + index + "/OptimizedSpeed", state.speedMetersPerSecond);
+    Logger.recordOutput("Drive/Module" + index + "/SteeringTarget", state.angle);
+    Logger.recordOutput(
+        "Drive/Module" + index + "/SteeringErrorRad",
+        DriveDiagnosticPolicy.wrapRadians(state.angle.getRadians() - getAngle().getRadians()));
 
     // Apply setpoints
     io.setDriveVelocity(state.speedMetersPerSecond / constants.WheelRadius);
@@ -144,5 +156,26 @@ public class Module {
 
   public boolean isConnected() {
     return inputs.driveConnected && inputs.turnConnected;
+  }
+
+  public ModuleIO.ModuleIOInputs getDiagnosticInputs() {
+    return inputs;
+  }
+
+  public void setDiagnosticLimits(boolean active) {
+    io.setDiagnosticLimits(active);
+  }
+
+  /** Direct voltage tests leave the unselected axis unpowered. */
+  public void runDiagnostic(double driveVolts, double turnVolts) {
+    io.setDriveOpenLoop(driveVolts);
+    io.setTurnOpenLoop(turnVolts);
+  }
+
+  /** Equal wheel requests deliberately bypass optimizer and cosine scaling for comparison. */
+  public void runDiagnosticPosition(Rotation2d angle, double speedMetersSec) {
+    if (speedMetersSec == 0) io.setDriveOpenLoop(0);
+    else io.setDriveVelocity(speedMetersSec / constants.WheelRadius);
+    io.setTurnPosition(angle);
   }
 }

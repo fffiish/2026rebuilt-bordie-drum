@@ -17,4 +17,10 @@ public final class RobotConstants {
   public static final Color8Bit kTargetStateColor = new Color8Bit(0, 0, 255);
 
   public static final double kLoopOverrunWarningTimeout = 0.2;
+
+  /**
+   * roboRIO brownout threshold: below this battery voltage the RIO cuts motor outputs. The default
+   * is 6.75 V; 5.5 V lets the robot ride through deeper sags. Only a roboRIO 2 can change it.
+   */
+  public static final double kBrownoutVoltage = 5.5;
 }

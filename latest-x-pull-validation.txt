@@ -1,0 +1,490 @@
+'indentWithSpaces' is deprecated, use 'leadingTabsToSpaces' in your gradle build script instead.
+'indentWithSpaces' is deprecated, use 'leadingTabsToSpaces' in your gradle build script instead.
+> Task :processResources NO-SOURCE
+> Task :downloadDepsPreemptively
+> Task :extractReleaseNative UP-TO-DATE
+> Task :processTestResources NO-SOURCE
+> Task :spotlessInternalRegisterDependencies UP-TO-DATE
+> Task :spotlessGroovyGradle UP-TO-DATE
+> Task :spotlessGroovyGradleCheck UP-TO-DATE
+> Task :spotlessJava
+> Task :generateEffectiveLombokConfig
+
+> Task :compileJava
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\commands\DriveCommands.java:204: warning: [removal] getPositionError() in PIDController has been deprecated and marked for removal
+              Logger.recordOutput("Drive/TrenchDrive/YError", yController.getPositionError());
+                                                                         ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:158: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+            SparkBase.ResetMode.kResetSafeParameters,
+                     ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:159: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+            SparkBase.PersistMode.kNoPersistParameters)
+                     ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:156: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+    return spark.configure(
+                ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:491: warning: [removal] setReference(double,ControlType,ClosedLoopSlot,double,ArbFFUnits) in SparkClosedLoopController has been deprecated and marked for removal
+        controller.setReference(
+                  ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:519: warning: [removal] setReference(double,ControlType,ClosedLoopSlot,double,ArbFFUnits) in SparkClosedLoopController has been deprecated and marked for removal
+    controller.setReference(
+              ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:668: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+        SparkBase.ResetMode.kNoResetSafeParameters,
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:669: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+        SparkBase.PersistMode.kNoPersistParameters);
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:666: warning: [removal] configureAsync(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+    master.configureAsync(
+          ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:674: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+                SparkBase.ResetMode.kNoResetSafeParameters,
+                         ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:675: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                SparkBase.PersistMode.kNoPersistParameters));
+                         ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:672: warning: [removal] configureAsync(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+            follower.configureAsync(
+                    ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:803: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+                        SparkBase.ResetMode.kNoResetSafeParameters,
+                                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:804: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                        SparkBase.PersistMode.kNoPersistParameters)
+                                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:801: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+                master.configure(
+                      ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:838: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+                            SparkBase.ResetMode.kNoResetSafeParameters,
+                                     ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:839: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                            SparkBase.PersistMode.kNoPersistParameters)
+                                     ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\angular\AngularIOSparkFlex.java:836: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+                    follower.configure(
+                            ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:95: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+            SparkBase.ResetMode.kResetSafeParameters,
+                     ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:96: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+            SparkBase.PersistMode.kNoPersistParameters)
+                     ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:93: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+    return spark.configure(
+                ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:152: warning: [removal] maxVelocity(double,ClosedLoopSlot) in MAXMotionConfig has been deprecated and marked for removal
+    configuration.closedLoop.maxMotion.maxVelocity(
+                                      ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:250: warning: [removal] setReference(double,ControlType,ClosedLoopSlot,double,ArbFFUnits) in SparkClosedLoopController has been deprecated and marked for removal
+    controller.setReference(
+              ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:306: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+        SparkBase.ResetMode.kNoResetSafeParameters,
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:307: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+        SparkBase.PersistMode.kNoPersistParameters);
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:304: warning: [removal] configureAsync(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+    master.configureAsync(
+          ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:312: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+                SparkBase.ResetMode.kNoResetSafeParameters,
+                         ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:313: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                SparkBase.PersistMode.kNoPersistParameters));
+                         ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:310: warning: [removal] configureAsync(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+            follower.configureAsync(
+                    ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:319: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+        SparkBase.ResetMode.kNoResetSafeParameters,
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:320: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+        SparkBase.PersistMode.kNoPersistParameters);
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\lib\subsystem\linear\LinearIOSparkFlex.java:317: warning: [removal] configureAsync(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+    master.configureAsync(
+          ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:211: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+            SparkBase.ResetMode.kResetSafeParameters,
+                     ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:213: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                ? SparkBase.PersistMode.kPersistParameters
+                           ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:214: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                : SparkBase.PersistMode.kNoPersistParameters)
+                           ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:209: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+    return spark.configure(
+                ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:416: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+                  SparkBase.ResetMode.kNoResetSafeParameters,
+                           ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:417: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                  SparkBase.PersistMode.kNoPersistParameters)
+                           ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:414: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+          driveSpark.configure(
+                    ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:422: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+                  SparkBase.ResetMode.kNoResetSafeParameters,
+                           ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:423: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+                  SparkBase.PersistMode.kNoPersistParameters)
+                           ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:420: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkBase has been deprecated and marked for removal
+          turnSpark.configure(
+                   ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:655: warning: [removal] setReference(double,ControlType,ClosedLoopSlot) in SparkClosedLoopController has been deprecated and marked for removal
+    driveController.setReference(velocityRadPerSec, SparkBase.ControlType.kVelocity, kSlot);
+                   ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\drive\ModuleIOSpark.java:664: warning: [removal] setReference(double,ControlType,ClosedLoopSlot) in SparkClosedLoopController has been deprecated and marked for removal
+    turnController.setReference(rotation.getRadians(), SparkBase.ControlType.kPosition, kSlot);
+                  ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\shooter\HoodIOSparkMax.java:57: warning: [removal] ResetMode in SparkBase has been deprecated and marked for removal
+        SparkBase.ResetMode.kResetSafeParameters,
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\shooter\HoodIOSparkMax.java:58: warning: [removal] PersistMode in SparkBase has been deprecated and marked for removal
+        SparkBase.PersistMode.kNoPersistParameters);
+                 ^
+C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\src\main\java\frc\robot\subsystems\shooter\HoodIOSparkMax.java:55: warning: [removal] configure(SparkBaseConfig,ResetMode,PersistMode) in SparkMax has been deprecated and marked for removal
+    actuators.configure(
+             ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+47 warnings
+
+> Task :classes
+> Task :jar
+> Task :assemble
+> Task :spotlessJavaCheck
+> Task :spotlessMisc UP-TO-DATE
+> Task :spotlessMiscCheck UP-TO-DATE
+> Task :spotlessCheck
+> Task :generateTestEffectiveLombokConfig
+> Task :compileTestJava UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+HAL Extensions: No extensions found
+Warning at com.revrobotics.spark.config.FeedForwardConfig.kG(FeedForwardConfig.java:221): kG is overriden by kCos, only kCos will be used on Closed Loop Slot 0
+	at com.revrobotics.spark.config.FeedForwardConfig.kG(FeedForwardConfig.java:221)
+	at com.revrobotics.spark.config.FeedForwardConfig.kG(FeedForwardConfig.java:120)
+	at frc.robot.lib.subsystem.angular.AngularSparkTuningTest.staticGravityAndNoGravityDoNotEnableAnArmCosine(AngularSparkTuningTest.java:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessor$CollectThenExecuteTestDefinitionConsumer.processAllTestClasses(JUnitPlatformTestDefinitionProcessor.java:172)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessor$CollectThenExecuteTestDefinitionConsumer.access$000(JUnitPlatformTestDefinitionProcessor.java:121)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestDefinitionProcessor.stop(JUnitPlatformTestDefinitionProcessor.java:114)
+	at org.gradle.api.internal.tasks.testing.SuiteTestDefinitionProcessor.stop(SuiteTestDefinitionProcessor.java:64)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:195)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+
+Warning at edu.wpi.first.wpilibj.DriverStation.reportJoystickUnpluggedWarning(DriverStation.java:1345): Joystick Button 8 on port 0 not available, check if controller is plugged in
+[phoenix-diagnostics] Server shutdown cleanly. (dur:0)
+	
+[phoenix] Library shutdown cleanly
+	
+[phoenix] CANbus Connected: sim
+[phoenix] CANbus Network Up: sim
+
+> Task :test
+
+SparkConnectionMonitorTest > invalidValuesCannotReportAHealthyDevice() PASSED
+
+SparkConnectionMonitorTest > perThreadErrorsAreCapturedBeforeAnotherDeviceReadClearsThem() PASSED
+
+SparkConnectionMonitorTest > disconnectStaysVisibleDespiteLaterHealthyReadsAndRecoversNextCycle() PASSED
+
+SparkConnectionMonitorTest > emptyCyclesDoNotReportAConnectionOrRequestDeviceData() PASSED
+
+AngularConfigurationStateTest > controllerFaultLosesReferenceAndReconfigurationNeverReseedsIt() PASSED
+
+AngularConfigurationStateTest > enabledNeverAppliesOrAcknowledgesPendingConfiguration() PASSED
+
+AngularConfigurationStateTest > exceptionOrInvalidRequestCannotLeaveOldConfigurationMarkedReady() PASSED
+
+AngularConfigurationStateTest > failedAcknowledgementRetriesOnlyDisabledAndAtBoundedRate() PASSED
+
+AngularIOSimTest > stopReportsZeroAppliedOutputAfterRunningWithCurrentLimits() PASSED
+
+AngularIOSimTest > rollerProfileAcceleratesAndLiveStaticFeedforwardChangesDirection() PASSED
+
+AngularIOSimTest > reverseOutputReportsPositiveBatteryDrawAndRespectsBatteryAndDutyLimits() PASSED
+
+AngularIOSimTest > currentLimitedAppliedVoltageDiffersFromRequestedVoltage() PASSED
+
+AngularIOSimTest > gravityRejectsMissingLengthAndIntakeSimHasExplicitGeometryAndRollerProfiles() PASSED
+
+AngularIOSimTest > gravityEnabledArmFallsAndReplacingAngleSupplierChangesGravityDirection() PASSED
+
+AngularIOSimTest > zeroBatteryDoesNotProduceNanCurrentOrVoltage() PASSED
+
+AngularSparkTuningTest > staticGravityAndNoGravityDoNotEnableAnArmCosine() PASSED
+
+AngularSparkTuningTest > completeGainApiPreservesLegacyIoCompatibility() PASSED
+
+AngularSparkTuningTest > convertedFirmwareGainsIncludeStaticFrictionAndGravityInsideOutputRange() PASSED
+
+AngularSparkVelocityModeTest > zeroAccelerationUsesPlainVelocityDespitePositiveCruiseVelocity() PASSED
+
+AngularSparkVelocityModeTest > positiveAccelerationEnablesMaxMotionWithoutRequiringCruiseVelocity() PASSED
+
+AngularSparkVelocityModeTest > plainVelocityReferenceIsTheGoalAndNeverReadsMaxMotionTelemetry() PASSED
+
+AngularSparkVelocityModeTest > negativeAndNonfiniteAccelerationAreRejected() PASSED
+
+AngularSparkVelocityModeTest > profileChangesDoNotChangeReferenceUntilAnotherVelocityCommandSelectsTheMode() PASSED
+
+AngularSparkVelocityModeTest > anUnconfiguredRollerUsesPlainVelocityControl() PASSED
+
+AngularSubsystemTuningTest > diagnosticRefreshForwardsStaticGainPreservesDeviceProfileAndNeverStows() PASSED
+
+BottomRollerLimitsTest > subsystemCapAppliesToRealAndSim() PASSED
+
+BottomRollerLimitsTest > mainDrumAndItsThreeFollowersAreCappedAtThirtyRps() PASSED
+
+BottomRollerLimitsTest > bottomRollersUseSixtyAmpsAndThirtyTwoRps() PASSED
+
+BottomRollerLimitsTest > hardwareClampsBothDirectionsAndConvertsMotorSpeedThroughGearing() PASSED
+
+BottomRollerLimitsTest > followerConversionPreservesMeasuredEncoderPolarity() PASSED
+
+BottomRollerLimitsTest > mechanismMotorIdsHaveExactlyOneControllerOwner() PASSED
+
+HardwareMergeConfigurationTest > intakeControlCurrentLimitsPreserveCalibratedHardwareAndGains() PASSED
+
+HardwareMergeConfigurationTest > mergedAgitationStaysWithinCalibratedPivotTravel() PASSED
+
+HardwareMergeConfigurationTest > shooterRetainsMirroredFollowersAndBringupSettings() PASSED
+
+DriveDiagnosticPolicyTest > oldCrossingsExpireAndGrowthOrBadTimeTrips() PASSED
+
+DriveDiagnosticPolicyTest > timingRequiresEnoughFreshFastSamples() PASSED
+
+DriveDiagnosticPolicyTest > timingRejectsBothSlowMedianAndTailAndRecoversWithRollingWindow() PASSED
+
+DriveDiagnosticPolicyTest > wrapsCrossBoundaryWithoutLongRotation() PASSED
+
+DriveDiagnosticPolicyTest > cancellationRequiresReleaseBeforeRestart() PASSED
+
+DriveDiagnosticPolicyTest > oscillationIgnoresSmallNoiseButTripsOnFourLargeCrossingsAndLatches() PASSED
+
+DriveDiagnosticPolicyTest > heldButtonNeverStartsAcrossEnableOrFaultRecovery() PASSED
+
+DriveDiagnosticPolicyTest > pulseStopsAtEitherLimitAndInvalidData() PASSED
+
+HeadingResetBindingTest > startResetsOnlyHeadingForEveryAllianceWhileEnabledOrDisabled() PASSED
+
+ModuleDiagnosticTest > equalDiagnosticVelocityBypassesOptimizationAndCosineScaling() PASSED
+
+ModuleDiagnosticTest > halfTurnOptimizationReversesSpeedButPreservesTravelDirection() PASSED
+
+ModuleDiagnosticTest > voltageRequestsAndLimitConfigurationForwardWithoutPolarityChanges() PASSED
+
+ModuleDiagnosticTest > steeringOnlyAndStopExplicitlyZeroDriveAndBothOpenLoopOutputs() PASSED
+
+ModulePolarityRegressionTest > calibratedModuleIdsOffsetsAndDrivePolaritiesStayTogether() PASSED
+
+ModulePolarityRegressionTest > gainAndDiagnosticRangeChangesReassertBothInversionValuesWithoutTouchingEncoders() PASSED
+
+ModuleTurnSeedCadenceTest > failedBootAndDisabledAttemptsWaitOneSecondBeforeRetrying() PASSED
+
+ModuleTurnSeedCadenceTest > sharedBudgetSpreadsAllFourModulesAcrossLoopsWithoutStarvation() PASSED
+
+ModuleTurnSeedCadenceTest > missingControllerCannotDelayAHealthyModulesRetry() PASSED
+
+ModuleTurnSeedCadenceTest > enabledUnconfiguredMissingAndMovingControllersDoNotConsumeTheBudget() PASSED
+
+RemoteDiagnosticPolicyTest > heartbeatAcceptsFreshInclusiveBoundaryAndRejectsStaleOrFuture() PASSED
+
+RemoteDiagnosticPolicyTest > heldRequestDoesNotRepeatAndOlderRequestsNeverStart() PASSED
+
+RemoteDiagnosticPolicyTest > heartbeatRejectsNegativeNonfiniteAndInvalidMaxAge() PASSED
+
+RemoteDiagnosticPolicyTest > invalidNoncesCannotActivateOrAdvanceTheGate() PASSED
+
+RemoteDiagnosticPolicyTest > disabledOrFaultedRequestsAreConsumedBeforeRecovery() PASSED
+
+IntakeDiagnosticPolicyTest > requestsEnforceAllIndependentHardLimits() PASSED
+
+IntakeDiagnosticPolicyTest > enabledChangesCannotReleaseOrSelectIsolation() PASSED
+
+IntakeDiagnosticPolicyTest > explicitStopStaysLatchedAcrossDisableUntilClearedWhileDisabled() PASSED
+
+IntakeDiagnosticPolicyTest > pulseStopsAtTravelLimitAndOnOppositeDirection() PASSED
+
+IntakeDiagnosticPolicyTest > verifiedHardstopAllowsOnlyBoundedInwardFeedback() PASSED
+
+IntakeDiagnosticPolicyTest > stepsCannotTargetOrOvershootOutsideVerifiedInterior() PASSED
+
+IntakeDiagnosticPolicyTest > oldCalibrationOrRemoteRequestCannotStartAfterEnable() PASSED
+
+IntakeDiagnosticPolicyTest > freshnessConnectionConfigurationAndCurrentAreRequired() PASSED
+
+IntakeDiagnosticPolicyTest > deadmanHeldBeforePreparationCannotStartAndCancellationRequiresRelease() PASSED
+
+IntakeDiagnosticPolicyTest > watchdogStopsWithoutWaitingForMainLoop() PASSED
+
+IntakeDiagnosticPolicyTest > startupSeedIsNotAnInteriorPositionStartingPoint() PASSED
+
+IntakeDiagnosticPolicyTest > timingMustRequalifyFollowingModeOrClockDiscontinuity() PASSED
+
+IntakeDiagnosticsWatchdogTest > notifierStopsWhileMainInputReadIsBlockedAndResumeCannotReissueOutput() PASSED
+
+IntakeDriverBindingTest > xboxRollersRetainStowedOrDeployedPivotAndStopOnReleaseAndRepress() PASSED
+
+IntakeDriverBindingTest > enabledTestUsesNormalXboxControlsWithoutAutomaticallyDeploying() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+IntakeDriverBindingTest > enabledTestUsesNormalXboxControlsWithoutAutomaticallyDeploying() PASSED
+
+IntakeDriverBindingTest > explicitTestDeployRequiresEnabledTestWithoutSelectedDiagnostic() PASSED
+
+IntakeDriverBindingTest > disableStopsRollersAndRequiresAnotherTriggerEdge() PASSED
+
+IntakeDriverBindingTest > autonomousThenTeleopDeploysOnlyOnceAndPracticeTeleopAlsoDeploys() PASSED
+
+IntakeDriverBindingTest > persistentStowAllowsLaterExplicitRedeployWithoutChangingRollers() PASSED
+
+IntakeDriverBindingTest > deployRestoresSixtyAfterTwoSecondTimeoutWithoutArrival() PASSED
+
+IntakeDriverBindingTest > cancelledDeployKeepsExistingEightyAmpRequestAndDeployedRestingState() PASSED
+
+IntakeDriverBindingTest > deployRequestsEightyThenSixtyAfterMeasuredArrival() PASSED
+
+IntakeReferenceUnitsTest > confirmedStowedReferenceEqualsConfiguredLimitExactly() PASSED
+
+IntakeRollerCommandTest > diagnosticAccessAndDirectStopRefreshBothRollerGroupsWithoutScheduling() PASSED
+
+IntakeRollerCommandTest > rollerAndPivotCommandsRunIndependentlyAndReleaseStopsBothRollerGroups() PASSED
+
+IntakeRollerCommandTest > outtakeInterruptsIntakeReversesIndexerAndLeavesPivotPositionAlone() PASSED
+
+ShooterDriverBindingTest > rightBumperInterruptsBothTriggersAndReleaseStopsOuttake() PASSED
+
+ShooterDriverBindingTest > backwardsLeaderOrUnderSpeedFollowerKeepsFeedingOff() PASSED
+
+ShooterDriverBindingTest > flywheelEncoderPolarityDoesNotBlockFeedingAtTargetSpeed() PASSED
+
+ShooterDriverBindingTest > releasingDuringSpinUpCancelsThePendingShot() PASSED
+
+ShooterDriverBindingTest > aStoppedOrDisconnectedFollowerKeepsTheShotWaiting() PASSED
+
+ShooterDriverBindingTest > xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTest() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+ShooterDriverBindingTest > xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTest() PASSED
+
+ShooterDriverBindingTest > diagnosticCancellationStopsHeldCommandsAndRetainsDirectDiagnosticAccess() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+ShooterDriverBindingTest > diagnosticCancellationStopsHeldCommandsAndRetainsDirectDiagnosticAccess() PASSED
+
+ShooterDriverBindingTest > shootingWithoutDeploymentSpinsFlywheelAndWaitsBeforeMovingArm() STANDARD_OUT
+    Starting live window mode.
+    stopping live window mode.
+
+ShooterDriverBindingTest > shootingWithoutDeploymentSpinsFlywheelAndWaitsBeforeMovingArm() PASSED
+
+ShooterDriverBindingTest > simultaneousTriggersShootImmediatelyWhileArmAgitatesAndIntakeContinues() PASSED
+
+ShooterDriverBindingTest > xboxRightTriggerWaitsForThirtyRpsThenFeedsAndReleasesInTeleop() PASSED
+
+ShooterDriverBindingTest > rightTriggerStartsBottomRollersAndFeederEvenWhenHoodIsNotReady() PASSED
+
+> Task :check
+> Task :build
+
+[Incubating] Problems report is available at: file:///C:/Users/otgra/.codex/worktrees/merge-10-9/FRC-Bordie/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.3.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 8s
+15 actionable tasks: 8 executed, 7 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.0/userguide/configuration_cache_enabling.html

@@ -1,0 +1,195 @@
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/Acceleration", "value": 0.0, "samples": 11, "first_server_us": 15506223, "last_server_us": 28820671}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/Angle", "value": -2.8722823792553454e-10, "samples": 41, "first_server_us": 15506223, "last_server_us": 29125521}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/AppliedVolts", "value": NaN, "samples": 12, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/BusVolts", "value": -5.242979383979218e-10, "samples": 7, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ConfigError", "value": "Controller reset, fault, brownout or unhealthy telemetry: reconfigure disabled and confirm physical reference", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ConfigPending", "value": true, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ConfigReady", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ConfigurationGeneration", "value": 0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/DeviceConnectedStatuses", "value": {"hex": "001c0000000023000000"}, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/GoalPos", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/GoalVel", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/IOOutputMode", "value": "kNeutral", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/MotorTemperatures", "value": [140.0, 136.0], "samples": 98, "first_server_us": 15506223, "last_server_us": 29165144}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/MotorVelocitiesRadiansPerSecond", "value": [-3.7921566855283385e-11, -3.9376618395940133e-13], "samples": 6, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/NeutralMode", "value": "Brake", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackAccelerationRadiansPerSecondPerSecond", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackCruiseVelocityRadiansPerSecond", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackKD", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackKG", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackKI", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackKP", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackKS", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackKV", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackMaximumAngleRadians", "value": NaN, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackMinimumAngleRadians", "value": NaN, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReadbackOutputLimit", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReferencePos", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReferenceValid", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/ReferenceVel", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/RequestedVolts", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/SampleTimestampSeconds", "value": NaN, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/StatorCurrent", "value": -3.1279596441891044e-06, "samples": 7, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/SupplyCurrent", "value": NaN, "samples": 13, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/Feeder/Velocity", "value": -3.7921566855283385e-11, "samples": 6, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/Acceleration", "value": 0.0, "samples": 59, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/Angle", "value": -3.036970810060068e-10, "samples": 23, "first_server_us": 15506223, "last_server_us": 29165144}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/AppliedVolts", "value": NaN, "samples": 52, "first_server_us": 15506223, "last_server_us": 28691359}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/BusVolts", "value": -5.242495326740482e-10, "samples": 11, "first_server_us": 15506223, "last_server_us": 28691359}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ConfigError", "value": "Controller reset, fault, brownout or unhealthy telemetry: reconfigure disabled and confirm physical reference", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ConfigPending", "value": true, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ConfigReady", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ConfigurationGeneration", "value": 0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/DeviceConnectedStatuses", "value": {"hex": "0015000000"}, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/GoalPos", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/GoalVel", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/IOOutputMode", "value": "kNeutral", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/MotorTemperatures", "value": [140.0], "samples": 83, "first_server_us": 15506223, "last_server_us": 28691359}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/MotorVelocitiesRadiansPerSecond", "value": [], "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/NeutralMode", "value": "Brake", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackAccelerationRadiansPerSecondPerSecond", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackCruiseVelocityRadiansPerSecond", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackKD", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackKG", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackKI", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackKP", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackKS", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackKV", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackMaximumAngleRadians", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackMinimumAngleRadians", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReadbackOutputLimit", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReferencePos", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReferenceValid", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/ReferenceVel", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/RequestedVolts", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/SampleTimestampSeconds", "value": NaN, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/StatorCurrent", "value": -3.1279387258109637e-06, "samples": 10, "first_server_us": 15506223, "last_server_us": 28691359}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/SupplyCurrent", "value": NaN, "samples": 51, "first_server_us": 15506223, "last_server_us": 28691359}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakePivot/Velocity", "value": -3.7921566855283385e-11, "samples": 7, "first_server_us": 15506223, "last_server_us": 28691359}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/Acceleration", "value": 0.0, "samples": 11, "first_server_us": 15506223, "last_server_us": 28820671}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/Angle", "value": -2.971119852817665e-10, "samples": 46, "first_server_us": 15506223, "last_server_us": 29165144}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/AppliedVolts", "value": NaN, "samples": 22, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/BusVolts", "value": -5.24350785013894e-10, "samples": 8, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ConfigError", "value": "Controller reset, fault, brownout or unhealthy telemetry: reconfigure disabled and confirm physical reference", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ConfigPending", "value": true, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ConfigReady", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ConfigurationGeneration", "value": 0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/DeviceConnectedStatuses", "value": {"hex": "00020000000025000000"}, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/GoalPos", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/GoalVel", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/IOOutputMode", "value": "kNeutral", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/MotorTemperatures", "value": [140.0, 140.0], "samples": 82, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/MotorVelocitiesRadiansPerSecond", "value": [], "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/NeutralMode", "value": "Brake", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackAccelerationRadiansPerSecondPerSecond", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackCruiseVelocityRadiansPerSecond", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackKD", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackKG", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackKI", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackKP", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackKS", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackKV", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackMaximumAngleRadians", "value": NaN, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackMinimumAngleRadians", "value": NaN, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReadbackOutputLimit", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReferencePos", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReferenceValid", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/ReferenceVel", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/RequestedVolts", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/SampleTimestampSeconds", "value": NaN, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/StatorCurrent", "value": -3.1279596441891044e-06, "samples": 7, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/SupplyCurrent", "value": NaN, "samples": 22, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/AngularSubsystems/IntakeRollers/Velocity", "value": -3.7921566855283385e-11, "samples": 6, "first_server_us": 15506223, "last_server_us": 28769491}
+{"topic": "/AdvantageKit/DriverStation/DSAttached", "value": true, "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/DriverStation/Enabled", "value": false, "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/DriverStation/Test", "value": true, "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealMetadata/BuildDate", "value": "2026-10-09 16:08:25 EDT", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealMetadata/GitBranch", "value": "merge-10-9", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealMetadata/GitDate", "value": "2026-10-09 15:53:15 EDT", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealMetadata/GitDirty", "value": "Uncommitted changes", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealMetadata/GitSHA", "value": "c67407c59ebe0c06262ee217dca1879cde33c2e4", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealMetadata/ProjectName", "value": "FRC-Bordie", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealOutputs/AngularSubsystems/Feeder/AtAngle", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/AngularSubsystems/IntakePivot/AtAngle", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/AngularSubsystems/IntakeRollers/AtAngle", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/Active", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/Calibrated", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/ConfigReadback", "value": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/ConfigurationReady", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/DSState", "value": [29.149191, 0.0, 1.0, 1.0, 0.0], "samples": 183, "first_server_us": 15506223, "last_server_us": 29125521}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/DirectionConfirmed", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/DirectionConfirmedLatched", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/FeedbackPassed", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/HealthFault", "value": "Prepare must be selected while disabled", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LastCalibrationNonce", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LastConsumedNonce", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LastDirectionConfirmationNonce", "value": 0.0, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LastRunPassed", "value": false, "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LastRunReason", "value": "No completed run in this program instance", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LoopMedianMs", "value": 54.90800000000107, "samples": 183, "first_server_us": 15506223, "last_server_us": 29125521}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LoopP95Ms", "value": 155.39300000000011, "samples": 11, "first_server_us": 15506223, "last_server_us": 29017727}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/LoopSamples", "value": 184, "samples": 184, "first_server_us": 15506223, "last_server_us": 29165144}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/Ready", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/RemoteAllowedLatched", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/Selected", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/Status", "value": "Blocked: Prepare must be selected while disabled", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/StopRequestedLatched", "value": false, "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/Trace", "value": [29.149191, 0.0, 0.0, 0.0, -2.9188471676380094e-10, -3.7921566855283385e-11, NaN, -3.1279387258109637e-06, 140.0, NaN, 0.0, 0.0], "samples": 183, "first_server_us": 15506223, "last_server_us": 29125521}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/TraceColumns", "value": "time,mode,start,target,angle,velocity,volts,current,temperature,sampleTime,outputCap,nonce", "samples": 1, "first_server_us": 1399133, "last_server_us": 1399133}
+{"topic": "/AdvantageKit/RealOutputs/IntakeDiagnostics/WatchdogReason", "value": "", "samples": 1, "first_server_us": 15506223, "last_server_us": 15506223}
+{"topic": "/SmartDashboard/IntakeDiagnostics/AllowRemote", "value": false, "samples": 1, "first_server_us": 13815706, "last_server_us": 13815706}
+{"topic": "/SmartDashboard/IntakeDiagnostics/CalibrationNonce", "value": 0.0, "samples": 1, "first_server_us": 13818451, "last_server_us": 13818451}
+{"topic": "/SmartDashboard/IntakeDiagnostics/CurrentLimitAmps", "value": 10.0, "samples": 1, "first_server_us": 13817746, "last_server_us": 13817746}
+{"topic": "/SmartDashboard/IntakeDiagnostics/DirectionConfirmationNonce", "value": 0.0, "samples": 1, "first_server_us": 13818562, "last_server_us": 13818562}
+{"topic": "/SmartDashboard/IntakeDiagnostics/DirectionConfirmed", "value": false, "samples": 1, "first_server_us": 13815576, "last_server_us": 13815576}
+{"topic": "/SmartDashboard/IntakeDiagnostics/DurationSeconds", "value": 0.1, "samples": 1, "first_server_us": 13817356, "last_server_us": 13817356}
+{"topic": "/SmartDashboard/IntakeDiagnostics/LastConsumedNonce", "value": 0.0, "samples": 1, "first_server_us": 16371562, "last_server_us": 16371562}
+{"topic": "/SmartDashboard/IntakeDiagnostics/MaximumDegrees", "value": NaN, "samples": 1, "first_server_us": 13816781, "last_server_us": 13816781}
+{"topic": "/SmartDashboard/IntakeDiagnostics/MinimumDegrees", "value": NaN, "samples": 1, "first_server_us": 13816670, "last_server_us": 13816670}
+{"topic": "/SmartDashboard/IntakeDiagnostics/Mode", "value": "OFF", "samples": 1, "first_server_us": 13816355, "last_server_us": 13816355}
+{"topic": "/SmartDashboard/IntakeDiagnostics/OutputDuty", "value": 0.03, "samples": 1, "first_server_us": 13817505, "last_server_us": 13817505}
+{"topic": "/SmartDashboard/IntakeDiagnostics/Prepare", "value": false, "samples": 1, "first_server_us": 13813980, "last_server_us": 13813980}
+{"topic": "/SmartDashboard/IntakeDiagnostics/Ready", "value": false, "samples": 1, "first_server_us": 16370578, "last_server_us": 16370578}
+{"topic": "/SmartDashboard/IntakeDiagnostics/ReferenceConfirmed", "value": false, "samples": 1, "first_server_us": 13814704, "last_server_us": 13814704}
+{"topic": "/SmartDashboard/IntakeDiagnostics/ReferenceDegrees", "value": NaN, "samples": 1, "first_server_us": 13816559, "last_server_us": 13816559}
+{"topic": "/SmartDashboard/IntakeDiagnostics/RemoteActivation", "value": false, "samples": 1, "first_server_us": 13815817, "last_server_us": 13815817}
+{"topic": "/SmartDashboard/IntakeDiagnostics/RemoteHeartbeat", "value": 0.0, "samples": 1, "first_server_us": 13818024, "last_server_us": 13818024}
+{"topic": "/SmartDashboard/IntakeDiagnostics/ScalingAndTravelConfirmed", "value": false, "samples": 1, "first_server_us": 13815335, "last_server_us": 13815335}
+{"topic": "/SmartDashboard/IntakeDiagnostics/SelectedLatched", "value": false, "samples": 1, "first_server_us": 16371432, "last_server_us": 16371432}
+{"topic": "/SmartDashboard/IntakeDiagnostics/StartNonce", "value": 0.0, "samples": 1, "first_server_us": 13818340, "last_server_us": 13818340}
+{"topic": "/SmartDashboard/IntakeDiagnostics/Status", "value": "Blocked: Prepare must be selected while disabled", "samples": 1, "first_server_us": 16369224, "last_server_us": 16369224}
+{"topic": "/SmartDashboard/IntakeDiagnostics/StepDegrees", "value": 1.0, "samples": 1, "first_server_us": 13817004, "last_server_us": 13817004}
+{"topic": "/SmartDashboard/IntakeDiagnostics/StopRequested", "value": false, "samples": 1, "first_server_us": 13814222, "last_server_us": 13814222}
+{"topic": "/SmartDashboard/IntakeDiagnostics/TemperatureLimitCelsius", "value": 45.0, "samples": 1, "first_server_us": 13817913, "last_server_us": 13817913}
+{"topic": "/SmartDashboard/IntakeDiagnostics/Voltage", "value": 0.1, "samples": 1, "first_server_us": 13816893, "last_server_us": 13816893}
+{"topic": "/Tuning/AngularSubsystems/Feeder/AccelerationRadiansPerSecondPerSecond", "value": 0.0, "samples": 1, "first_server_us": 12812169, "last_server_us": 12812169}
+{"topic": "/Tuning/AngularSubsystems/Feeder/CruiseVelocityRadiansPerSecond", "value": 0.0, "samples": 1, "first_server_us": 12811909, "last_server_us": 12811909}
+{"topic": "/Tuning/AngularSubsystems/Feeder/KD", "value": 0.0, "samples": 1, "first_server_us": 12810629, "last_server_us": 12810629}
+{"topic": "/Tuning/AngularSubsystems/Feeder/KG", "value": 0.0, "samples": 1, "first_server_us": 12811130, "last_server_us": 12811130}
+{"topic": "/Tuning/AngularSubsystems/Feeder/KI", "value": 0.0, "samples": 1, "first_server_us": 12810240, "last_server_us": 12810240}
+{"topic": "/Tuning/AngularSubsystems/Feeder/KP", "value": 0.0008333333333333334, "samples": 1, "first_server_us": 12809795, "last_server_us": 12809795}
+{"topic": "/Tuning/AngularSubsystems/Feeder/KS", "value": 0.0, "samples": 1, "first_server_us": 12811557, "last_server_us": 12811557}
+{"topic": "/Tuning/AngularSubsystems/Feeder/KV", "value": 0.01909859317102744, "samples": 1, "first_server_us": 12810908, "last_server_us": 12810908}
+{"topic": "/Tuning/AngularSubsystems/Feeder/PositionToleranceRadians", "value": Infinity, "samples": 1, "first_server_us": 12812484, "last_server_us": 12812484}
+{"topic": "/Tuning/AngularSubsystems/Feeder/VelocityToleranceRadiansPerSecond", "value": 31.41592653589793, "samples": 1, "first_server_us": 12812874, "last_server_us": 12812874}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/AccelerationRadiansPerSecondPerSecond", "value": 12.566370614359172, "samples": 1, "first_server_us": 12685176, "last_server_us": 12685176}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/CruiseVelocityRadiansPerSecond", "value": 6.283185307179586, "samples": 1, "first_server_us": 12684786, "last_server_us": 12684786}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/KD", "value": 0.0, "samples": 1, "first_server_us": 12682022, "last_server_us": 12682022}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/KG", "value": 0.35, "samples": 1, "first_server_us": 12683228, "last_server_us": 12683228}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/KI", "value": 0.0, "samples": 1, "first_server_us": 12681725, "last_server_us": 12681725}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/KP", "value": 2.0, "samples": 1, "first_server_us": 12681243, "last_server_us": 12681243}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/KS", "value": 0.0, "samples": 1, "first_server_us": 12683914, "last_server_us": 12683914}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/KV", "value": 0.5, "samples": 1, "first_server_us": 12682449, "last_server_us": 12682449}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/PositionToleranceRadians", "value": 0.03490658503988659, "samples": 1, "first_server_us": 12685918, "last_server_us": 12685918}
+{"topic": "/Tuning/AngularSubsystems/IntakePivot/VelocityToleranceRadiansPerSecond", "value": 0.17453292519943295, "samples": 1, "first_server_us": 12686363, "last_server_us": 12686363}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/AccelerationRadiansPerSecondPerSecond", "value": 0.0, "samples": 1, "first_server_us": 12787219, "last_server_us": 12787219}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/CruiseVelocityRadiansPerSecond", "value": 0.0, "samples": 1, "first_server_us": 12786997, "last_server_us": 12786997}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/KD", "value": 0.0, "samples": 1, "first_server_us": 12785865, "last_server_us": 12785865}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/KG", "value": 0.0, "samples": 1, "first_server_us": 12786496, "last_server_us": 12786496}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/KI", "value": 0.0, "samples": 1, "first_server_us": 12785494, "last_server_us": 12785494}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/KP", "value": 0.0, "samples": 1, "first_server_us": 12784826, "last_server_us": 12784826}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/KS", "value": 0.0, "samples": 1, "first_server_us": 12786756, "last_server_us": 12786756}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/KV", "value": 0.01909859317102744, "samples": 1, "first_server_us": 12786199, "last_server_us": 12786199}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/PositionToleranceRadians", "value": Infinity, "samples": 1, "first_server_us": 12787423, "last_server_us": 12787423}
+{"topic": "/Tuning/AngularSubsystems/IntakeRollers/VelocityToleranceRadiansPerSecond", "value": 31.41592653589793, "samples": 1, "first_server_us": 12787627, "last_server_us": 12787627}
+Saved C:\Users\otgra\.codex\worktrees\merge-10-9\FRC-Bordie\build\diagnostics\feeder-60amp-readback.json

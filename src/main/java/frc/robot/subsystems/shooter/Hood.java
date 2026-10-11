@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants;
 import frc.robot.constants.shooter.ShooterConstants;
 import frc.robot.lib.subsystem.RegisteredSubsystem;
 import org.littletonrobotics.junction.Logger;
@@ -38,12 +39,14 @@ public class Hood extends RegisteredSubsystem {
 
   @Override
   public void periodic() {
+    double start = Constants.kEnableLoopTimingLogs ? Timer.getFPGATimestamp() : 0.0;
     io.updateInputs(inputs);
+    if (Constants.kEnableLoopTimingLogs) {
+      Logger.recordOutput("Timing/Hood/InputUpdateMS", (Timer.getFPGATimestamp() - start) * 1000.0);
+    }
     Logger.processInputs("Hood", inputs);
     Logger.recordOutput("Hood/TargetState", targetState.toString());
     Logger.recordOutput("Hood/AtPosition", isAtPosition());
-    Logger.recordOutput("Hood/UsingSensor", inputs.connected);
-    controllerDisconnectedAlert.set(!inputs.controllerConnected);
     Logger.recordOutput("Hood/UsingSensor", inputs.connected);
     controllerDisconnectedAlert.set(!inputs.controllerConnected);
   }
@@ -66,6 +69,10 @@ public class Hood extends RegisteredSubsystem {
 
   public HoodState getTargetState() {
     return targetState;
+  }
+
+  public void stopImmediately() {
+    io.stop();
   }
 
   /**

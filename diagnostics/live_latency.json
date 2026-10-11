@@ -1,0 +1,10212 @@
+{
+  "capture_utc": "2026-10-09T03:49:05.595831+00:00",
+  "duration_sec": 20.03099999999995,
+  "topics": [
+    {
+      "id": 253,
+      "name": "/AdvantageKit/Timestamp",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 580,
+      "name": "/AdvantageKit/DriverStation/Joystick4/ButtonValues",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 583,
+      "name": "/AdvantageKit/DriverStation/Joystick0/ButtonValues",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 586,
+      "name": "/AdvantageKit/SystemStats/5vRail/Voltage",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 592,
+      "name": "/AdvantageKit/SystemStats/CANBus/Utilization",
+      "properties": {},
+      "type": "float"
+    },
+    {
+      "id": 595,
+      "name": "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/IPAddress",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 598,
+      "name": "/AdvantageKit/SystemStats/FPGAVersion",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 601,
+      "name": "/AdvantageKit/DriverStation/MatchType",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 607,
+      "name": "/AdvantageKit/DriverStation/Joystick4/POVs",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 613,
+      "name": "/AdvantageKit/SystemStats/3v3Rail/Voltage",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 616,
+      "name": "/AdvantageKit/DriverStation/Joystick5/AxisValues",
+      "properties": {},
+      "type": "float[]"
+    },
+    {
+      "id": 619,
+      "name": "/AdvantageKit/DriverStation/Joystick5/POVs",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 628,
+      "name": "/AdvantageKit/SystemStats/CANBus/TransmitErrorCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 634,
+      "name": "/AdvantageKit/RealMetadata/GitBranch",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 640,
+      "name": "/AdvantageKit/SystemStats/Comments",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 643,
+      "name": "/AdvantageKit/DriverStation/Joystick0/Name",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 646,
+      "name": "/AdvantageKit/SystemStats/CPUTempCelsius",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 652,
+      "name": "/AdvantageKit/DriverStation/Joystick3/POVs",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 658,
+      "name": "/AdvantageKit/DriverStation/Joystick5/Xbox",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 661,
+      "name": "/AdvantageKit/SystemStats/FPGARevision",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 667,
+      "name": "/AdvantageKit/SystemStats/CANBus/ReceiveErrorCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 673,
+      "name": "/AdvantageKit/DriverStation/Joystick1/POVs",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 679,
+      "name": "/AdvantageKit/DriverStation/EmergencyStop",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 691,
+      "name": "/AdvantageKit/DriverStation/Joystick5/AxisTypes",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 694,
+      "name": "/AdvantageKit/DriverStation/Joystick2/Name",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 697,
+      "name": "/AdvantageKit/SystemStats/NTClients/Dashboard@1/Connected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 700,
+      "name": "/AdvantageKit/SystemStats/TeamNumber",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 706,
+      "name": "/AdvantageKit/DriverStation/Joystick0/Xbox",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 709,
+      "name": "/AdvantageKit/SystemStats/FPGAButton",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 712,
+      "name": "/AdvantageKit/SystemStats/6vRail/Voltage",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 721,
+      "name": "/AdvantageKit/SystemStats/BrownedOut",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 724,
+      "name": "/AdvantageKit/SystemStats/EpochTimeMicros",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 727,
+      "name": "/AdvantageKit/DriverStation/FMSAttached",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 736,
+      "name": "/AdvantageKit/DriverStation/MatchTime",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 739,
+      "name": "/AdvantageKit/DriverStation/Joystick0/AxisTypes",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 742,
+      "name": "/AdvantageKit/DriverStation/Joystick3/Xbox",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 748,
+      "name": "/AdvantageKit/SystemStats/6vRail/CurrentFaults",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 754,
+      "name": "/AdvantageKit/SystemStats/5vRail/CurrentFaults",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 757,
+      "name": "/AdvantageKit/DriverStation/Joystick0/Type",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 760,
+      "name": "/AdvantageKit/DriverStation/Joystick3/Type",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 763,
+      "name": "/AdvantageKit/SystemStats/SystemTimeValid",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 769,
+      "name": "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/ProtocolVersion",
+      "properties": {},
+      "type": "raw"
+    },
+    {
+      "id": 772,
+      "name": "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/Connected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 784,
+      "name": "/AdvantageKit/DriverStation/Joystick2/ButtonValues",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 790,
+      "name": "/AdvantageKit/SystemStats/CANBus/TxFullCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 796,
+      "name": "/AdvantageKit/DriverStation/Joystick1/Type",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 799,
+      "name": "/AdvantageKit/DriverStation/DSAttached",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 802,
+      "name": "/AdvantageKit/DriverStation/Joystick5/Name",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 808,
+      "name": "/AdvantageKit/DriverStation/MatchNumber",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 811,
+      "name": "/AdvantageKit/SystemStats/5vRail/Active",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 814,
+      "name": "/AdvantageKit/DriverStation/Joystick1/Xbox",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 823,
+      "name": "/AdvantageKit/RealMetadata/ProjectName",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 826,
+      "name": "/AdvantageKit/DriverStation/Joystick4/Name",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 829,
+      "name": "/AdvantageKit/SystemStats/3v3Rail/Current",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 835,
+      "name": "/AdvantageKit/DriverStation/Joystick0/AxisValues",
+      "properties": {},
+      "type": "float[]"
+    },
+    {
+      "id": 838,
+      "name": "/AdvantageKit/RealMetadata/GitSHA",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 844,
+      "name": "/AdvantageKit/SystemStats/6vRail/Active",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 847,
+      "name": "/AdvantageKit/DriverStation/Joystick3/AxisTypes",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 850,
+      "name": "/AdvantageKit/SystemStats/NTClients/Dashboard@1/ProtocolVersion",
+      "properties": {},
+      "type": "raw"
+    },
+    {
+      "id": 853,
+      "name": "/AdvantageKit/SystemStats/5vRail/Current",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 856,
+      "name": "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/RemotePort",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 859,
+      "name": "/AdvantageKit/DriverStation/Joystick2/Type",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 862,
+      "name": "/AdvantageKit/DriverStation/Joystick2/AxisTypes",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 865,
+      "name": "/AdvantageKit/DriverStation/Joystick3/Name",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 868,
+      "name": "/AdvantageKit/SystemStats/6vRail/Current",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 871,
+      "name": "/AdvantageKit/SystemStats/BatteryCurrent",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 877,
+      "name": "/AdvantageKit/DriverStation/Test",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 880,
+      "name": "/AdvantageKit/DriverStation/Autonomous",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 883,
+      "name": "/AdvantageKit/SystemStats/NTClients/Dashboard@1/RemotePort",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 895,
+      "name": "/AdvantageKit/DriverStation/EventName",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 898,
+      "name": "/AdvantageKit/DriverStation/Joystick2/Xbox",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 904,
+      "name": "/AdvantageKit/DriverStation/Joystick0/POVs",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 907,
+      "name": "/AdvantageKit/SystemStats/BrownoutVoltage",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 910,
+      "name": "/AdvantageKit/DriverStation/Joystick3/ButtonValues",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 913,
+      "name": "/AdvantageKit/DriverStation/Joystick4/AxisValues",
+      "properties": {},
+      "type": "float[]"
+    },
+    {
+      "id": 916,
+      "name": "/AdvantageKit/DriverStation/ReplayNumber",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 919,
+      "name": "/AdvantageKit/DriverStation/Enabled",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 925,
+      "name": "/AdvantageKit/DriverStation/Joystick1/ButtonValues",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 934,
+      "name": "/AdvantageKit/DriverStation/Joystick5/ButtonValues",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 937,
+      "name": "/AdvantageKit/DriverStation/Joystick4/Type",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 940,
+      "name": "/AdvantageKit/SystemStats/BatteryVoltage",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 943,
+      "name": "/AdvantageKit/DriverStation/Joystick1/AxisTypes",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 946,
+      "name": "/AdvantageKit/SystemStats/SerialNumber",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 955,
+      "name": "/AdvantageKit/RealMetadata/GitDirty",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 958,
+      "name": "/AdvantageKit/SystemStats/CommsDisableCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 964,
+      "name": "/AdvantageKit/DriverStation/GameSpecificMessage",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 967,
+      "name": "/AdvantageKit/DriverStation/Joystick1/AxisValues",
+      "properties": {},
+      "type": "float[]"
+    },
+    {
+      "id": 970,
+      "name": "/AdvantageKit/DriverStation/Joystick4/Xbox",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 973,
+      "name": "/AdvantageKit/SystemStats/3v3Rail/CurrentFaults",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 976,
+      "name": "/AdvantageKit/DriverStation/Joystick2/POVs",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 985,
+      "name": "/AdvantageKit/SystemStats/CANBus/OffCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 988,
+      "name": "/AdvantageKit/DriverStation/Joystick5/Type",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 994,
+      "name": "/AdvantageKit/DriverStation/Joystick1/Name",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 997,
+      "name": "/AdvantageKit/RealMetadata/GitDate",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 1000,
+      "name": "/AdvantageKit/DriverStation/Joystick2/ButtonCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 1003,
+      "name": "/AdvantageKit/SystemStats/SystemActive",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1012,
+      "name": "/AdvantageKit/DriverStation/Joystick3/ButtonCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 1015,
+      "name": "/AdvantageKit/DriverStation/Joystick2/AxisValues",
+      "properties": {},
+      "type": "float[]"
+    },
+    {
+      "id": 1018,
+      "name": "/AdvantageKit/SystemStats/RSLState",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1021,
+      "name": "/AdvantageKit/DriverStation/AllianceStation",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 1024,
+      "name": "/AdvantageKit/DriverStation/Joystick4/ButtonCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 1027,
+      "name": "/AdvantageKit/DriverStation/Joystick5/ButtonCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 1033,
+      "name": "/AdvantageKit/SystemStats/3v3Rail/Active",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1045,
+      "name": "/AdvantageKit/DriverStation/Joystick3/AxisValues",
+      "properties": {},
+      "type": "float[]"
+    },
+    {
+      "id": 1048,
+      "name": "/AdvantageKit/SystemStats/NTClients/Dashboard@1/IPAddress",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 1051,
+      "name": "/AdvantageKit/DriverStation/Joystick4/AxisTypes",
+      "properties": {},
+      "type": "int[]"
+    },
+    {
+      "id": 1054,
+      "name": "/AdvantageKit/RealMetadata/BuildDate",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 1057,
+      "name": "/AdvantageKit/DriverStation/Joystick0/ButtonCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 1060,
+      "name": "/AdvantageKit/DriverStation/Joystick1/ButtonCount",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 1078,
+      "name": "/AdvantageKit/RealOutputs/AngularSubsystems/Feeder/AtAngle",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1084,
+      "name": "/AdvantageKit/Drive/Module1/TurnPosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1120,
+      "name": "/AdvantageKit/Drive/Module3/OdometryDrivePositionsRad",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1150,
+      "name": "/AdvantageKit/Drive/Module1/TurnCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1156,
+      "name": "/AdvantageKit/Drive/Module2/TurnPosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1165,
+      "name": "/AdvantageKit/Drive/Module2/TurnAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1168,
+      "name": "/AdvantageKit/RealOutputs/Timing/Drive/InputUpdateMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1177,
+      "name": "/AdvantageKit/Drive/Module0/TurnPosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1186,
+      "name": "/AdvantageKit/Drive/Module2/DriveConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1195,
+      "name": "/AdvantageKit/Drive/Module1/DriveVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1243,
+      "name": "/AdvantageKit/Drive/Module0/TurnConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1252,
+      "name": "/AdvantageKit/Drive/Module1/DriveCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1255,
+      "name": "/AdvantageKit/Drive/Module0/TurnVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1264,
+      "name": "/AdvantageKit/Drive/Module1/TurnVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1267,
+      "name": "/AdvantageKit/Drive/Module1/TurnAbsolutePosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1276,
+      "name": "/AdvantageKit/Drive/Module3/OdometryTurnPositions",
+      "properties": {},
+      "type": "struct:Rotation2d[]"
+    },
+    {
+      "id": 1300,
+      "name": "/AdvantageKit/Drive/Module2/OdometryTimestamps",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1315,
+      "name": "/AdvantageKit/Drive/Module0/OdometryTimestamps",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1318,
+      "name": "/AdvantageKit/Drive/Module3/OdometryTimestamps",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1330,
+      "name": "/AdvantageKit/Drive/Module3/TurnAbsolutePosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1339,
+      "name": "/AdvantageKit/RealOutputs/AngularSubsystems/Indexer/AtAngle",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1345,
+      "name": "/AdvantageKit/Drive/Module3/DriveConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1351,
+      "name": "/AdvantageKit/RealOutputs/Timing/AngularSubsystems/InputUpdateMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1354,
+      "name": "/AdvantageKit/Drive/Module0/TurnAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1357,
+      "name": "/AdvantageKit/Hood/SensorVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1363,
+      "name": "/AdvantageKit/Drive/Module2/TurnCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1369,
+      "name": "/AdvantageKit/Drive/Module3/DriveAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1387,
+      "name": "/AdvantageKit/Drive/Module1/TurnConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1390,
+      "name": "/AdvantageKit/Drive/Module2/DriveAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1393,
+      "name": "/AdvantageKit/Drive/Module2/DriveVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1408,
+      "name": "/AdvantageKit/Drive/Module1/DriveAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1411,
+      "name": "/AdvantageKit/Drive/Module2/TurnConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1423,
+      "name": "/AdvantageKit/Drive/Module0/DriveConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1444,
+      "name": "/AdvantageKit/Drive/Module2/DriveCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1468,
+      "name": "/AdvantageKit/Drive/Module2/TurnVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1471,
+      "name": "/AdvantageKit/Drive/Module2/TurnAbsolutePosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1477,
+      "name": "/AdvantageKit/Hood/ExtendCommanded",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1492,
+      "name": "/AdvantageKit/Drive/Module3/TurnVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1501,
+      "name": "/AdvantageKit/Drive/Module1/OdometryDrivePositionsRad",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1510,
+      "name": "/AdvantageKit/Drive/Module1/TurnEncoderConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1525,
+      "name": "/AdvantageKit/RealOutputs/Timing/SuperstructureVisualizerMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1531,
+      "name": "/AdvantageKit/Drive/Module0/DrivePositionRad",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1534,
+      "name": "/AdvantageKit/RealOutputs/AngularSubsystems/ShooterFlywheel/AtAngle",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1546,
+      "name": "/AdvantageKit/RealOutputs/Timing/LinearSubsystems/InputUpdateMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1549,
+      "name": "/AdvantageKit/Drive/Module3/DrivePositionRad",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1555,
+      "name": "/AdvantageKit/Drive/Module1/DriveConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1573,
+      "name": "/AdvantageKit/Hood/Connected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1591,
+      "name": "/AdvantageKit/Drive/Module3/DriveVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1606,
+      "name": "/AdvantageKit/Drive/Module1/OdometryTimestamps",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1642,
+      "name": "/AdvantageKit/Drive/Module0/OdometryDrivePositionsRad",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1660,
+      "name": "/AdvantageKit/Drive/Module1/TurnAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1720,
+      "name": "/AdvantageKit/Drive/Module3/TurnConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1741,
+      "name": "/AdvantageKit/Drive/Module0/DriveVelocityRadPerSec",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1747,
+      "name": "/AdvantageKit/Hood/PositionNormalized",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1753,
+      "name": "/AdvantageKit/Hood/ControllerConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1762,
+      "name": "/AdvantageKit/Drive/Module2/TurnEncoderConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1768,
+      "name": "/AdvantageKit/Drive/Module1/DrivePositionRad",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1783,
+      "name": "/AdvantageKit/Drive/Module3/TurnAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1795,
+      "name": "/AdvantageKit/RealOutputs/AngularSubsystems/IntakeRollers/AtAngle",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1801,
+      "name": "/AdvantageKit/Drive/Module0/TurnEncoderConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1804,
+      "name": "/AdvantageKit/RealOutputs/Timing/Drive/SubsystemCodeMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1825,
+      "name": "/AdvantageKit/RealOutputs/Timing/LinearSubsystems/SubsystemCodeMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1840,
+      "name": "/AdvantageKit/RealOutputs/Timing/SignalIOUpdateMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1858,
+      "name": "/AdvantageKit/Hood/AppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1861,
+      "name": "/AdvantageKit/Drive/Module2/OdometryDrivePositionsRad",
+      "properties": {},
+      "type": "double[]"
+    },
+    {
+      "id": 1864,
+      "name": "/AdvantageKit/RealOutputs/Timing/Vision/SubsystemCodeMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1867,
+      "name": "/AdvantageKit/Drive/Module0/DriveAppliedVolts",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1870,
+      "name": "/AdvantageKit/Drive/Module2/DrivePositionRad",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1873,
+      "name": "/AdvantageKit/Drive/Module2/OdometryTurnPositions",
+      "properties": {},
+      "type": "struct:Rotation2d[]"
+    },
+    {
+      "id": 1888,
+      "name": "/AdvantageKit/Drive/Module0/TurnAbsolutePosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1903,
+      "name": "/AdvantageKit/Drive/Module0/OdometryTurnPositions",
+      "properties": {},
+      "type": "struct:Rotation2d[]"
+    },
+    {
+      "id": 1933,
+      "name": "/AdvantageKit/Hood/CurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1939,
+      "name": "/AdvantageKit/Drive/Module3/DriveCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1951,
+      "name": "/AdvantageKit/RealOutputs/AngularSubsystems/IntakePivot/AtAngle",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1954,
+      "name": "/AdvantageKit/RealOutputs/Timing/AllianceCheckerMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 1957,
+      "name": "/AdvantageKit/Drive/Module3/TurnPosition",
+      "properties": {},
+      "type": "struct:Rotation2d"
+    },
+    {
+      "id": 1975,
+      "name": "/AdvantageKit/Drive/Module3/TurnEncoderConnected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 1981,
+      "name": "/AdvantageKit/RealOutputs/Timing/Vision/InputUpdateMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 2002,
+      "name": "/AdvantageKit/Drive/Module0/TurnCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 2005,
+      "name": "/AdvantageKit/Drive/Module3/TurnCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 2011,
+      "name": "/AdvantageKit/RealOutputs/Timing/AngularSubsystems/SubsystemCodeMS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 2017,
+      "name": "/AdvantageKit/Drive/Module0/DriveCurrentAmps",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 2026,
+      "name": "/AdvantageKit/Drive/Module1/OdometryTurnPositions",
+      "properties": {},
+      "type": "struct:Rotation2d[]"
+    },
+    {
+      "id": 2049,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/ProtocolVersion",
+      "properties": {},
+      "type": "raw"
+    },
+    {
+      "id": 2052,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/Connected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 2055,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/IPAddress",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 2058,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/RemotePort",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 2069,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/RemotePort",
+      "properties": {},
+      "type": "int"
+    },
+    {
+      "id": 2072,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/Connected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 2075,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/IPAddress",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 2078,
+      "name": "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/ProtocolVersion",
+      "properties": {},
+      "type": "raw"
+    },
+    {
+      "id": 2085,
+      "name": "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/IPAddress",
+      "properties": {},
+      "type": "string"
+    },
+    {
+      "id": 2088,
+      "name": "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/ProtocolVersion",
+      "properties": {},
+      "type": "raw"
+    },
+    {
+      "id": 2091,
+      "name": "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/Connected",
+      "properties": {},
+      "type": "boolean"
+    },
+    {
+      "id": 2094,
+      "name": "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/RemotePort",
+      "properties": {},
+      "type": "int"
+    }
+  ],
+  "history": {
+    "/AdvantageKit/Timestamp": [
+      [
+        0.03099999999994907,
+        1548042426,
+        1548042426
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        1548407898
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        1548778044
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        1549169208
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        1549534736
+      ],
+      [
+        1.625,
+        1549903807,
+        1549903807
+      ],
+      [
+        2.0,
+        1550276439,
+        1550276439
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        1550637533
+      ],
+      [
+        2.75,
+        1550992488,
+        1550992488
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        1551383967
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        1551756006
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        1552118269
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        1552499193
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        1552865277
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        1553226501
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        1553613584
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        1553978945
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        1554335383
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        1554703545
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        1555074731
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        1555426253
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        1555815655
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        1556171277
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        1556535729
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        1556907229
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        1557269418
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        1557640715
+      ],
+      [
+        9.75,
+        1558026073,
+        1558026073
+      ],
+      [
+        10.125,
+        1558391044,
+        1558391044
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        1558750710
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        1559116367
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        1559483231
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        1559837721
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        1560220593
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        1560587160
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        1560965487
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        1561330625
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        1561700531
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        1562061328
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        1562434072
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        1562791697
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        1563149137
+      ],
+      [
+        15.25,
+        1563527947,
+        1563527947
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        1563880953
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        1564232365
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        1564607557
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        1564964997
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        1565331972
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        1565719277
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        1566090388
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        1566456287
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        1566833297
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        1567194317
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        1567559493
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        1567934796
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        1568295891
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/ButtonValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/ButtonValues": [
+      [
+        0.03099999999994907,
+        1467485378,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/5vRail/Voltage": [
+      [
+        0.03099999999994907,
+        1547670108,
+        5.0785712890625
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        5.07711572265625
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        5.0756601562500006
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        5.0785712890625
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        5.08002685546875
+      ],
+      [
+        2.0,
+        1550276439,
+        5.074204589843751
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        5.07711572265625
+      ],
+      [
+        2.75,
+        1550992488,
+        5.0785712890625
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        5.08002685546875
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        5.0785712890625
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        5.08002685546875
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        5.07711572265625
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        5.074204589843751
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        5.08002685546875
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        5.084393554687501
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        5.07711572265625
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        5.0785712890625
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        5.0756601562500006
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        5.074204589843751
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        5.07129345703125
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        5.07711572265625
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        5.0785712890625
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        5.07711572265625
+      ],
+      [
+        9.75,
+        1558026073,
+        5.081482421875
+      ],
+      [
+        10.125,
+        1558391044,
+        5.07711572265625
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        5.081482421875
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        5.07711572265625
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        5.08002685546875
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        5.07711572265625
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        5.08002685546875
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        5.0756601562500006
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        5.07711572265625
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        5.0785712890625
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        5.081482421875
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        5.07711572265625
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        5.08002685546875
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        5.0756601562500006
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        5.08002685546875
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        5.0785712890625
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        5.08002685546875
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        5.0785712890625
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        5.07711572265625
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        5.0756601562500006
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        5.07711572265625
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        5.081482421875
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        5.0785712890625
+      ]
+    ],
+    "/AdvantageKit/SystemStats/CANBus/Utilization": [
+      [
+        0.03099999999994907,
+        1547313837,
+        0.5610091686248779
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.6204130053520203
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.5661792159080505
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/IPAddress": [
+      [
+        0.03099999999994907,
+        1183729,
+        "10.18.99.200"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/FPGAVersion": [
+      [
+        0.03099999999994907,
+        1183729,
+        8228
+      ]
+    ],
+    "/AdvantageKit/DriverStation/MatchType": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/POVs": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/SystemStats/3v3Rail/Voltage": [
+      [
+        0.03099999999994907,
+        1547313837,
+        3.27994091796875
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        3.278744140625
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        3.27994091796875
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        3.2811376953125
+      ],
+      [
+        1.625,
+        1549903807,
+        3.27994091796875
+      ],
+      [
+        2.0,
+        1550276439,
+        3.278744140625
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        3.2823344726562502
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        3.2811376953125
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        3.27994091796875
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        3.2823344726562502
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        3.2835312500000002
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        3.278744140625
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        3.27994091796875
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        3.2811376953125
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        3.27994091796875
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        3.278744140625
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        3.2823344726562502
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        3.27994091796875
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        3.2811376953125
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        3.2823344726562502
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        3.27994091796875
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        3.2811376953125
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        3.27994091796875
+      ],
+      [
+        9.75,
+        1558026073,
+        3.2811376953125
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        3.2823344726562502
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        3.2811376953125
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        3.27994091796875
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        3.2835312500000002
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        3.27994091796875
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        3.2835312500000002
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        3.2823344726562502
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        3.2847280273437502
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        3.2811376953125
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        3.2835312500000002
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        3.2823344726562502
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        3.27994091796875
+      ],
+      [
+        15.25,
+        1563527947,
+        3.2823344726562502
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        3.2811376953125
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        3.27994091796875
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        3.2823344726562502
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        3.2811376953125
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        3.2823344726562502
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        3.2811376953125
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        3.27994091796875
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        3.2823344726562502
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        3.27994091796875
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        3.2811376953125
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        3.2823344726562502
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        3.2811376953125
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/AxisValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/POVs": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/SystemStats/CANBus/TransmitErrorCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/RealMetadata/GitBranch": [
+      [
+        0.03099999999994907,
+        1183729,
+        "encoder"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/Comments": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/Name": [
+      [
+        0.03099999999994907,
+        1183729,
+        "Controller (Xbox One For Windows)"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/CPUTempCelsius": [
+      [
+        0.03099999999994907,
+        1548042426,
+        52.16979980468756
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        51.92371826171876
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        52.661962890625034
+      ],
+      [
+        1.625,
+        1549903807,
+        52.04675903320316
+      ],
+      [
+        2.0,
+        1550276439,
+        51.92371826171876
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        52.2928405761719
+      ],
+      [
+        2.75,
+        1550992488,
+        52.04675903320316
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        51.80067749023442
+      ],
+      [
+        3.5,
+        1551756006,
+        52.538922119140636
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        51.55459594726568
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        52.538922119140636
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        52.2928405761719
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        51.92371826171876
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        51.431555175781284
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        52.2928405761719
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        51.80067749023442
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        52.04675903320316
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        52.2928405761719
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        52.415881347656295
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        51.92371826171876
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        51.55459594726568
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        51.92371826171876
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        51.80067749023442
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        51.92371826171876
+      ],
+      [
+        10.125,
+        1558391044,
+        51.67763671875002
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        52.2928405761719
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        52.661962890625034
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        52.2928405761719
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        52.04675903320316
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        52.16979980468756
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        52.04675903320316
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        52.16979980468756
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        52.415881347656295
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        52.2928405761719
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        52.16979980468756
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        52.78500366210943
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        52.16979980468756
+      ],
+      [
+        15.25,
+        1563527947,
+        51.92371826171876
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        52.2928405761719
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        51.55459594726568
+      ],
+      [
+        16.71900000000005,
+        1564964997,
+        52.415881347656295
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        52.04675903320316
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        51.92371826171876
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        52.04675903320316
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        51.92371826171876
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        52.04675903320316
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        51.55459594726568
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        52.04675903320316
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/POVs": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/Xbox": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/FPGARevision": [
+      [
+        0.03099999999994907,
+        1183729,
+        37748736
+      ]
+    ],
+    "/AdvantageKit/SystemStats/CANBus/ReceiveErrorCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/POVs": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/DriverStation/EmergencyStop": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/AxisTypes": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/Name": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/Dashboard@1/Connected": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/SystemStats/TeamNumber": [
+      [
+        0.03099999999994907,
+        1183729,
+        1899
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/Xbox": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/SystemStats/FPGAButton": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/6vRail/Voltage": [
+      [
+        0.03099999999994907,
+        1548042426,
+        5.992248779296875
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        5.988821533203125
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        5.99053515625
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        5.992248779296875
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        5.99396240234375
+      ],
+      [
+        1.625,
+        1549903807,
+        5.99053515625
+      ],
+      [
+        2.0,
+        1550276439,
+        5.988821533203125
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        5.99396240234375
+      ],
+      [
+        2.75,
+        1550992488,
+        5.988821533203125
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        5.99053515625
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        5.992248779296875
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        5.988821533203125
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        5.99053515625
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        5.992248779296875
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        5.99053515625
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        5.988821533203125
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        5.99053515625
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        5.988821533203125
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        5.992248779296875
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        5.995676025390625
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        5.99053515625
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        5.992248779296875
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        5.99053515625
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        5.98710791015625
+      ],
+      [
+        10.125,
+        1558391044,
+        5.988821533203125
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        5.99053515625
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        5.992248779296875
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        5.99053515625
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        5.988821533203125
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        5.98710791015625
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        5.99053515625
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        5.988821533203125
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        5.992248779296875
+      ],
+      [
+        15.25,
+        1563527947,
+        5.98710791015625
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        5.99053515625
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        5.992248779296875
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        5.99053515625
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        5.99396240234375
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        5.988821533203125
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        5.99053515625
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        5.988821533203125
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        5.99396240234375
+      ]
+    ],
+    "/AdvantageKit/SystemStats/BrownedOut": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/EpochTimeMicros": [
+      [
+        0.03099999999994907,
+        1548042426,
+        1791517745275414
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        1791517745638003
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        1791517746029149
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        1791517746396314
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        1791517746766356
+      ],
+      [
+        1.625,
+        1549903807,
+        1791517747137696
+      ],
+      [
+        2.0,
+        1550276439,
+        1791517747502633
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        1791517747853722
+      ],
+      [
+        2.75,
+        1550992488,
+        1791517748241890
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        1791517748622328
+      ],
+      [
+        3.5,
+        1551756006,
+        1791517748978972
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        1791517749363529
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        1791517749731665
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        1791517750087668
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        1791517750474077
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        1791517750844180
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        1791517751199052
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        1791517751565500
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        1791517751942079
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        1791517752286646
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        1791517752676415
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        1791517753038164
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        1791517753397937
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        1791517753770077
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        1791517754135933
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        1791517754502749
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        1791517754885309
+      ],
+      [
+        9.75,
+        1558026073,
+        1791517755256534
+      ],
+      [
+        10.125,
+        1558391044,
+        1791517755613993
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        1791517755978753
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        1791517756350112
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        1791517756699707
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        1791517757080406
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        1791517757454609
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        1791517757824782
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        1791517758191803
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        1791517758564219
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        1791517758920846
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        1791517759293943
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        1791517759657955
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        1791517760007222
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        1791517760390568
+      ],
+      [
+        15.25,
+        1563527947,
+        1791517760745631
+      ],
+      [
+        15.608999999999469,
+        1563880953,
+        1791517761092724
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        1791517761469469
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        1791517761833201
+      ],
+      [
+        16.71900000000005,
+        1564964997,
+        1791517762192338
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        1791517762580536
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        1791517762952217
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        1791517763313915
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        1791517763694844
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        1791517764059150
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        1791517764420959
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        1791517764797802
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        1791517765160977
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        1791517765519054
+      ]
+    ],
+    "/AdvantageKit/DriverStation/FMSAttached": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/DriverStation/MatchTime": [
+      [
+        0.03099999999994907,
+        1183729,
+        -1.0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/AxisTypes": [
+      [
+        0.03099999999994907,
+        1183729,
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/Xbox": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/6vRail/CurrentFaults": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/5vRail/CurrentFaults": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/Type": [
+      [
+        0.03099999999994907,
+        1183729,
+        1
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/Type": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/SystemTimeValid": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/ProtocolVersion": [
+      [
+        0.03099999999994907,
+        1183729,
+        {
+          "hex": "00000401"
+        }
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/Connected": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/ButtonValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/CANBus/TxFullCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/Type": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/DSAttached": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/Name": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/DriverStation/MatchNumber": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/5vRail/Active": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/Xbox": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/RealMetadata/ProjectName": [
+      [
+        0.03099999999994907,
+        1183729,
+        "2026rebuilt-bordie-drum"
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/Name": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/SystemStats/3v3Rail/Current": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.02552587890625
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        0.02431201171875
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.02552587890625
+      ],
+      [
+        1.625,
+        1549903807,
+        0.02431201171875
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.0249189453125
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.02431201171875
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.02552587890625
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        0.0249189453125
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.023705078125
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.0249189453125
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.02431201171875
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.02552587890625
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.023705078125
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.0249189453125
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.02431201171875
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.0261328125
+      ],
+      [
+        9.75,
+        1558026073,
+        0.02431201171875
+      ],
+      [
+        10.125,
+        1558391044,
+        0.0273466796875
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.02431201171875
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.02552587890625
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.02431201171875
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.0261328125
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.0249189453125
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.02552587890625
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.0261328125
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.02552587890625
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.02431201171875
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.0249189453125
+      ],
+      [
+        15.25,
+        1563527947,
+        0.02552587890625
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        0.02431201171875
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.0261328125
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.0249189453125
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        0.02431201171875
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.02552587890625
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.0249189453125
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.0261328125
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.0249189453125
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.0261328125
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.02552587890625
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/AxisValues": [
+      [
+        0.03099999999994907,
+        1158401735,
+        [
+          -0.0078125,
+          -0.0078125,
+          0.0,
+          0.0,
+          0.0,
+          -0.03125
+        ]
+      ]
+    ],
+    "/AdvantageKit/RealMetadata/GitSHA": [
+      [
+        0.03099999999994907,
+        1183729,
+        "2772495388301aa161092cdaadf7122eb1c75786"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/6vRail/Active": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/AxisTypes": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/Dashboard@1/ProtocolVersion": [
+      [
+        0.03099999999994907,
+        1183729,
+        {
+          "hex": "00000401"
+        }
+      ]
+    ],
+    "/AdvantageKit/SystemStats/5vRail/Current": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.0628115234375
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        0.06232421874999999
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.07401953124999999
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.0618369140625
+      ],
+      [
+        1.625,
+        1549903807,
+        0.06086230468749999
+      ],
+      [
+        2.0,
+        1550276439,
+        0.06232421874999999
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.0676845703125
+      ],
+      [
+        2.75,
+        1550992488,
+        0.0637861328125
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.063298828125
+      ],
+      [
+        3.5,
+        1551756006,
+        0.058425781249999996
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.059400390624999994
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.0589130859375
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        0.07401953124999999
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.0637861328125
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.0715830078125
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.060375
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.07255761718749999
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.063298828125
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.0720703125
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.067197265625
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.058425781249999996
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.067197265625
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.07401953124999999
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.059400390624999994
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.059887695312499996
+      ],
+      [
+        9.75,
+        1558026073,
+        0.063298828125
+      ],
+      [
+        10.125,
+        1558391044,
+        0.065248046875
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.058425781249999996
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.0589130859375
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.0618369140625
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.0628115234375
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.0735322265625
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.07401953124999999
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.06086230468749999
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.0618369140625
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.0628115234375
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.07109570312499999
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.060375
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.0628115234375
+      ],
+      [
+        15.25,
+        1563527947,
+        0.0735322265625
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        0.073044921875
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.063298828125
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.060375
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.061349609375
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.057938476562499994
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.0618369140625
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.0642734375
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.0735322265625
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.0628115234375
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.063298828125
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/limelight-sr@2/RemotePort": [
+      [
+        0.03099999999994907,
+        1183729,
+        50990
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/Type": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/AxisTypes": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/Name": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/SystemStats/6vRail/Current": [
+      [
+        0.03099999999994907,
+        1547670108,
+        0.030407714843749996
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.031766601562499996
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.03312548828125
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.0372021484375
+      ],
+      [
+        1.625,
+        1549903807,
+        0.030407714843749996
+      ],
+      [
+        2.0,
+        1550276439,
+        0.031766601562499996
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.030407714843749996
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.031766601562499996
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.030407714843749996
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.03312548828125
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        0.031766601562499996
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.034484375
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.031766601562499996
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.030407714843749996
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.031766601562499996
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.029048828124999995
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.031766601562499996
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.034484375
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.031766601562499996
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.030407714843749996
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.029048828124999995
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.03312548828125
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.031766601562499996
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.030407714843749996
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.031766601562499996
+      ],
+      [
+        15.25,
+        1563527947,
+        0.030407714843749996
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.031766601562499996
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.03312548828125
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.031766601562499996
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.03312548828125
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.034484375
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.030407714843749996
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.034484375
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.030407714843749996
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.031766601562499996
+      ]
+    ],
+    "/AdvantageKit/SystemStats/BatteryCurrent": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.38251025390625004
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        0.37002832031250005
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.378349609375
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.3866708984375
+      ],
+      [
+        1.625,
+        1549903807,
+        0.38251025390625004
+      ],
+      [
+        2.0,
+        1550276439,
+        0.37002832031250005
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.37418896484375
+      ],
+      [
+        2.75,
+        1550992488,
+        0.36586767578125
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.37002832031250005
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.37418896484375
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.378349609375
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        0.38251025390625004
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.37418896484375
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.378349609375
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.37418896484375
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.37002832031250005
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.378349609375
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.37418896484375
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.37002832031250005
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.36586767578125
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.37002832031250005
+      ],
+      [
+        9.75,
+        1558026073,
+        0.37418896484375
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.38251025390625004
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.37418896484375
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.38251025390625004
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.37002832031250005
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.37418896484375
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.37002832031250005
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.37418896484375
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.378349609375
+      ],
+      [
+        15.25,
+        1563527947,
+        0.37002832031250005
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        0.378349609375
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.39083154296875006
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.38251025390625004
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        0.378349609375
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        0.37418896484375
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.38251025390625004
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.37002832031250005
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.37418896484375
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.378349609375
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.37002832031250005
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.39915283203125
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Test": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Autonomous": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/Dashboard@1/RemotePort": [
+      [
+        0.03099999999994907,
+        1183729,
+        1848
+      ]
+    ],
+    "/AdvantageKit/DriverStation/EventName": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/Xbox": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/POVs": [
+      [
+        0.03099999999994907,
+        1183729,
+        [
+          -1
+        ]
+      ]
+    ],
+    "/AdvantageKit/SystemStats/BrownoutVoltage": [
+      [
+        0.03099999999994907,
+        1183729,
+        6.75
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/ButtonValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/AxisValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/DriverStation/ReplayNumber": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Enabled": [
+      [
+        0.03099999999994907,
+        152909855,
+        false
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/ButtonValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/ButtonValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/Type": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/BatteryVoltage": [
+      [
+        0.03099999999994907,
+        1548042426,
+        11.26688232421875
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        11.24175244140625
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        11.2543173828125
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        11.260599853515625
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        11.248034912109375
+      ],
+      [
+        1.625,
+        1549903807,
+        11.2543173828125
+      ],
+      [
+        2.0,
+        1550276439,
+        11.26688232421875
+      ],
+      [
+        2.75,
+        1550992488,
+        11.260599853515625
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        11.2543173828125
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        11.273164794921875
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        11.26688232421875
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        11.273164794921875
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        11.260599853515625
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        11.26688232421875
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        11.260599853515625
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        11.26688232421875
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        11.273164794921875
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        11.2543173828125
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        11.248034912109375
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        11.26688232421875
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        11.260599853515625
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        11.248034912109375
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        11.2543173828125
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        11.260599853515625
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        11.26688232421875
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        11.260599853515625
+      ],
+      [
+        9.75,
+        1558026073,
+        11.273164794921875
+      ],
+      [
+        10.125,
+        1558391044,
+        11.26688232421875
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        11.2543173828125
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        11.273164794921875
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        11.2543173828125
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        11.26688232421875
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        11.260599853515625
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        11.26688232421875
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        11.260599853515625
+      ],
+      [
+        15.25,
+        1563527947,
+        11.2543173828125
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        11.260599853515625
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        11.26688232421875
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        11.260599853515625
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        11.2543173828125
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        11.26688232421875
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        11.2543173828125
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        11.260599853515625
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/AxisTypes": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/SystemStats/SerialNumber": [
+      [
+        0.03099999999994907,
+        1183729,
+        "0326423F"
+      ]
+    ],
+    "/AdvantageKit/RealMetadata/GitDirty": [
+      [
+        0.03099999999994907,
+        1183729,
+        "Uncommitted changes"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/CommsDisableCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/GameSpecificMessage": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/AxisValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/Xbox": [
+      [
+        0.03099999999994907,
+        1183729,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/3v3Rail/CurrentFaults": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/POVs": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/SystemStats/CANBus/OffCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/Type": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/Name": [
+      [
+        0.03099999999994907,
+        1183729,
+        ""
+      ]
+    ],
+    "/AdvantageKit/RealMetadata/GitDate": [
+      [
+        0.03099999999994907,
+        1183729,
+        "2026-10-08 23:04:10 EDT"
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/ButtonCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/SystemActive": [
+      [
+        0.03099999999994907,
+        152657835,
+        false
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/ButtonCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick2/AxisValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/SystemStats/RSLState": [
+      [
+        0.03099999999994907,
+        152657835,
+        true
+      ]
+    ],
+    "/AdvantageKit/DriverStation/AllianceStation": [
+      [
+        0.03099999999994907,
+        1183729,
+        1
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/ButtonCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick5/ButtonCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/SystemStats/3v3Rail/Active": [
+      [
+        0.03099999999994907,
+        1183729,
+        true
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick3/AxisValues": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/Dashboard@1/IPAddress": [
+      [
+        0.03099999999994907,
+        1183729,
+        "10.18.99.202"
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick4/AxisTypes": [
+      [
+        0.03099999999994907,
+        1183729,
+        []
+      ]
+    ],
+    "/AdvantageKit/RealMetadata/BuildDate": [
+      [
+        0.03099999999994907,
+        1183729,
+        "2026-10-08 23:23:05 EDT"
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick0/ButtonCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        16
+      ]
+    ],
+    "/AdvantageKit/DriverStation/Joystick1/ButtonCount": [
+      [
+        0.03099999999994907,
+        1183729,
+        0
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/AngularSubsystems/Feeder/AtAngle": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/TurnPosition": [
+      [
+        0.03099999999994907,
+        1542941194,
+        {
+          "hex": "000000203425fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/OdometryDrivePositionsRad": [
+      [
+        0.03099999999994907,
+        1234943412,
+        [
+          -244.6582794189453
+        ]
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/TurnCurrentAmps": [
+      [
+        0.03099999999994907,
+        1544408889,
+        0.0
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.10989011079072952
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.0
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.07326007634401321
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.0
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.10989011079072952
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.07326007634401321
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/TurnPosition": [
+      [
+        0.03099999999994907,
+        1488402692,
+        {
+          "hex": "000000003558fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/TurnAppliedVolts": [
+      [
+        0.03099999999994907,
+        152909855,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/Drive/InputUpdateMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        17.270000000053187
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        17.10300000013376
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        14.524999999821375
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        11.723999999958323
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        17.028999999865846
+      ],
+      [
+        1.625,
+        1549903807,
+        14.376000000083877
+      ],
+      [
+        2.0,
+        1550276439,
+        11.31600000007893
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        12.725000000045839
+      ],
+      [
+        2.75,
+        1550992488,
+        13.560000000097716
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        12.928999999985535
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        11.557000000038897
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        17.846000000190543
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        17.84500000007938
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        14.283999999861408
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        14.784000000190645
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        13.837999999850581
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        10.109999999940555
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        12.724999999818465
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        14.245999999957348
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        13.374000000112574
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        15.73099999995975
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        17.77100000003884
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        18.289999999979045
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        16.100999999935084
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        18.790999999964697
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        20.98000000000866
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        15.897999999879175
+      ],
+      [
+        9.75,
+        1558026073,
+        15.247999999928652
+      ],
+      [
+        10.125,
+        1558391044,
+        11.110999999800697
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        13.578999999936059
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        19.440000000031432
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        12.633000000050743
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        11.426999999912368
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        11.666999999988548
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        14.543000000003303
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        12.466000000131316
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        12.76200000006611
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        14.00499999999738
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        15.674999999873762
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        17.790000000104556
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        12.539999999944484
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        15.359999999873253
+      ],
+      [
+        15.25,
+        1563527947,
+        12.59499999991931
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        13.077999999950407
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        22.186000000147033
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        20.794999999907304
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        14.31999999999789
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        22.22299999993993
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        16.027000000121916
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        13.541999999915788
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        13.096000000132335
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        12.058000000024549
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        16.955000000052678
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        18.80899999991925
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        12.855000000172367
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        14.190999999982523
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/TurnPosition": [
+      [
+        0.03099999999994907,
+        1525035176,
+        {
+          "hex": "000000c0b31cfb3f"
+        }
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        {
+          "hex": "00000040fc22fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/DriveConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/DriveVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1315654462,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/TurnConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/DriveCurrentAmps": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.25641027092933655
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        0.0
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.03663003817200661
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.14652015268802643
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.0
+      ],
+      [
+        1.625,
+        1549903807,
+        0.03663003817200661
+      ],
+      [
+        2.0,
+        1550276439,
+        0.18315018713474274
+      ],
+      [
+        2.75,
+        1550992488,
+        0.0
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.03663003817200661
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.10989011079072952
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.0
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.03663003817200661
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.0
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.10989011079072952
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.03663003817200661
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.07326007634401321
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.32967033982276917
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.07326007634401321
+      ],
+      [
+        9.75,
+        1558026073,
+        0.03663003817200661
+      ],
+      [
+        10.125,
+        1558391044,
+        0.0
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.07326007634401321
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.14652015268802643
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.03663003817200661
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.18315018713474274
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.07326007634401321
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.0
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.21978022158145905
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.0
+      ],
+      [
+        15.25,
+        1563527947,
+        0.25641027092933655
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        0.10989011079072952
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.0
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        0.03663003817200661
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.0
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.29304030537605286
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.14652015268802643
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.0
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.21978022158145905
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.03663003817200661
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.0
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.03663003817200661
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/TurnVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1352882439,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/TurnVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1315654462,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/TurnAbsolutePosition": [
+      [
+        0.03099999999994907,
+        1547313837,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        0.14099999999962165,
+        1548407898,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ],
+      [
+        15.25,
+        1563527947,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        {
+          "hex": "c0b358737c2bfb3f"
+        }
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        {
+          "hex": "b4a283f43325fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/OdometryTurnPositions": [
+      [
+        0.03099999999994907,
+        1543307111,
+        {
+          "hex": "000000e02a7dfb3f"
+        }
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        {
+          "hex": "00000060e276fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/OdometryTimestamps": [
+      [
+        0.03099999999994907,
+        1548042426,
+        [
+          1548.059046
+        ]
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        [
+          1548.425038
+        ]
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        [
+          1548.794591
+        ]
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        [
+          1549.182082
+        ]
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        [
+          1549.55323
+        ]
+      ],
+      [
+        1.625,
+        1549903807,
+        [
+          1549.920891
+        ]
+      ],
+      [
+        2.0,
+        1550276439,
+        [
+          1550.291465
+        ]
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        [
+          1550.651001
+        ]
+      ],
+      [
+        2.75,
+        1550992488,
+        [
+          1551.010945
+        ]
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        [
+          1551.4035
+        ]
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        [
+          1551.766728
+        ]
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        [
+          1552.13795
+        ]
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        [
+          1552.514552
+        ]
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        [
+          1552.879802
+        ]
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        [
+          1553.245905
+        ]
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        [
+          1553.629426
+        ]
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        [
+          1553.989092
+        ]
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        [
+          1554.350817
+        ]
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        [
+          1554.721093
+        ]
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        [
+          1555.085935
+        ]
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        [
+          1555.445415
+        ]
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        [
+          1555.837599
+        ]
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        [
+          1556.186172
+        ]
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        [
+          1556.552553
+        ]
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        [
+          1556.929211
+        ]
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        [
+          1557.287059
+        ]
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        [
+          1557.658634
+        ]
+      ],
+      [
+        9.75,
+        1558026073,
+        [
+          1558.045828
+        ]
+      ],
+      [
+        10.125,
+        1558391044,
+        [
+          1558.401469
+        ]
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        [
+          1558.766978
+        ]
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        [
+          1559.136902
+        ]
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        [
+          1559.494602
+        ]
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        [
+          1559.851374
+        ]
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        [
+          1560.235025
+        ]
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        [
+          1560.60072
+        ]
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        [
+          1560.979771
+        ]
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        [
+          1561.344241
+        ]
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        [
+          1561.711976
+        ]
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        [
+          1562.079656
+        ]
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        [
+          1562.451268
+        ]
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        [
+          1562.803365
+        ]
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        [
+          1563.164794
+        ]
+      ],
+      [
+        15.25,
+        1563527947,
+        [
+          1563.543177
+        ]
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        [
+          1563.89123
+        ]
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        [
+          1564.255701
+        ]
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        [
+          1564.627739
+        ]
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        [
+          1564.980338
+        ]
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        [
+          1565.356012
+        ]
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        [
+          1565.735211
+        ]
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        [
+          1566.103893
+        ]
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        [
+          1566.470515
+        ]
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        [
+          1566.847562
+        ]
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        [
+          1567.210604
+        ]
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        [
+          1567.578822
+        ]
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        [
+          1567.952122
+        ]
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        [
+          1568.306872
+        ]
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/OdometryTimestamps": [
+      [
+        0.03099999999994907,
+        1548042426,
+        [
+          1548.049957
+        ]
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        [
+          1548.415392
+        ]
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        [
+          1548.788358
+        ]
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        [
+          1549.176777
+        ]
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        [
+          1549.543566
+        ]
+      ],
+      [
+        1.625,
+        1549903807,
+        [
+          1549.912395
+        ]
+      ],
+      [
+        2.0,
+        1550276439,
+        [
+          1550.285158
+        ]
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        [
+          1550.645566
+        ]
+      ],
+      [
+        2.75,
+        1550992488,
+        [
+          1551.004935
+        ]
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        [
+          1551.395932
+        ]
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        [
+          1551.760179
+        ]
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        [
+          1552.128434
+        ]
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        [
+          1552.50691
+        ]
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        [
+          1552.870545
+        ]
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        [
+          1553.24008
+        ]
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        [
+          1553.623434
+        ]
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        [
+          1553.983991
+        ]
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        [
+          1554.344807
+        ]
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        [
+          1554.712189
+        ]
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        [
+          1555.079312
+        ]
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        [
+          1555.437123
+        ]
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        [
+          1555.830291
+        ]
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        [
+          1556.175747
+        ]
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        [
+          1556.544521
+        ]
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        [
+          1556.919547
+        ]
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        [
+          1557.27899
+        ]
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        [
+          1557.648153
+        ]
+      ],
+      [
+        9.75,
+        1558026073,
+        [
+          1558.039336
+        ]
+      ],
+      [
+        10.125,
+        1558391044,
+        [
+          1558.39531
+        ]
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        [
+          1558.759966
+        ]
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        [
+          1559.125698
+        ]
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        [
+          1559.487219
+        ]
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        [
+          1559.845698
+        ]
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        [
+          1560.229182
+        ]
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        [
+          1560.593467
+        ]
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        [
+          1560.972332
+        ]
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        [
+          1561.338843
+        ]
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        [
+          1561.70578
+        ]
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        [
+          1562.072403
+        ]
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        [
+          1562.443755
+        ]
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        [
+          1562.796242
+        ]
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        [
+          1563.157615
+        ]
+      ],
+      [
+        15.25,
+        1563527947,
+        [
+          1563.536721
+        ]
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        [
+          1563.886277
+        ]
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        [
+          1564.244812
+        ]
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        [
+          1564.617203
+        ]
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        [
+          1564.97379
+        ]
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        [
+          1565.343454
+        ]
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        [
+          1565.728886
+        ]
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        [
+          1566.098996
+        ]
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        [
+          1566.463689
+        ]
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        [
+          1566.840754
+        ]
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        [
+          1567.200977
+        ]
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        [
+          1567.567655
+        ]
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        [
+          1567.944387
+        ]
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        [
+          1568.301956
+        ]
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/OdometryTimestamps": [
+      [
+        0.03099999999994907,
+        1548042426,
+        [
+          1548.064537
+        ]
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        [
+          1548.427709
+        ]
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        [
+          1548.798709
+        ]
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        [
+          1549.185551
+        ]
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        [
+          1549.555772
+        ]
+      ],
+      [
+        1.625,
+        1549903807,
+        [
+          1549.923396
+        ]
+      ],
+      [
+        2.0,
+        1550276439,
+        [
+          1550.293932
+        ]
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        [
+          1550.653505
+        ]
+      ],
+      [
+        2.75,
+        1550992488,
+        [
+          1551.013468
+        ]
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        [
+          1551.406134
+        ]
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        [
+          1551.769195
+        ]
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        [
+          1552.143274
+        ]
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        [
+          1552.521453
+        ]
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        [
+          1552.882232
+        ]
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        [
+          1553.248483
+        ]
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        [
+          1553.632987
+        ]
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        [
+          1553.991503
+        ]
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        [
+          1554.35449
+        ]
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        [
+          1554.723579
+        ]
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        [
+          1555.090108
+        ]
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        [
+          1555.447864
+        ]
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        [
+          1555.842441
+        ]
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        [
+          1556.191088
+        ]
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        [
+          1556.55784
+        ]
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        [
+          1556.932773
+        ]
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        [
+          1557.291901
+        ]
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        [
+          1557.661083
+        ]
+      ],
+      [
+        9.75,
+        1558026073,
+        [
+          1558.048481
+        ]
+      ],
+      [
+        10.125,
+        1558391044,
+        [
+          1558.403899
+        ]
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        [
+          1558.769742
+        ]
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        [
+          1559.142523
+        ]
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        [
+          1559.497292
+        ]
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        [
+          1559.854435
+        ]
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        [
+          1560.237733
+        ]
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        [
+          1560.605394
+        ]
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        [
+          1560.982238
+        ]
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        [
+          1561.347858
+        ]
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        [
+          1561.717152
+        ]
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        [
+          1562.083143
+        ]
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        [
+          1562.456351
+        ]
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        [
+          1562.806185
+        ]
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        [
+          1563.169209
+        ]
+      ],
+      [
+        15.25,
+        1563527947,
+        [
+          1563.545699
+        ]
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        [
+          1563.895979
+        ]
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        [
+          1564.262212
+        ]
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        [
+          1564.632451
+        ]
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        [
+          1564.982823
+        ]
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        [
+          1565.360817
+        ]
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        [
+          1565.739923
+        ]
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        [
+          1566.10649
+        ]
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        [
+          1566.474151
+        ]
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        [
+          1566.850159
+        ]
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        [
+          1567.213164
+        ]
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        [
+          1567.583663
+        ]
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        [
+          1567.9547
+        ]
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        [
+          1568.311992
+        ]
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/TurnAbsolutePosition": [
+      [
+        0.03099999999994907,
+        1548042426,
+        {
+          "hex": "52912ae42a7dfb3f"
+        }
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        {
+          "hex": "47805565e276fb3f"
+        }
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        {
+          "hex": "52912ae42a7dfb3f"
+        }
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        {
+          "hex": "47805565e276fb3f"
+        }
+      ],
+      [
+        2.0,
+        1550276439,
+        {
+          "hex": "52912ae42a7dfb3f"
+        }
+      ],
+      [
+        2.75,
+        1550992488,
+        {
+          "hex": "47805565e276fb3f"
+        }
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        {
+          "hex": "52912ae42a7dfb3f"
+        }
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        {
+          "hex": "47805565e276fb3f"
+        }
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        {
+          "hex": "3c6f80e69970fb3f"
+        }
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        {
+          "hex": "47805565e276fb3f"
+        }
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        {
+          "hex": "3c6f80e69970fb3f"
+        }
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        {
+          "hex": "47805565e276fb3f"
+        }
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        {
+          "hex": "3c6f80e69970fb3f"
+        }
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        {
+          "hex": "47805565e276fb3f"
+        }
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        {
+          "hex": "52912ae42a7dfb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/AngularSubsystems/Indexer/AtAngle": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/DriveConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/AngularSubsystems/InputUpdateMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        181.45599999979822
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        175.50099999994018
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        182.3829999998452
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        178.63600000009683
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        177.70899999982248
+      ],
+      [
+        1.625,
+        1549903807,
+        179.23099999984515
+      ],
+      [
+        2.0,
+        1550276439,
+        179.78500000003805
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        173.86799999962932
+      ],
+      [
+        2.75,
+        1550992488,
+        177.5969999996505
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        182.14299999976902
+      ],
+      [
+        3.483999999999469,
+        1551756006,
+        179.45300000019415
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        179.86099999984617
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        175.98300000031486
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        178.82200000030934
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        184.10700000004
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        182.9769999999371
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        176.37399999966874
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        176.68800000001283
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        184.46000000017193
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        174.3149999997513
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        183.38599999992766
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        171.14300000002913
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        175.48199999987446
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        177.7820000002066
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        173.86800000008407
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        179.32299999984025
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        180.93599999997423
+      ],
+      [
+        9.75,
+        1558026073,
+        176.8930000000637
+      ],
+      [
+        10.125,
+        1558391044,
+        173.3879999999317
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        176.5389999998206
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        179.02400000002672
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        169.99199999986558
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        173.03299999957744
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        185.11100000000624
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        185.55700000024444
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        175.0000000001819
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        183.60900000016045
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        173.8679999998567
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        173.94500000000335
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        180.54700000016055
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        172.94100000026447
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        185.90700000027027
+      ],
+      [
+        15.25,
+        1563527947,
+        171.58800000015617
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        173.16600000026483
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        172.2930000003089
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        171.4950000002773
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        177.50599999999395
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        181.67900000025838
+      ],
+      [
+        17.436999999999898,
+        1565719277,
+        180.65900000010515
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        181.679000000031
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        183.99700000009034
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        181.30900000005568
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        176.9299999998566
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        177.58000000026186
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        177.4689999997463
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        178.0269999999291
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/TurnAppliedVolts": [
+      [
+        0.03099999999994907,
+        152909855,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Hood/SensorVolts": [
+      [
+        0.03099999999994907,
+        15064675,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/TurnCurrentAmps": [
+      [
+        0.03099999999994907,
+        1307988211,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/DriveAppliedVolts": [
+      [
+        0.03099999999994907,
+        141417017,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/TurnConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/DriveAppliedVolts": [
+      [
+        0.03099999999994907,
+        141417017,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/DriveVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1315654462,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/DriveAppliedVolts": [
+      [
+        0.03099999999994907,
+        141417017,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/TurnConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/DriveConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/DriveCurrentAmps": [
+      [
+        0.03099999999994907,
+        1546958438,
+        0.0
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.03663003817200661
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.0
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.03663003817200661
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.21978022158145905
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.0
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        0.03663003817200661
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.0
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.07326007634401321
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.0
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.07326007634401321
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.0
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.03663003817200661
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.0
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.03663003817200661
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.0
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.10989011079072952
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.0
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.14652015268802643
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.0
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.03663003817200661
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.0
+      ],
+      [
+        15.25,
+        1563527947,
+        0.10989011079072952
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        0.0
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        0.10989011079072952
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/TurnVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1315654462,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/TurnAbsolutePosition": [
+      [
+        0.03099999999994907,
+        1546594969,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        1.625,
+        1549903807,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        2.0,
+        1550276439,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        2.75,
+        1550992488,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        10.125,
+        1558391044,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        15.25,
+        1563527947,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        {
+          "hex": "671317a67d5efb3f"
+        }
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        {
+          "hex": "5c0242273558fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Hood/ExtendCommanded": [
+      [
+        0.03099999999994907,
+        15064675,
+        false
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/TurnVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1315654462,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/OdometryDrivePositionsRad": [
+      [
+        0.03099999999994907,
+        1246992713,
+        [
+          -241.17800903320312
+        ]
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/TurnEncoderConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/SuperstructureVisualizerMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.26000000002568413
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        1.1689999998907297
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        1.1320000000978325
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.24099999995996768
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.2230000000054133
+      ],
+      [
+        1.625,
+        1549903807,
+        0.2969999998185813
+      ],
+      [
+        2.0,
+        1550276439,
+        0.3710000000864966
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.24100000018734136
+      ],
+      [
+        2.75,
+        1550992488,
+        0.24099999995996768
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.29700000004595495
+      ],
+      [
+        3.5,
+        1551756006,
+        0.24200000007112976
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.5940000000919099
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.24100000018734136
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.2230000000054133
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        1.0939999999663996
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.29600000016216654
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.48199999991993536
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.2230000000054133
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.26000000002568413
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.5009999999856518
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.38900000004105095
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.29700000004595495
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.24099999995996768
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.8909999999104912
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.24099999995996768
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.2969999998185813
+      ],
+      [
+        9.75,
+        1558026073,
+        1.2609999998858257
+      ],
+      [
+        10.125,
+        1558391044,
+        0.2230000000054133
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.35299999990456854
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.5009999999856518
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.24099999995996768
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.2779999999802385
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.33400000006622577
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.2220000001216249
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.29700000004595495
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        1.2239999998655549
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.3150000000005093
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.22299999977803964
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.29700000004595495
+      ],
+      [
+        15.25,
+        1563527947,
+        0.35299999990456854
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        0.7049999999253487
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.2779999999802385
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.24099999995996768
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        0.9829999999055872
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.38900000004105095
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.24099999995996768
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.2779999999802385
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.2230000000054133
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.33400000006622577
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.9830000001329608
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.463999999965381
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.6120000000464643
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.5380000000059226
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/DrivePositionRad": [
+      [
+        0.03099999999994907,
+        1145198123,
+        -136.4878692626953
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/AngularSubsystems/ShooterFlywheel/AtAngle": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/LinearSubsystems/InputUpdateMS": [
+      [
+        0.03099999999994907,
+        15064675,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/DrivePositionRad": [
+      [
+        0.03099999999994907,
+        1234943412,
+        -244.6582794189453
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/DriveConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Hood/Connected": [
+      [
+        0.03099999999994907,
+        15064675,
+        false
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/DriveVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1315654462,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/OdometryTimestamps": [
+      [
+        0.03099999999994907,
+        1548042426,
+        [
+          1548.053741
+        ]
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        [
+          1548.420141
+        ]
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        [
+          1548.791308
+        ]
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        [
+          1549.179503
+        ]
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        [
+          1549.548352
+        ]
+      ],
+      [
+        1.625,
+        1549903807,
+        [
+          1549.915011
+        ]
+      ],
+      [
+        2.0,
+        1550276439,
+        [
+          1550.287996
+        ]
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        [
+          1550.648088
+        ]
+      ],
+      [
+        2.75,
+        1550992488,
+        [
+          1551.007958
+        ]
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        [
+          1551.400922
+        ]
+      ],
+      [
+        3.5,
+        1551756006,
+        [
+          1551.762758
+        ]
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        [
+          1552.132626
+        ]
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        [
+          1552.511658
+        ]
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        [
+          1552.876166
+        ]
+      ],
+      [
+        4.969000000000051,
+        1553226501,
+        [
+          1553.24277
+        ]
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        [
+          1553.625976
+        ]
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        [
+          1553.98655
+        ]
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        [
+          1554.347329
+        ]
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        [
+          1554.715361
+        ]
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        [
+          1555.081724
+        ]
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        [
+          1555.440982
+        ]
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        [
+          1555.833945
+        ]
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        [
+          1556.180978
+        ]
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        [
+          1556.547953
+        ]
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        [
+          1556.924277
+        ]
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        [
+          1557.283831
+        ]
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        [
+          1557.653273
+        ]
+      ],
+      [
+        9.75,
+        1558026073,
+        [
+          1558.043268
+        ]
+      ],
+      [
+        10.125,
+        1558391044,
+        [
+          1558.398983
+        ]
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        [
+          1558.762489
+        ]
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        [
+          1559.13117
+        ]
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        [
+          1559.489797
+        ]
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        [
+          1559.848796
+        ]
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        [
+          1560.232428
+        ]
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        [
+          1560.597047
+        ]
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        [
+          1560.97504
+        ]
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        [
+          1561.341477
+        ]
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        [
+          1561.708266
+        ]
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        [
+          1562.077151
+        ]
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        [
+          1562.446278
+        ]
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        [
+          1562.799767
+        ]
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        [
+          1563.160379
+        ]
+      ],
+      [
+        15.25,
+        1563527947,
+        [
+          1563.540468
+        ]
+      ],
+      [
+        15.57799999999952,
+        1563880953,
+        [
+          1563.888726
+        ]
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        [
+          1564.25123
+        ]
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        [
+          1564.622787
+        ]
+      ],
+      [
+        16.70299999999952,
+        1564964997,
+        [
+          1564.976238
+        ]
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        [
+          1565.348481
+        ]
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        [
+          1565.732689
+        ]
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        [
+          1566.101426
+        ]
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        [
+          1566.467881
+        ]
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        [
+          1566.844557
+        ]
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        [
+          1567.204501
+        ]
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        [
+          1567.5727
+        ]
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        [
+          1567.948078
+        ]
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        [
+          1568.304405
+        ]
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/OdometryDrivePositionsRad": [
+      [
+        0.03099999999994907,
+        1145198123,
+        [
+          -136.4878692626953
+        ]
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/TurnAppliedVolts": [
+      [
+        0.03099999999994907,
+        152909855,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/TurnConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/DriveVelocityRadPerSec": [
+      [
+        0.03099999999994907,
+        1315654462,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Hood/PositionNormalized": [
+      [
+        0.03099999999994907,
+        15064675,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Hood/ControllerConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        false
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/TurnEncoderConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/DrivePositionRad": [
+      [
+        0.03099999999994907,
+        1246992713,
+        -241.17800903320312
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/TurnAppliedVolts": [
+      [
+        0.03099999999994907,
+        152909855,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/AngularSubsystems/IntakeRollers/AtAngle": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/TurnEncoderConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/Drive/SubsystemCodeMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        1.8370000000231812
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        0.8719999998447747
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        3.024000000095839
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        1.9849999998768908
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        1.0020000001986773
+      ],
+      [
+        1.625,
+        1549903807,
+        1.019999999925858
+      ],
+      [
+        2.0,
+        1550276439,
+        1.3539999999920838
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        1.0019999999713036
+      ],
+      [
+        2.75,
+        1550992488,
+        2.076999999871987
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        2.4859999998625426
+      ],
+      [
+        3.5,
+        1551756006,
+        0.9829999999055872
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        1.1129999998047424
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        1.8359999999120191
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        1.0570000001735025
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        1.113000000032116
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        2.171000000089407
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        1.1309999999866704
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        1.2250000002040906
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        2.690000000029613
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        1.0760000000118453
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        1.1309999999866704
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.9270000000469736
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.9829999999055872
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        1.0760000000118453
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        2.338000000008833
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        2.336999999897671
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        1.0939999999663996
+      ],
+      [
+        9.75,
+        1558026073,
+        1.4280000000326254
+      ],
+      [
+        10.125,
+        1558391044,
+        0.94600000011269
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        1.2979999999060965
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        1.1309999999866704
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        1.1870000000726577
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.9640000000672444
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        2.040999999962878
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.9090000000924192
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.9089999998650455
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        1.8370000000231812
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.9280000001581357
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.9640000000672444
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.9270000000469736
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        1.2800000001789158
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        1.2610000001131993
+      ],
+      [
+        15.25,
+        1563527947,
+        3.1349999999292777
+      ],
+      [
+        15.608999999999469,
+        1563880953,
+        1.113000000032116
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.8709999999609863
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.9090000000924192
+      ],
+      [
+        16.71900000000005,
+        1564964997,
+        1.3179999998556013
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        3.4319999999752326
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        1.5949999999520514
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.853000000006432
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        1.7439999999169231
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        1.7430000000331347
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        1.113000000032116
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.9280000001581357
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        1.2609999998858257
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.8900000000267028
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/LinearSubsystems/SubsystemCodeMS": [
+      [
+        0.03099999999994907,
+        15064675,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/SignalIOUpdateMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.0
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.01799999995455437
+      ],
+      [
+        3.5,
+        1551756006,
+        0.0
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.018000000181928044
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.0
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.01799999995455437
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.0
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.01799999995455437
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.0
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.03700000002027082
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.0
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.01799999995455437
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.0
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.01799999995455437
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.0
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.01900000006571645
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.0
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.01799999995455437
+      ]
+    ],
+    "/AdvantageKit/Hood/AppliedVolts": [
+      [
+        0.03099999999994907,
+        316041096,
+        NaN
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/OdometryDrivePositionsRad": [
+      [
+        0.03099999999994907,
+        1308357597,
+        [
+          -245.12850952148438
+        ]
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/Vision/SubsystemCodeMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.22199999989425123
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        0.20399999993969686
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.24099999995996768
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.2230000000054133
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.24099999995996768
+      ],
+      [
+        1.625,
+        1549903807,
+        0.3150000000005093
+      ],
+      [
+        2.0,
+        1550276439,
+        0.5929999999807478
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.20400000016707054
+      ],
+      [
+        2.75,
+        1550992488,
+        0.5380000000059226
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.22199999989425123
+      ],
+      [
+        3.5,
+        1551756006,
+        0.20399999993969686
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.7050000001527224
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.20399999993969686
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.2779999999802385
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        1.243000000158645
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.20399999993969686
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.2230000000054133
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.35200000002078013
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.26000000002568413
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.20399999993969686
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.20500000005085894
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.20400000016707054
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.2230000000054133
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.20399999993969686
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.927999999930762
+      ],
+      [
+        9.75,
+        1558026073,
+        0.5750000000261934
+      ],
+      [
+        10.125,
+        1558391044,
+        0.3709999998591229
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.2779999999802385
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.4080000001067674
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.26000000002568413
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.2230000000054133
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.20399999993969686
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.20400000016707054
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.4450000001270382
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.20400000016707054
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.20399999993969686
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.5750000000261934
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.20399999993969686
+      ],
+      [
+        15.25,
+        1563527947,
+        0.2220000001216249
+      ],
+      [
+        15.608999999999469,
+        1563880953,
+        0.2230000000054133
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        1.3539999999920838
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.38900000004105095
+      ],
+      [
+        16.71900000000005,
+        1564964997,
+        0.2779999999802385
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.20399999993969686
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.29600000016216654
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.20500000005085894
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.2230000000054133
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.20400000016707054
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.22199999989425123
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.7419999999456195
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.20399999993969686
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/DriveAppliedVolts": [
+      [
+        0.03099999999994907,
+        141637113,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/DrivePositionRad": [
+      [
+        0.03099999999994907,
+        1308357597,
+        -245.12850952148438
+      ]
+    ],
+    "/AdvantageKit/Drive/Module2/OdometryTurnPositions": [
+      [
+        0.03099999999994907,
+        1488402692,
+        {
+          "hex": "000000003558fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/TurnAbsolutePosition": [
+      [
+        0.03099999999994907,
+        1547670108,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        1.625,
+        1549903807,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        2.75,
+        1550992488,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        9.75,
+        1558026073,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        10.125,
+        1558391044,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        {
+          "hex": "01b44440fc22fb3f"
+        }
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        {
+          "hex": "f6a26fc1b31cfb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/OdometryTurnPositions": [
+      [
+        0.03099999999994907,
+        1525035176,
+        {
+          "hex": "000000c0b31cfb3f"
+        }
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        {
+          "hex": "00000040fc22fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Hood/CurrentAmps": [
+      [
+        0.03099999999994907,
+        316041096,
+        -3.2525440474273637e-06
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/DriveCurrentAmps": [
+      [
+        0.03099999999994907,
+        1511182518,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/AngularSubsystems/IntakePivot/AtAngle": [
+      [
+        0.03099999999994907,
+        96949235,
+        true
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/AllianceCheckerMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.03699999979289714
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.03700000002027082
+      ],
+      [
+        1.625,
+        1549903807,
+        0.05499999997482519
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.03799999990405922
+      ],
+      [
+        2.75,
+        1550992488,
+        0.05600000008598727
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.03700000002027082
+      ],
+      [
+        3.5,
+        1551756006,
+        0.05600000008598727
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.779000000193264
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.05600000008598727
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.03700000002027082
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        0.05600000008598727
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.03700000002027082
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.05600000008598727
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.14899999996487168
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.05499999997482519
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.03700000002027082
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.05600000008598727
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.26000000002568413
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.0380000001314329
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.03700000002027082
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.11100000006081245
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.05499999997482519
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.03700000002027082
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.44499999989966454
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.03700000002027082
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.05600000008598727
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.05599999985861359
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.05600000008598727
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.03700000002027082
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.05499999997482519
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.03700000002027082
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.05599999985861359
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.05600000008598727
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.03700000002027082
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.20399999993969686
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.03799999990405922
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.03700000002027082
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/TurnPosition": [
+      [
+        0.03099999999994907,
+        1543307111,
+        {
+          "hex": "000000e02a7dfb3f"
+        }
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        {
+          "hex": "00000060e276fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/TurnEncoderConnected": [
+      [
+        0.03099999999994907,
+        15064675,
+        true
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/Vision/InputUpdateMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.3710000000864966
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        0.24100000018734136
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.5009999999856518
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.8340000001680892
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.3150000000005093
+      ],
+      [
+        1.625,
+        1549903807,
+        0.24200000007112976
+      ],
+      [
+        2.0,
+        1550276439,
+        0.4269999999451102
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.7419999999456195
+      ],
+      [
+        2.75,
+        1550992488,
+        0.5570000000716391
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.6310000001121807
+      ],
+      [
+        3.5,
+        1551756006,
+        0.24099999995996768
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.5009999999856518
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.26000000002568413
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.3710000000864966
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        0.29700000004595495
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.3710000000864966
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.24200000007112976
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.2220000001216249
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.5380000000059226
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.24200000007112976
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.2230000000054133
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.48300000003109744
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.24099999995996768
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.2779999999802385
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.24099999995996768
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.33400000006622577
+      ],
+      [
+        9.75,
+        1558026073,
+        1.2429999999312713
+      ],
+      [
+        10.125,
+        1558391044,
+        0.5380000000059226
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.2230000000054133
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.24099999995996768
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.3339999998388521
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.3150000000005093
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.6120000000464643
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.2220000001216249
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.24099999995996768
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.5009999999856518
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.3159999998842977
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.2230000000054133
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.3159999998842977
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.25999999979831045
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.24099999995996768
+      ],
+      [
+        15.25,
+        1563527947,
+        0.26000000002568413
+      ],
+      [
+        15.608999999999469,
+        1563880953,
+        0.25899999991452205
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.2220000001216249
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        0.2779999999802385
+      ],
+      [
+        16.71900000000005,
+        1564964997,
+        0.4450000001270382
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.24099999995996768
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.6869999999707943
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.3150000000005093
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.44499999989966454
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.7039999998141866
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.3150000000005093
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.5009999999856518
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.29700000004595495
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/TurnCurrentAmps": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.10989011079072952
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        0.0
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.07326007634401321
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.03663003817200661
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.0
+      ],
+      [
+        2.0,
+        1550276439,
+        0.10989011079072952
+      ],
+      [
+        2.75,
+        1550992488,
+        0.25641027092933655
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.07326007634401321
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.10989011079072952
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.07326007634401321
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.03663003817200661
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        0.10989011079072952
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.03663003817200661
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.14652015268802643
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.0
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.32967033982276917
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.14652015268802643
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.18315018713474274
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.0
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.18315018713474274
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.0
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        0.03663003817200661
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.0
+      ],
+      [
+        9.75,
+        1558026073,
+        0.21978022158145905
+      ],
+      [
+        10.125,
+        1558391044,
+        0.10989011079072952
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.18315018713474274
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.0
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.14652015268802643
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.21978022158145905
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.0
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.10989011079072952
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.21978022158145905
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.07326007634401321
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.18315018713474274
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.0
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.10989011079072952
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.29304030537605286
+      ],
+      [
+        15.25,
+        1563527947,
+        0.14652015268802643
+      ],
+      [
+        15.608999999999469,
+        1563880953,
+        0.0
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.03663003817200661
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.0
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.21978022158145905
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.07326007634401321
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.03663003817200661
+      ]
+    ],
+    "/AdvantageKit/Drive/Module3/TurnCurrentAmps": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.21978022158145905
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        0.18315018713474274
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.03663003817200661
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.21978022158145905
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.14652015268802643
+      ],
+      [
+        1.625,
+        1549903807,
+        0.0
+      ],
+      [
+        2.0,
+        1550276439,
+        0.03663003817200661
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.14652015268802643
+      ],
+      [
+        2.75,
+        1550992488,
+        0.03663003817200661
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.0
+      ],
+      [
+        3.5,
+        1551756006,
+        0.25641027092933655
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.0
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.18315018713474274
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        0.07326007634401321
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.03663003817200661
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.0
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.07326007634401321
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.10989011079072952
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.21978022158145905
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.0
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.21978022158145905
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.25641027092933655
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.18315018713474274
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.0
+      ],
+      [
+        10.125,
+        1558391044,
+        0.21978022158145905
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.10989011079072952
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        0.03663003817200661
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.07326007634401321
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.03663003817200661
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.0
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.10989011079072952
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.0
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.14652015268802643
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.0
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.10989011079072952
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.0
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.14652015268802643
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.21978022158145905
+      ],
+      [
+        15.25,
+        1563527947,
+        0.0
+      ],
+      [
+        16.71900000000005,
+        1564964997,
+        0.07326007634401321
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.18315018713474274
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.14652015268802643
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.07326007634401321
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.03663003817200661
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.0
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        0.07326007634401321
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.0
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        0.14652015268802643
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.21978022158145905
+      ]
+    ],
+    "/AdvantageKit/RealOutputs/Timing/AngularSubsystems/SubsystemCodeMS": [
+      [
+        0.03099999999994907,
+        1548042426,
+        0.38999999992483936
+      ],
+      [
+        0.15599999999994907,
+        1548407898,
+        1.2440000000424334
+      ],
+      [
+        0.5469999999995707,
+        1548778044,
+        0.4090000002179295
+      ],
+      [
+        0.8909999999996217,
+        1549169208,
+        0.42600000028869545
+      ],
+      [
+        1.2659999999996217,
+        1549534736,
+        0.46300000030896626
+      ],
+      [
+        1.625,
+        1549903807,
+        0.4269999999451102
+      ],
+      [
+        2.0,
+        1550276439,
+        0.8530000002338056
+      ],
+      [
+        2.344000000000051,
+        1550637533,
+        0.4470000001219887
+      ],
+      [
+        2.75,
+        1550992488,
+        0.5760000001373555
+      ],
+      [
+        3.108999999999469,
+        1551383967,
+        0.4820000003746827
+      ],
+      [
+        3.5,
+        1551756006,
+        0.40699999976823165
+      ],
+      [
+        3.858999999999469,
+        1552118269,
+        0.5010000002130255
+      ],
+      [
+        4.233999999999469,
+        1552499193,
+        0.888999999688167
+      ],
+      [
+        4.594000000000051,
+        1552865277,
+        0.5179999998290441
+      ],
+      [
+        4.983999999999469,
+        1553226501,
+        0.46600000018770515
+      ],
+      [
+        5.344000000000051,
+        1553613584,
+        0.5210000001625303
+      ],
+      [
+        5.70299999999952,
+        1553978945,
+        0.5000000003292371
+      ],
+      [
+        6.061999999999898,
+        1554335383,
+        0.44499999989966454
+      ],
+      [
+        6.45299999999952,
+        1554703545,
+        0.4259999998339481
+      ],
+      [
+        6.796999999999571,
+        1555074731,
+        0.5009999999856518
+      ],
+      [
+        7.171999999999571,
+        1555426253,
+        0.7409999998344574
+      ],
+      [
+        7.546999999999571,
+        1555815655,
+        0.49999999987448973
+      ],
+      [
+        7.905999999999949,
+        1556171277,
+        0.9110000003147434
+      ],
+      [
+        8.280999999999949,
+        1556535729,
+        0.6500000001778972
+      ],
+      [
+        8.640999999999622,
+        1556907229,
+        0.502999999525855
+      ],
+      [
+        9.015999999999622,
+        1557269418,
+        1.4109999997344858
+      ],
+      [
+        9.390999999999622,
+        1557640715,
+        0.5759999999099819
+      ],
+      [
+        9.75,
+        1558026073,
+        0.4079999998793937
+      ],
+      [
+        10.125,
+        1558391044,
+        0.38900000004105095
+      ],
+      [
+        10.483999999999469,
+        1558750710,
+        0.37200000019765866
+      ],
+      [
+        10.844000000000051,
+        1559116367,
+        1.1129999998047424
+      ],
+      [
+        11.219000000000051,
+        1559483231,
+        0.5180000000564178
+      ],
+      [
+        11.594000000000051,
+        1559837721,
+        0.4090000002179295
+      ],
+      [
+        11.936999999999898,
+        1560220593,
+        0.4650000000765431
+      ],
+      [
+        12.32799999999952,
+        1560587160,
+        0.46400000019275467
+      ],
+      [
+        12.686999999999898,
+        1560965487,
+        0.6679999996777042
+      ],
+      [
+        13.07799999999952,
+        1561330625,
+        0.40699999976823165
+      ],
+      [
+        13.42199999999957,
+        1561700531,
+        0.7610000000113359
+      ],
+      [
+        13.811999999999898,
+        1562061328,
+        0.39000000015221303
+      ],
+      [
+        14.17199999999957,
+        1562434072,
+        0.5929999997533741
+      ],
+      [
+        14.515999999999622,
+        1562791697,
+        0.40899999953580846
+      ],
+      [
+        14.905999999999949,
+        1563149137,
+        0.4459999993287056
+      ],
+      [
+        15.25,
+        1563527947,
+        0.4799999999249849
+      ],
+      [
+        15.608999999999469,
+        1563880953,
+        0.5919999998695857
+      ],
+      [
+        15.969000000000051,
+        1564232365,
+        0.48299999980372377
+      ],
+      [
+        16.32799999999952,
+        1564607557,
+        1.485000000002401
+      ],
+      [
+        16.71900000000005,
+        1564964997,
+        0.6300000000010186
+      ],
+      [
+        17.09400000000005,
+        1565331972,
+        0.4809999998087733
+      ],
+      [
+        17.46900000000005,
+        1565719277,
+        0.9820000000217988
+      ],
+      [
+        17.82799999999952,
+        1566090388,
+        0.6300000002283923
+      ],
+      [
+        18.20299999999952,
+        1566456287,
+        0.4649999998491694
+      ],
+      [
+        18.57799999999952,
+        1566833297,
+        0.46500000030391675
+      ],
+      [
+        18.92199999999957,
+        1567194317,
+        1.4469999998709682
+      ],
+      [
+        19.29699999999957,
+        1567559493,
+        0.4079999998793937
+      ],
+      [
+        19.67199999999957,
+        1567934796,
+        1.0370000002239976
+      ],
+      [
+        20.03099999999995,
+        1568295891,
+        0.5190000001675799
+      ]
+    ],
+    "/AdvantageKit/Drive/Module0/DriveCurrentAmps": [
+      [
+        0.03099999999994907,
+        1107479647,
+        0.0
+      ]
+    ],
+    "/AdvantageKit/Drive/Module1/OdometryTurnPositions": [
+      [
+        0.03099999999994907,
+        1542941194,
+        {
+          "hex": "000000203425fb3f"
+        }
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/ProtocolVersion": [
+      [
+        0.03099999999994907,
+        34449240,
+        {
+          "hex": "00000400"
+        }
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/Connected": [
+      [
+        0.03099999999994907,
+        1284442307,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/IPAddress": [
+      [
+        0.03099999999994907,
+        34449240,
+        "10.18.99.202"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-calibration-readonly@3/RemotePort": [
+      [
+        0.03099999999994907,
+        1278921326,
+        36220
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/RemotePort": [
+      [
+        0.03099999999994907,
+        459280894,
+        34423
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/Connected": [
+      [
+        0.03099999999994907,
+        467539095,
+        false
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/IPAddress": [
+      [
+        0.03099999999994907,
+        459280894,
+        "10.18.99.202"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/bordie-pid-readonly@3/ProtocolVersion": [
+      [
+        0.03099999999994907,
+        459280894,
+        {
+          "hex": "00000400"
+        }
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/IPAddress": [
+      [
+        0.14099999999962165,
+        1548407898,
+        "10.18.99.202"
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/ProtocolVersion": [
+      [
+        0.15599999999994907,
+        1548407898,
+        {
+          "hex": "00000400"
+        }
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/Connected": [
+      [
+        0.15599999999994907,
+        1548407898,
+        true
+      ]
+    ],
+    "/AdvantageKit/SystemStats/NTClients/controller-latency-readonly@3/RemotePort": [
+      [
+        0.17199999999957072,
+        1548407898,
+        1072
+      ]
+    ]
+  }
+}

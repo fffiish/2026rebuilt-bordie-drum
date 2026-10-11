@@ -33,7 +33,9 @@ public final class Constants {
   // They allow you to prevent subsystems that don't exist from being initialized,
   // skipping over looking for hardware that doesn't exist.
   public static boolean driveHardwareExists = true;
-  public static boolean visionHardwareExists = true;
+  // Off: Limelight heading corrections are suspected of pulling field-centric off. Turn back on
+  // once the cameras' mounting poses are set correctly in the Limelight web UI.
+  public static boolean visionHardwareExists = false;
   public static boolean intakeHardwareExists = true;
   public static boolean indexerHardwareExists = true;
   public static boolean shooterHardwareExists = true;

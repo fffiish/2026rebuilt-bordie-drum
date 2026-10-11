@@ -1,13 +1,18 @@
 package frc.robot.subsystems.shooter;
 
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.Volts;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.constants.shooter.ShooterConstants;
 import frc.robot.lib.subsystem.VirtualSubsystem;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
+import org.littletonrobotics.junction.Logger;
 
 /**
- * Two-motor flywheel plus a linear-actuator hood.
+ * Four-motor flywheel plus a linear-actuator hood.
  *
  * <p>The hood is a two-position actuator pair, not a continuously variable surface, so range within
  * a hood position comes from flywheel RPM.
@@ -24,7 +29,7 @@ public class Shooter extends VirtualSubsystem {
     this.flywheel = flywheel;
     this.hood = hood;
 
-    flywheel.setDefaultCommand(flywheel.velocity(() -> targetState.getFlywheelVelocity()));
+    flywheel.setDefaultCommand(flywheel.openLoop(() -> targetState.getFlywheelVoltage()));
     // The hood is a two-position actuator with no feedback, so it is pushed rather than tracked.
     hood.setDefaultCommand(hood.run(() -> hood.setState(targetState.getHoodState())));
   }
@@ -43,13 +48,30 @@ public class Shooter extends VirtualSubsystem {
     return targetState;
   }
 
+  public void stopImmediately() {
+    flywheel.stopImmediately();
+    hood.stopImmediately();
+  }
+
   /**
-   * Flywheel is within its velocity tolerance of the commanded speed. {@code atAngle()} is
-   * mode-aware — in velocity mode it compares goal velocity to measured velocity — so this is the
-   * correct "spun up" signal, despite the name.
+   * Require every connected flywheel motor to be near the speed the open-loop voltage settles at.
    */
   public Trigger atSpeed() {
-    return flywheel.atAngle();
+    return new Trigger(
+        () -> {
+          double volts = targetState.getFlywheelVoltage().in(Volts);
+          double settled = volts / ShooterConstants.kFlywheelKV;
+          return volts > 0
+              && flywheel.areAllMotorsAtLeast(
+                  RadiansPerSecond.of(ShooterConstants.kFlywheelReadyFraction * settled));
+        });
+  }
+
+  @Override
+  public void periodic() {
+    Logger.recordOutput("Shooter/TargetState", targetState.toString());
+    Logger.recordOutput("Shooter/AtSpeed", atSpeed().getAsBoolean());
+    Logger.recordOutput("Shooter/ReadyToFire", readyToFire().getAsBoolean());
   }
 
   /**

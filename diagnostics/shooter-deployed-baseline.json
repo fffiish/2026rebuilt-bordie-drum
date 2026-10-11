@@ -1,0 +1,571 @@
+{
+  "capture_utc": "2026-10-09T09:37:54.894136+00:00",
+  "duration_sec": 3.2030000000013388,
+  "topics": [
+    {
+      "id": 512,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/KP",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 515,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/KI",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 518,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/KD",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 521,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/KV",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 524,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/KG",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 527,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/KS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 530,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/CruiseVelocityRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 533,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/AccelerationRadiansPerSecondPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 536,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/PositionToleranceRadians",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 539,
+      "name": "/Tuning/AngularSubsystems/IntakePivot/VelocityToleranceRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 542,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/KP",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 545,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/KI",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 548,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/KD",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 551,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/KV",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 554,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/KG",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 557,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/KS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 560,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/CruiseVelocityRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 563,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/AccelerationRadiansPerSecondPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 566,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/PositionToleranceRadians",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 569,
+      "name": "/Tuning/AngularSubsystems/IntakeRollers/VelocityToleranceRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 572,
+      "name": "/Tuning/AngularSubsystems/Feeder/KP",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 575,
+      "name": "/Tuning/AngularSubsystems/Feeder/KI",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 578,
+      "name": "/Tuning/AngularSubsystems/Feeder/KD",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 581,
+      "name": "/Tuning/AngularSubsystems/Feeder/KV",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 584,
+      "name": "/Tuning/AngularSubsystems/Feeder/KG",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 587,
+      "name": "/Tuning/AngularSubsystems/Feeder/KS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 590,
+      "name": "/Tuning/AngularSubsystems/Feeder/CruiseVelocityRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 593,
+      "name": "/Tuning/AngularSubsystems/Feeder/AccelerationRadiansPerSecondPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 596,
+      "name": "/Tuning/AngularSubsystems/Feeder/PositionToleranceRadians",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 599,
+      "name": "/Tuning/AngularSubsystems/Feeder/VelocityToleranceRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 602,
+      "name": "/Tuning/AngularSubsystems/Indexer/KP",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 605,
+      "name": "/Tuning/AngularSubsystems/Indexer/KI",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 608,
+      "name": "/Tuning/AngularSubsystems/Indexer/KD",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 611,
+      "name": "/Tuning/AngularSubsystems/Indexer/KV",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 614,
+      "name": "/Tuning/AngularSubsystems/Indexer/KG",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 617,
+      "name": "/Tuning/AngularSubsystems/Indexer/KS",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 620,
+      "name": "/Tuning/AngularSubsystems/Indexer/CruiseVelocityRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 623,
+      "name": "/Tuning/AngularSubsystems/Indexer/AccelerationRadiansPerSecondPerSecond",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 626,
+      "name": "/Tuning/AngularSubsystems/Indexer/PositionToleranceRadians",
+      "properties": {},
+      "type": "double"
+    },
+    {
+      "id": 629,
+      "name": "/Tuning/AngularSubsystems/Indexer/VelocityToleranceRadiansPerSecond",
+      "properties": {},
+      "type": "double"
+    }
+  ],
+  "latest": {
+    "/Tuning/AngularSubsystems/IntakePivot/KP": 2.0,
+    "/Tuning/AngularSubsystems/IntakePivot/KI": 0.0,
+    "/Tuning/AngularSubsystems/IntakePivot/KD": 0.0,
+    "/Tuning/AngularSubsystems/IntakePivot/KV": 0.5,
+    "/Tuning/AngularSubsystems/IntakePivot/KG": 0.35,
+    "/Tuning/AngularSubsystems/IntakePivot/KS": 0.0,
+    "/Tuning/AngularSubsystems/IntakePivot/CruiseVelocityRadiansPerSecond": 6.283185307179586,
+    "/Tuning/AngularSubsystems/IntakePivot/AccelerationRadiansPerSecondPerSecond": 12.566370614359172,
+    "/Tuning/AngularSubsystems/IntakePivot/PositionToleranceRadians": 0.03490658503988659,
+    "/Tuning/AngularSubsystems/IntakePivot/VelocityToleranceRadiansPerSecond": 0.17453292519943295,
+    "/Tuning/AngularSubsystems/IntakeRollers/KP": 0.0,
+    "/Tuning/AngularSubsystems/IntakeRollers/KI": 0.0,
+    "/Tuning/AngularSubsystems/IntakeRollers/KD": 0.0,
+    "/Tuning/AngularSubsystems/IntakeRollers/KV": 0.01909859317102744,
+    "/Tuning/AngularSubsystems/IntakeRollers/KG": 0.0,
+    "/Tuning/AngularSubsystems/IntakeRollers/KS": 0.0,
+    "/Tuning/AngularSubsystems/IntakeRollers/CruiseVelocityRadiansPerSecond": 0.0,
+    "/Tuning/AngularSubsystems/IntakeRollers/AccelerationRadiansPerSecondPerSecond": 0.0,
+    "/Tuning/AngularSubsystems/IntakeRollers/PositionToleranceRadians": Infinity,
+    "/Tuning/AngularSubsystems/IntakeRollers/VelocityToleranceRadiansPerSecond": 31.41592653589793,
+    "/Tuning/AngularSubsystems/Feeder/KP": 0.0,
+    "/Tuning/AngularSubsystems/Feeder/KI": 0.0,
+    "/Tuning/AngularSubsystems/Feeder/KD": 0.0,
+    "/Tuning/AngularSubsystems/Feeder/KV": 0.01909859317102744,
+    "/Tuning/AngularSubsystems/Feeder/KG": 0.0,
+    "/Tuning/AngularSubsystems/Feeder/KS": 0.0,
+    "/Tuning/AngularSubsystems/Feeder/CruiseVelocityRadiansPerSecond": 0.0,
+    "/Tuning/AngularSubsystems/Feeder/AccelerationRadiansPerSecondPerSecond": 0.0,
+    "/Tuning/AngularSubsystems/Feeder/PositionToleranceRadians": Infinity,
+    "/Tuning/AngularSubsystems/Feeder/VelocityToleranceRadiansPerSecond": 31.41592653589793,
+    "/Tuning/AngularSubsystems/Indexer/KP": 0.0,
+    "/Tuning/AngularSubsystems/Indexer/KI": 0.0,
+    "/Tuning/AngularSubsystems/Indexer/KD": 0.0,
+    "/Tuning/AngularSubsystems/Indexer/KV": 0.01909859317102744,
+    "/Tuning/AngularSubsystems/Indexer/KG": 0.0,
+    "/Tuning/AngularSubsystems/Indexer/KS": 0.0,
+    "/Tuning/AngularSubsystems/Indexer/CruiseVelocityRadiansPerSecond": 0.0,
+    "/Tuning/AngularSubsystems/Indexer/AccelerationRadiansPerSecondPerSecond": 0.0,
+    "/Tuning/AngularSubsystems/Indexer/PositionToleranceRadians": Infinity,
+    "/Tuning/AngularSubsystems/Indexer/VelocityToleranceRadiansPerSecond": 31.41592653589793
+  },
+  "history": {
+    "/Tuning/AngularSubsystems/IntakePivot/KP": [
+      [
+        2.6090000000003783,
+        12262037,
+        2.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/KI": [
+      [
+        2.6090000000003783,
+        12262353,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/KD": [
+      [
+        2.6090000000003783,
+        12262705,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/KV": [
+      [
+        2.6090000000003783,
+        12262946,
+        0.5
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/KG": [
+      [
+        2.6090000000003783,
+        12263373,
+        0.35
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/KS": [
+      [
+        2.6090000000003783,
+        12264059,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/CruiseVelocityRadiansPerSecond": [
+      [
+        2.6090000000003783,
+        12264672,
+        6.283185307179586
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/AccelerationRadiansPerSecondPerSecond": [
+      [
+        2.6090000000003783,
+        12265061,
+        12.566370614359172
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/PositionToleranceRadians": [
+      [
+        2.6090000000003783,
+        12265376,
+        0.03490658503988659
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakePivot/VelocityToleranceRadiansPerSecond": [
+      [
+        2.6090000000003783,
+        12265710,
+        0.17453292519943295
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/KP": [
+      [
+        2.7340000000003783,
+        12406356,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/KI": [
+      [
+        2.7340000000003783,
+        12406635,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/KD": [
+      [
+        2.75,
+        12406876,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/KV": [
+      [
+        2.75,
+        12407098,
+        0.01909859317102744
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/KG": [
+      [
+        2.75,
+        12407469,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/KS": [
+      [
+        2.75,
+        12407766,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/CruiseVelocityRadiansPerSecond": [
+      [
+        2.75,
+        12408063,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/AccelerationRadiansPerSecondPerSecond": [
+      [
+        2.75,
+        12408304,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/PositionToleranceRadians": [
+      [
+        2.75,
+        12409083,
+        Infinity
+      ]
+    ],
+    "/Tuning/AngularSubsystems/IntakeRollers/VelocityToleranceRadiansPerSecond": [
+      [
+        2.75,
+        12409324,
+        31.41592653589793
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/KP": [
+      [
+        2.8280000000013388,
+        12482449,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/KI": [
+      [
+        2.8280000000013388,
+        12482634,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/KD": [
+      [
+        2.8280000000013388,
+        12482801,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/KV": [
+      [
+        2.8280000000013388,
+        12482968,
+        0.01909859317102744
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/KG": [
+      [
+        2.8280000000013388,
+        12483320,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/KS": [
+      [
+        2.8280000000013388,
+        12483728,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/CruiseVelocityRadiansPerSecond": [
+      [
+        2.8280000000013388,
+        12483970,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/AccelerationRadiansPerSecondPerSecond": [
+      [
+        2.8280000000013388,
+        12484174,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/PositionToleranceRadians": [
+      [
+        2.8280000000013388,
+        12484378,
+        Infinity
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Feeder/VelocityToleranceRadiansPerSecond": [
+      [
+        2.8280000000013388,
+        12484582,
+        31.41592653589793
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/KP": [
+      [
+        2.9530000000013388,
+        12596809,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/KI": [
+      [
+        2.9530000000013388,
+        12597088,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/KD": [
+      [
+        2.9530000000013388,
+        12597310,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/KV": [
+      [
+        2.9530000000013388,
+        12597477,
+        0.01909859317102744
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/KG": [
+      [
+        2.9530000000013388,
+        12597755,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/KS": [
+      [
+        2.9530000000013388,
+        12597978,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/CruiseVelocityRadiansPerSecond": [
+      [
+        2.9530000000013388,
+        12598312,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/AccelerationRadiansPerSecondPerSecond": [
+      [
+        2.9530000000013388,
+        12598516,
+        0.0
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/PositionToleranceRadians": [
+      [
+        2.9530000000013388,
+        12598776,
+        Infinity
+      ]
+    ],
+    "/Tuning/AngularSubsystems/Indexer/VelocityToleranceRadiansPerSecond": [
+      [
+        2.9530000000013388,
+        12600334,
+        31.41592653589793
+      ]
+    ]
+  },
+  "interrupted": false
+}

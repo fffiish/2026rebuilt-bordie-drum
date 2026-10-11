@@ -19,9 +19,9 @@ import edu.wpi.first.wpilibj.Timer;
  *       Phoenix {@code StatusSignal}s and reading them with CANivore timesync; an MXP device has
  *       nothing to register. Yaw is therefore sampled once per main loop and reported as a
  *       single-element odometry array, matching what the Spark modules do.
- *   <li><b>Yaw sign is inverted.</b> The navX reports clockwise-positive; WPILib geometry is
- *       counter-clockwise-positive. Getting this wrong makes the robot steer the wrong way under
- *       field-oriented control while looking perfectly fine on a dashboard.
+ *   <li><b>Yaw sign is used as reported.</b> A right-side-up navX reports clockwise-positive, but
+ *       this one is mounted upside down, which makes it counter-clockwise-positive like WPILib.
+ *       Negating it here made field-oriented control rotate the wrong way as the robot turned.
  * </ul>
  */
 public class GyroIONavX implements GyroIO {
@@ -36,9 +36,10 @@ public class GyroIONavX implements GyroIO {
   @Override
   public void updateInputs(GyroIOInputs inputs) {
     inputs.connected = navX.isConnected();
-    // Negated: navX is clockwise-positive, WPILib is counter-clockwise-positive.
-    inputs.yawPosition = Rotation2d.fromDegrees(-navX.getAngle());
-    inputs.yawVelocityRadPerSec = Units.degreesToRadians(-navX.getRate());
+    // Not negated: the navX is mounted upside down, so its yaw is already
+    // counter-clockwise-positive.
+    inputs.yawPosition = Rotation2d.fromDegrees(navX.getAngle());
+    inputs.yawVelocityRadPerSec = Units.degreesToRadians(navX.getRate());
 
     inputs.odometryYawTimestamps = new double[] {Timer.getFPGATimestamp()};
     inputs.odometryYawPositions = new Rotation2d[] {inputs.yawPosition};

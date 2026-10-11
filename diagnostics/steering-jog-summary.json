@@ -1,0 +1,58 @@
+[
+  {
+    "module": 0,
+    "absoluteTravelDegrees": 11.07421875000002,
+    "relativeTravelDegrees": 11.08359385298981,
+    "maxSteeringVolts": 0.24995306725227096,
+    "maxDriveVolts": 0.0,
+    "activePulseCount": 4,
+    "timeFirstLastPulseStartedSec": 0.9220000000004802,
+    "outputsZeroAtEnd": true,
+    "activeAtEnd": false,
+    "loopMedianMs": 19.996999999875698,
+    "loopP95Ms": 20.721000000094136,
+    "evidence": "diagnostics\\pid-visible-20261008-231430-m0.json"
+  },
+  {
+    "module": 1,
+    "absoluteTravelDegrees": 12.128906250000004,
+    "relativeTravelDegrees": 12.34687832111869,
+    "maxSteeringVolts": 0.24989210388302752,
+    "maxDriveVolts": 0.0,
+    "activePulseCount": 4,
+    "timeFirstLastPulseStartedSec": 0.9219999999986612,
+    "outputsZeroAtEnd": true,
+    "activeAtEnd": false,
+    "loopMedianMs": 19.99700000010307,
+    "loopP95Ms": 21.18400000017573,
+    "evidence": "diagnostics\\pid-visible-20261008-231458-m1.json"
+  },
+  {
+    "module": 2,
+    "absoluteTravelDegrees": 12.216796875000005,
+    "relativeTravelDegrees": 11.908595327362727,
+    "maxSteeringVolts": 0.24988915205815587,
+    "maxDriveVolts": 0.0,
+    "activePulseCount": 4,
+    "timeFirstLastPulseStartedSec": 0.9369999999998981,
+    "outputsZeroAtEnd": true,
+    "activeAtEnd": false,
+    "loopMedianMs": 19.996999999875698,
+    "loopP95Ms": 20.98000000000866,
+    "evidence": "diagnostics\\pid-visible-20261008-231514-m2.json"
+  },
+  {
+    "module": 3,
+    "absoluteTravelDegrees": 12.216796874999988,
+    "relativeTravelDegrees": 12.023441543161907,
+    "maxSteeringVolts": 0.2499108580511944,
+    "maxDriveVolts": 0.0,
+    "activePulseCount": 4,
+    "timeFirstLastPulseStartedSec": 0.8590000000003783,
+    "outputsZeroAtEnd": true,
+    "activeAtEnd": false,
+    "loopMedianMs": 20.015000000057626,
+    "loopP95Ms": 20.775999999841588,
+    "evidence": "diagnostics\\pid-visible-20261008-231532-m3.json"
+  }
+]
