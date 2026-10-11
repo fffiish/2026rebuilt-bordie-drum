@@ -423,7 +423,8 @@ public class RobotContainer {
 
   private void logInit() {
     SmartDashboard.putData("Field", field);
-    // Shows as a toggle in Shuffleboard; setDefaultBoolean keeps a value the drive team already set.
+    // Shows as a toggle in Shuffleboard; setDefaultBoolean keeps a value the drive team already
+    // set.
     SmartDashboard.setDefaultBoolean(SHOOT_PRELOAD_AUTO_KEY, true);
 
     Logger.recordOutput(

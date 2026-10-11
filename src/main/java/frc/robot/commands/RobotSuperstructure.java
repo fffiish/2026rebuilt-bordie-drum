@@ -147,8 +147,8 @@ public class RobotSuperstructure {
 
   /**
    * Autonomous routine that only shoots the preloaded FUEL from where the robot starts. Runs for
-   * the whole autonomous period (the scheduler cancels it when auto ends), long enough to empty
-   * all 8 balls.
+   * the whole autonomous period (the scheduler cancels it when auto ends), long enough to empty all
+   * 8 balls.
    */
   public Command shootPreloadAuto() {
     return shoot().withTimeout(15.0);
