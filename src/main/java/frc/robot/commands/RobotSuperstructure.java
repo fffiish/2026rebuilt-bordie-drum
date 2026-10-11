@@ -36,7 +36,7 @@ public class RobotSuperstructure {
     this.intake = intake;
     this.indexer = indexer;
     this.shooter = shooter;
-    // Bottom rollers (30/8) stay off while the floor intake rollers are pulling FUEL in.
+    // Feeder (30/8) stays off while the intake rollers (2/37) are intaking.
     indexer.setInhibit(() -> intake.getRollerState() == IntakeRollerState.kIntaking);
   }
 

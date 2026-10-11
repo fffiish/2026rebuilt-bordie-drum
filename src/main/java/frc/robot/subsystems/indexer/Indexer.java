@@ -46,9 +46,7 @@ public class Indexer extends VirtualSubsystem {
                     : targetState.getVoltage()));
   }
 
-  /**
-   * While {@code inhibit} is true the bottom rollers (30/8) output nothing, whatever is commanded.
-   */
+  /** While {@code inhibit} is true the feeder (30/8) outputs nothing, whatever is commanded. */
   public void setInhibit(BooleanSupplier inhibit) {
     this.inhibit = inhibit;
   }
