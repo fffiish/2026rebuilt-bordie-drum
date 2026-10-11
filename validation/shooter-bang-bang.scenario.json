@@ -1,0 +1,55 @@
+{
+  "id": "shooter-wpilib-bang-bang",
+  "description": "Production WPILib shooter controller with deterministic 20 ms scheduler ticks. Start at rest with healthy feedback; exercise normal and soft presets at 12 V and 8 V supply, coast and drag, a 20% speed-loss impulse, and immediate stop. Plant powered time constant is 0.5 s, coast time constant 2 s, and steady powered speed is volts/0.0184 rad/s. No hardware current-limit or ball-contact model.",
+  "mode": "teleop",
+  "duration_seconds": 8.1,
+  "runner": {
+    "command": [
+      "bash",
+      "gradlew",
+      "test",
+      "--tests",
+      "frc.robot.subsystems.shooter.ShooterBangBangTest",
+      "--console=plain"
+    ],
+    "working_directory": ".",
+    "timeout_seconds": 120
+  },
+  "checks": [
+    {
+      "id": "startup",
+      "field": "time_to_80_percent_seconds",
+      "assertion": "maximum",
+      "maximum": 2
+    },
+    {
+      "id": "steady-speed",
+      "field": "measured_speed_over_target",
+      "assertion": "range",
+      "minimum": 0.9,
+      "maximum": 1.1,
+      "start_seconds": 2,
+      "end_seconds": 7
+    },
+    {
+      "id": "recovery",
+      "description": "Time to return to 90% of target after 20% speed loss",
+      "field": "recovery_seconds",
+      "assertion": "maximum",
+      "maximum": 1
+    },
+    {
+      "id": "stop",
+      "description": "Requested output zero within one scheduler cycle after immediate stop",
+      "field": "requested_volts_after_stop",
+      "assertion": "equals",
+      "expected": 0
+    },
+    {
+      "id": "no-rev-velocity",
+      "field": "rev_velocity_request_count",
+      "assertion": "equals",
+      "expected": 0
+    }
+  ]
+}

@@ -362,6 +362,21 @@ public class AngularSubsystem extends RegisteredSubsystem {
         .allMatch(DeviceConnectedStatus::isConnected);
   }
 
+  /** Configuration and finite feedback from a complete, recent healthy sample. */
+  public boolean isVelocityFeedbackHealthy(double maximumAgeSeconds) {
+    double age = Timer.getFPGATimestamp() - inputs.sampleTimestampSeconds;
+    return inputs.configReady
+        && !inputs.configPending
+        && diagnosticConnected()
+        && Double.isFinite(inputs.velocity.in(RadiansPerSecond))
+        && Arrays.stream(inputs.motorVelocitiesRadiansPerSecond).allMatch(Double::isFinite)
+        && Double.isFinite(maximumAgeSeconds)
+        && maximumAgeSeconds >= 0.0
+        && Double.isFinite(age)
+        && age >= 0.0
+        && age <= maximumAgeSeconds;
+  }
+
   public boolean areAllMotorsAtVelocity(AngularVelocity target, AngularVelocity tolerance) {
     double desired = target.in(RadiansPerSecond);
     double allowed = tolerance.in(RadiansPerSecond);

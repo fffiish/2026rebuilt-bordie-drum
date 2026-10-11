@@ -42,21 +42,22 @@ class BottomRollerLimitsTest {
   }
 
   @Test
-  void mainDrumAndItsThreeFollowersAreCappedAtFortyRps() {
+  void mainDrumVelocityCapMatchesTheNewNormalTarget() {
+    double normalRps = (6.4 / 0.0184) / (2 * Math.PI);
     var config = ShooterConstants.kFlywheelSparkFlexConfig;
     assertEquals(39, config.getMasterId());
     assertEquals(List.of(34, 26, 29), config.getFollowerIds());
-    assertEquals(40, config.getMaximumMotorVelocity().in(RotationsPerSecond), 1e-9);
-    assertEquals(40, ShooterConstants.kFlywheelShooting.in(RotationsPerSecond), 1e-9);
-    assertEquals(40, ShooterConstants.kFlywheelShootingFar.in(RotationsPerSecond), 1e-9);
-    assertEquals(20, ShooterConstants.kFlywheelEjecting.in(RotationsPerSecond), 1e-9);
+    assertEquals(normalRps, config.getMaximumMotorVelocity().in(RotationsPerSecond), 1e-9);
+    assertEquals(normalRps, ShooterConstants.kFlywheelShooting.in(RotationsPerSecond), 1e-9);
+    assertEquals(normalRps, ShooterConstants.kFlywheelShootingFar.in(RotationsPerSecond), 1e-9);
+    assertEquals(1.25 / 0.0184, ShooterConstants.kFlywheelEjecting.in(RadiansPerSecond), 1e-9);
     assertEquals(
-        40,
+        normalRps,
         AngularIOSparkFlex.limitMotorVelocity(config, RotationsPerSecond.of(95))
             .in(RotationsPerSecond),
         1e-9);
     assertEquals(
-        -40,
+        -normalRps,
         AngularIOSparkFlex.limitMotorVelocity(config, RotationsPerSecond.of(-95))
             .in(RotationsPerSecond),
         1e-9);
@@ -65,7 +66,9 @@ class BottomRollerLimitsTest {
             ShooterConstants.kFlywheelSubsystemConfigReal,
             ShooterConstants.kFlywheelSubsystemConfigSim)) {
       assertEquals(
-          40, subsystem.limitVelocity(RotationsPerSecond.of(95)).in(RotationsPerSecond), 1e-9);
+          normalRps,
+          subsystem.limitVelocity(RotationsPerSecond.of(95)).in(RotationsPerSecond),
+          1e-9);
     }
   }
 

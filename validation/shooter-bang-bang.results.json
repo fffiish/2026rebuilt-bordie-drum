@@ -1,0 +1,39 @@
+{
+  "baseline_revision": "38884337fd3b89721a69c196451f6b533dd36c49",
+  "candidate": "uncommitted working tree",
+  "validation_utc": "2026-10-11T04:34:03.570740+00:00",
+  "source_sha256": {
+    "src/main/java/frc/robot/RobotContainer.java": "df278c6c086835593a7eb387e0326b645a4a0b34502e93bd604d829212952d96",
+    "src/main/java/frc/robot/commands/RobotSuperstructure.java": "925c747b7bd155ca79b1004b345f5f51591d527b6a3dfceed7b0736486beba27",
+    "src/main/java/frc/robot/lib/subsystem/angular/AngularSubsystem.java": "864aeceffdae8fa27c0d9b7fb5902e8bb3f4600ff0ea47da736727624921be21",
+    "src/main/java/frc/robot/subsystems/shooter/Shooter.java": "9738b8dfba703714b4d32c14bd5367d4fe94b60079bf2aa55a9b2f88fe2aab21",
+    "src/main/java/frc/robot/subsystems/shooter/ShooterState.java": "65aa3b457de9f17824811f13e0cd2e0a0f4855b0b70908437c56d06c9264847d",
+    "src/main/java/frc/robot/constants/shooter/ShooterConstants.java": "6bb662f02c98e734be23750905d5af58db345723b74b87cfcbd44eb6e17ece6c",
+    "src/test/java/frc/robot/lib/subsystem/angular/HardwareMergeConfigurationTest.java": "b0d7e2cf75e653f974da5766dbe0c8db0af66f5d745ce6393005ee7013c35aa3",
+    "src/test/java/frc/robot/lib/subsystem/angular/BottomRollerLimitsTest.java": "0ddac4a9c9f5e95622cf5508ef5da22151745c340b08e7b1f487af4bc79bf2ed",
+    "src/test/java/frc/robot/subsystems/shooter/ShooterBangBangTest.java": "b41289dddda7fe3347bb753bdf14d704b2a9124adb24e005999a205c9335d5e3",
+    "src/test/java/frc/robot/subsystems/shooter/ShooterDriverBindingTest.java": "cabbbfa749edf2d27aa0a5c10c2d7e6b1878940cf87674caba3572c95b923068"
+  },
+  "evidence_level": "unit/integration and test-only closed-loop simulation",
+  "suite": {
+    "tests": 109,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "plant_output": "BangBang plant kShootingNear bus=12.0: ready=0.30s range=3288.4..3435.4 RPM recovery=0.08s\nBangBang plant kShootingSoft bus=12.0: ready=0.26s range=2928.9..3083.8 RPM recovery=0.06s\nBangBang plant kShootingNear bus=8.0: ready=0.54s range=3304.8..3339.9 RPM recovery=0.16s\nBangBang plant kShootingSoft bus=8.0: ready=0.46s range=2929.8..3001.4 RPM recovery=0.12s",
+  "command": [
+    "bash",
+    "gradlew",
+    "test",
+    "--console=plain"
+  ],
+  "java_version": "17.0.16",
+  "source_wpilogs": [],
+  "limitations": [
+    "No hardware tests or deployment",
+    "Plant does not model current limiting, real inertia, encoder lag, or ball contact",
+    "Shared production AngularIOSim still models braking at zero voltage; coast validation uses test-only plant",
+    "No replay; changed outputs would change later physical inputs"
+  ]
+}

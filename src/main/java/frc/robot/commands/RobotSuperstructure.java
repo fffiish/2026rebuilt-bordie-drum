@@ -72,9 +72,9 @@ public class RobotSuperstructure {
    * it is pressed:
    *
    * <ul>
-   *   <li><b>Spin-up.</b> The flywheel immediately runs at its open-loop shooting voltage.
-   *   <li><b>The shot.</b> Once flywheel speed is within tolerance, the bottom rollers and feeder
-   *       start together. The arm rises slowly to raised over {@link
+   *   <li><b>Spin-up.</b> The flywheel immediately runs under WPILib bang-bang speed control.
+   *   <li><b>The shot.</b> Once all flywheel motors reach 80% of target, the bottom rollers and
+   *       feeder start together. The arm rises slowly to raised over {@link
    *       IntakeConstants#kAgitateRaiseTime}, settling FUEL toward the indexer, then holds.
    * </ul>
    *

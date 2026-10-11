@@ -49,7 +49,7 @@ class HardwareMergeConfigurationTest {
     assertEquals(60.0, flywheel.getSecondaryCurrentLimit().in(Amps), 1e-12);
     assertEquals(10, flywheel.getEncoderMeasurementPeriodMs());
     assertEquals(2, flywheel.getEncoderAverageDepth());
-    assertEquals(0.01 / 12.0, flywheel.getKP(), 1e-12);
-    assertEquals(0.0184, flywheel.getKV(), 1e-12);
+    assertEquals(0, flywheel.getKP(), 1e-12);
+    assertEquals(0, flywheel.getKV(), 1e-12);
   }
 }

@@ -31,12 +31,16 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class ShooterDriverBindingTest {
-  private static final class RecordingIO implements AngularIO {
+  static class RecordingIO implements AngularIO {
     double requestedRps;
     double requestedVolts;
     double measuredRps;
     double[] motorMeasuredRps = {};
     boolean allConnected = true;
+    boolean configReady = true;
+    boolean configPending;
+    double sampleAge;
+    int velocityRequests;
     double requestedAngleRadians;
     int stops;
 
@@ -59,11 +63,15 @@ class ShooterDriverBindingTest {
 
     @Override
     public void setVelocity(AngularVelocity velocity) {
+      velocityRequests++;
       requestedRps = velocity.in(RotationsPerSecond);
     }
 
     @Override
     public void updateInputs(AngularIOInputs inputs) {
+      inputs.configReady = configReady;
+      inputs.configPending = configPending;
+      inputs.sampleTimestampSeconds = edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - sampleAge;
       inputs.velocity = RotationsPerSecond.of(measuredRps);
       inputs.goalVel = RotationsPerSecond.of(requestedRps);
       inputs.motorVelocitiesRadiansPerSecond =
@@ -73,11 +81,11 @@ class ShooterDriverBindingTest {
     }
   }
 
-  private static final class Fixture implements AutoCloseable {
+  static final class Fixture implements AutoCloseable {
     final boolean originalTuning = Constants.kTuningMode;
     final boolean originalShooterExists = Constants.shooterHardwareExists;
     final CommandScheduler scheduler = CommandScheduler.getInstance();
-    final RecordingIO flywheelIO = new RecordingIO();
+    final RecordingIO flywheelIO;
     final RecordingIO indexerIO = new RecordingIO();
     final RecordingIO pivotIO = new RecordingIO();
     final RecordingIO pickupIO = new RecordingIO();
@@ -97,6 +105,11 @@ class ShooterDriverBindingTest {
     final XboxControllerSim xboxSim;
 
     Fixture(boolean testMode) {
+      this(testMode, new RecordingIO());
+    }
+
+    Fixture(boolean testMode, RecordingIO flywheelIO) {
+      this.flywheelIO = flywheelIO;
       HAL.initialize(500, 0);
       SimHooks.pauseTiming();
       DriverStationSim.resetData();
@@ -145,7 +158,10 @@ class ShooterDriverBindingTest {
       xboxSim.setRightTriggerAxis(0);
       xboxSim.setRightBumperButton(false);
       DriverStationSim.notifyNewData();
-      xbox.rightTrigger(0.5).whileTrue(superstructure.shoot());
+      xbox.rightTrigger(0.5).and(xbox.a().negate()).whileTrue(superstructure.shoot());
+      xbox.rightTrigger(0.5)
+          .and(xbox.a())
+          .whileTrue(superstructure.shoot(ShooterState.kShootingSoft));
       superstructure.bindIntakeTrigger(xbox.leftTrigger(0.5));
       xbox.rightBumper().whileTrue(superstructure.outtake());
       DriverStationSim.setDsAttached(true);
@@ -159,7 +175,7 @@ class ShooterDriverBindingTest {
         LiveWindow.setEnabled(false);
         scheduler.enable();
       }
-      // Open loop: a stopped flywheel at idle (0 V) must never read as ready to fire.
+      // A stopped flywheel with an idle target must never read as ready to fire.
       flywheelIO.measuredRps = 0;
       axis(0);
       assertTrue(testMode ? DriverStation.isTestEnabled() : DriverStation.isTeleopEnabled());
@@ -204,8 +220,11 @@ class ShooterDriverBindingTest {
       assertEquals(ShooterState.kIdle, robot.shooter.getTargetState());
       robot.axis(0.8);
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
-      assertEquals(6.4, robot.shooter.getTargetState().getFlywheelVoltage().in(Volts), 1e-9);
-      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(
+          6.4 / 0.0184,
+          robot.shooter.getTargetState().getFlywheelVelocity().in(RadiansPerSecond),
+          1e-9);
+      assertEquals(12.0, robot.flywheelIO.requestedVolts, 1e-9);
       assertFalse(robot.shooter.atSpeed().getAsBoolean(), "Flywheel is still stopped");
       assertEquals(IndexerState.kIdle, robot.indexer.getTargetState());
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
@@ -233,12 +252,12 @@ class ShooterDriverBindingTest {
   }
 
   @Test
-  void xboxRightTriggerWaitsForFortyRpsThenFeedsAndReleasesInTeleop() {
+  void xboxRightTriggerWaitsForReadySpeedThenFeedsAndReleasesInTeleop() {
     verifyRightTrigger(false);
   }
 
   @Test
-  void xboxRightTriggerWaitsForFortyRpsThenFeedsAndReleasesInTest() {
+  void xboxRightTriggerWaitsForReadySpeedThenFeedsAndReleasesInTest() {
     verifyRightTrigger(true);
   }
 
@@ -249,7 +268,7 @@ class ShooterDriverBindingTest {
       robot.axis(0.8);
       assertFalse(robot.shooter.hoodAtTarget().getAsBoolean());
       assertFalse(robot.shooter.readyToFire().getAsBoolean());
-      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;
@@ -375,7 +394,7 @@ class ShooterDriverBindingTest {
       robot.axis(0.9);
       assertEquals(IntakeRollerState.kIntaking, robot.intake.getRollerState());
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
-      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
@@ -428,7 +447,7 @@ class ShooterDriverBindingTest {
       assertFalse(robot.intake.isDeployed());
       robot.axis(0.9);
       assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
-      assertEquals(6.4, robot.flywheelIO.requestedVolts, 1e-9);
+      assertEquals(12.0, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;
