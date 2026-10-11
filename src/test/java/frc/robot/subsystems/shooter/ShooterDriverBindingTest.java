@@ -399,7 +399,8 @@ class ShooterDriverBindingTest {
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
-      assertEquals(12.0, robot.indexerIO.requestedVolts, 1e-9);
+      // Feeder (30/8) is held off while the intake rollers (2/37) run, even in a shot.
+      assertEquals(0.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(35, robot.feederIO.requestedRps, 1e-9);
       // TODO: agitation disabled for the deadline; restore these checks with agitateArm().
       // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
@@ -438,6 +439,25 @@ class ShooterDriverBindingTest {
       assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
       robot.axis(0);
       assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
+    }
+  }
+
+  @Test
+  void shotInAutonomousFeedsButDoesNotAgitateTheArm() {
+    try (var robot = new Fixture(false)) {
+      robot.intake.setPersistentPivot(IntakePivotState.kDeployed).initialize();
+      DriverStationSim.setAutonomous(true);
+      robot.tick();
+      assertTrue(DriverStation.isAutonomousEnabled());
+      robot.axis(0.9);
+      robot.flywheelIO.measuredRps = 60;
+      robot.tick();
+      assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
+      assertTrue(robot.feederIO.requestedRps > 0);
+      for (int i = 0; i < 200; i++) {
+        robot.advanceTicks(1);
+        assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
+      }
     }
   }
 

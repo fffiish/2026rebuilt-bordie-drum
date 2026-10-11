@@ -36,6 +36,8 @@ public class RobotSuperstructure {
     this.intake = intake;
     this.indexer = indexer;
     this.shooter = shooter;
+    // Feeder (30/8) stays off while the intake rollers (2/37) are intaking.
+    indexer.setInhibit(() -> intake.getRollerState() == IntakeRollerState.kIntaking);
   }
 
   /**
@@ -75,7 +77,8 @@ public class RobotSuperstructure {
    *   <li><b>Spin-up.</b> The flywheel immediately runs under WPILib bang-bang speed control.
    *   <li><b>The shot.</b> Once all flywheel motors reach 80% of target, the bottom rollers and
    *       feeder start together. The arm rises slowly to raised over {@link
-   *       IntakeConstants#kAgitateRaiseTime}, settling FUEL toward the indexer, then holds.
+   *       IntakeConstants#kAgitateRaiseTime}, settling FUEL toward the indexer, then holds. In
+   *       autonomous the arm is not moved at all.
    * </ul>
    *
    * <p>Releasing the trigger cancels both, and because the arm's resting position is down, it
@@ -101,8 +104,12 @@ public class RobotSuperstructure {
                             // Commands.sequence(
                             //     agitateArm(), intake.setPivot(IntakePivotState.kRaised))
                             // Agitation is now one slow, steady raise to the shooting position.
-                            intake.raiseSlowly(
-                                IntakePivotState.kRaised, IntakeConstants.kAgitateRaiseTime))));
+                            // No agitation in autonomous: the arm stays down while it shoots.
+                            Commands.either(
+                                Commands.none(),
+                                intake.raiseSlowly(
+                                    IntakePivotState.kRaised, IntakeConstants.kAgitateRaiseTime),
+                                DriverStation::isAutonomous))));
   }
 
   // Old up/down shake, replaced by Intake#raiseSlowly; kept commented for reference.
@@ -143,6 +150,15 @@ public class RobotSuperstructure {
    */
   public Command clearBehindShooter() {
     return intake.setRollers(IntakeRollerState.kEjecting);
+  }
+
+  /**
+   * Autonomous routine that only shoots the preloaded FUEL from where the robot starts. Runs for
+   * the whole autonomous period (the scheduler cancels it when auto ends), long enough to empty all
+   * 8 balls.
+   */
+  public Command shootPreloadAuto() {
+    return shoot().withTimeout(15.0);
   }
 
   /**

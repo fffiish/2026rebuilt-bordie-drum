@@ -217,9 +217,9 @@ class IntakeRollerCommandTest {
       eject.schedule();
       f.tick();
       assertEquals(60.0, limits.get(limits.size() - 1), 1e-9);
-      assertEquals(67.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
+      assertEquals(57.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
       eject.cancel();
-      assertEquals(60.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
+      assertEquals(50.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
     }
   }
 

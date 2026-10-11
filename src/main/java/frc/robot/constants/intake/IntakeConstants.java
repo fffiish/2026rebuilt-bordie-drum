@@ -75,13 +75,13 @@ public final class IntakeConstants {
    * intake free takes more than ordinary motion. Raised only for the deploy itself, then dropped
    * back to {@link #kPivotCurrentLimit}.
    */
-  public static final Current kPivotDeployCurrentLimit = Amps.of(80);
+  public static final Current kPivotDeployCurrentLimit = Amps.of(65);
 
   /** Drop back to the normal limit after this long even if the arm has not reported arriving. */
   public static final Time kPivotDeployTimeout = Seconds.of(2.0); // TODO(bringup)
 
   /** Pivot current limit while retracting the arm back to stowed (driver B). */
-  public static final Current kPivotRetractCurrentLimit = Amps.of(60);
+  public static final Current kPivotRetractCurrentLimit = Amps.of(65);
 
   /** Drop back to the normal limit after this long even if the retract has not arrived. */
   public static final Time kPivotRetractTimeout = Seconds.of(2.0); // TODO(bringup)
@@ -240,7 +240,7 @@ public final class IntakeConstants {
       RotationsPerSecond.of(-40.0); // TODO(bringup)
 
   /** Intake roller smart current limit per motor (intaking). */
-  public static final Current kIntakeRollerCurrentLimit = Amps.of(60);
+  public static final Current kIntakeRollerCurrentLimit = Amps.of(50);
 
   /** Intake roller smart current limit while ejecting (outtake): 7 A above the normal limit. */
   public static final Current kIntakeRollerEjectingCurrentLimit =
