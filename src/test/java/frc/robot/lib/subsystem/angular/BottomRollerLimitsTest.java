@@ -93,7 +93,7 @@ class BottomRollerLimitsTest {
     var config = IndexerConstants.kSparkFlexConfig;
     assertEquals(30, config.getMasterId());
     assertEquals(List.of(8), config.getFollowerIds());
-    assertEquals(50, config.getSmartCurrentLimit().in(Amps));
+    assertEquals(35, config.getSmartCurrentLimit().in(Amps));
     assertEquals(70, config.getSecondaryCurrentLimit().in(Amps));
     assertEquals(3900, config.getMaximumMotorVelocity().in(RPM), 1e-9);
     assertEquals(5.0, config.getMotorRotationsPerOutputRotations(), 1e-12);

@@ -179,10 +179,7 @@ public class RobotContainer {
           intake =
               new Intake(
                   new AngularSubsystem(
-                      // TEMPORARY: pivot motor disabled; see Constants.intakePivotMotorEnabled.
-                      Constants.intakePivotMotorEnabled
-                          ? new AngularIOSparkFlex(IntakeConstants.kPivotSparkFlexConfig)
-                          : new AngularIO() {},
+                      new AngularIOSparkFlex(IntakeConstants.kPivotSparkFlexConfig),
                       IntakeConstants.kPivotSubsystemConfigReal),
                   new AngularSubsystem(
                       new AngularIOSparkFlex(IntakeConstants.kIntakeRollerSparkFlexConfig),

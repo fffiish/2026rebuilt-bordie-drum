@@ -57,12 +57,12 @@ public class RobotSuperstructure {
     return intakeFuel();
   }
 
-  /** Auto deploys once, and teleop also deploys for practice without an autonomous period. */
+  /**
+   * Zeroes the pivot on every enable, then auto deploys once, and teleop also deploys for practice
+   * without an autonomous period. The zero is bound first so it runs before either deploy.
+   */
   public void bindDeploymentTriggers() {
-    // TEMPORARY: automatic intake deploy on enable is disabled. To restore, set this to true
-    // (and remove the @Disabled TEMP markers in IntakeDriverBindingTest).
-    final boolean kAutoDeployOnEnable = false;
-    if (!kAutoDeployOnEnable) return;
+    new Trigger(DriverStation::isEnabled).onTrue(intake.zeroPivot());
     RobotModeTriggers.autonomous().onTrue(deployIntake());
     RobotModeTriggers.teleop().onTrue(deployIntake());
   }

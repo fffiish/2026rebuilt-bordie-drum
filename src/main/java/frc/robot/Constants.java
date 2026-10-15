@@ -37,9 +37,6 @@ public final class Constants {
   // once the cameras' mounting poses are set correctly in the Limelight web UI.
   public static boolean visionHardwareExists = false;
   public static boolean intakeHardwareExists = true;
-  // TEMPORARY: false keeps the intake pivot motor completely idle (blank IO, never commanded).
-  // Set back to true to restore it.
-  public static boolean intakePivotMotorEnabled = false;
   public static boolean indexerHardwareExists = true;
   public static boolean shooterHardwareExists = true;
   // TODO(template): add one flag per mechanism subsystem as you build it, and gate its REAL-branch

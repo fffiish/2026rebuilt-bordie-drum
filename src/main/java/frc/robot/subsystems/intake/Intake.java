@@ -266,6 +266,15 @@ public class Intake extends VirtualSubsystem {
         .ignoringDisable(true);
   }
 
+  /**
+   * Re-zeroes the arm's encoder to the stowed angle, the same reference it assumes at power-on.
+   * Bound to every enable, so the arm must be folded against its hard stop whenever the robot is
+   * enabled. Leaves the resting position alone.
+   */
+  public Command zeroPivot() {
+    return pivot.resetAngle(IntakeConstants.kPivotStowed);
+  }
+
   /** {@link #deploy()}, but only if it has not already happened this match. */
   public Command deployOnce() {
     return Commands.either(Commands.none(), deploy(), this::isDeployed);

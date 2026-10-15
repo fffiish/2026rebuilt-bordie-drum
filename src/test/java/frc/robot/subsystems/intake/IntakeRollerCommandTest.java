@@ -31,6 +31,12 @@ class IntakeRollerCommandTest {
     double requestedAngleRadians = Double.NaN;
     double measuredDegrees = IntakeConstants.kPivotStowed.in(Degrees);
     final List<Double> currentLimits = new ArrayList<>();
+    final List<Double> angleResetsDegrees = new ArrayList<>();
+
+    @Override
+    public void resetAngle(Angle angle) {
+      angleResetsDegrees.add(angle.in(Degrees));
+    }
 
     @Override
     public void setVelocity(AngularVelocity velocity) {

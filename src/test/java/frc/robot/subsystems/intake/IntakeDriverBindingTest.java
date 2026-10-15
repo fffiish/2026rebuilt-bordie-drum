@@ -184,8 +184,27 @@ class IntakeDriverBindingTest {
     }
   }
 
-  // TEMP: auto deploy on enable is disabled in RobotSuperstructure.bindDeploymentTriggers.
-  @org.junit.jupiter.api.Disabled("TEMP: automatic intake deploy on enable disabled")
+  @Test
+  void pivotIsZeroedToStowedOnEveryEnable() {
+    try (var f = new IntakeRollerCommandTest.Fixture()) {
+      DriverStationSim.setEnabled(false);
+      f.tick();
+      f.superstructure.bindDeploymentTriggers();
+      f.pivotIO.angleResetsDegrees.clear();
+      double stowed = IntakeConstants.kPivotStowed.in(Degrees);
+      for (int enable = 1; enable <= 3; enable++) {
+        DriverStationSim.setEnabled(true);
+        f.tick();
+        f.tick();
+        assertEquals(enable, f.pivotIO.angleResetsDegrees.size(), "enable " + enable);
+        assertEquals(stowed, f.pivotIO.angleResetsDegrees.get(enable - 1), 1e-9);
+        DriverStationSim.setEnabled(false);
+        f.tick();
+        assertEquals(enable, f.pivotIO.angleResetsDegrees.size(), "no zero while disabled");
+      }
+    }
+  }
+
   @Test
   void autonomousThenTeleopDeploysOnlyOnceAndPracticeTeleopAlsoDeploys() {
     for (boolean runAuto : new boolean[] {true, false}) {
