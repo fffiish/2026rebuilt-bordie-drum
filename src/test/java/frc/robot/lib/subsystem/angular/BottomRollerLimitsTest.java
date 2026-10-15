@@ -43,14 +43,14 @@ class BottomRollerLimitsTest {
 
   @Test
   void mainDrumVelocityCapMatchesTheNewNormalTarget() {
-    double normalRps = (6.4 / 0.0184) / (2 * Math.PI);
+    double normalRps = 55.358;
     var config = ShooterConstants.kFlywheelSparkFlexConfig;
     assertEquals(39, config.getMasterId());
     assertEquals(List.of(34, 26, 29), config.getFollowerIds());
     assertEquals(normalRps, config.getMaximumMotorVelocity().in(RotationsPerSecond), 1e-9);
     assertEquals(normalRps, ShooterConstants.kFlywheelShooting.in(RotationsPerSecond), 1e-9);
     assertEquals(normalRps, ShooterConstants.kFlywheelShootingFar.in(RotationsPerSecond), 1e-9);
-    assertEquals(1.25 / 0.0184, ShooterConstants.kFlywheelEjecting.in(RadiansPerSecond), 1e-9);
+    assertEquals(10.812, ShooterConstants.kFlywheelEjecting.in(RotationsPerSecond), 1e-9);
     assertEquals(
         normalRps,
         AngularIOSparkFlex.limitMotorVelocity(config, RotationsPerSecond.of(95))

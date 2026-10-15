@@ -32,19 +32,17 @@ public final class ShooterConstants {
   public static final int kFlywheelFollowerIdB = 26; // confirmed: "Shooter #26"
   public static final int kFlywheelFollowerIdC = 29; // confirmed: "Shooter #29"
 
-  // Measured 10-10: holding 242 rad/s took 4.46 V with no balls. Used only to
-  // translate the old voltage presets into provisional speed targets, not as feedforward.
-  public static final double kFlywheelKV = 0.0184;
   // User-provided total rotating inertia about the drum axis: 6.5 lb*in^2.
   // Includes the entire rotating system; 1:1 motor/drum gearing is still assumed.
   public static final MomentOfInertia kFlywheelMOI =
       KilogramSquareMeters.of(6.5 * 0.45359237 * 0.0254 * 0.0254);
-  public static final AngularVelocity kFlywheelIdle = RadiansPerSecond.of(0.0);
-  public static final AngularVelocity kFlywheelShooting = RadiansPerSecond.of(6.4 / kFlywheelKV);
-  public static final AngularVelocity kFlywheelShootingSoft =
-      RadiansPerSecond.of(5.7 / kFlywheelKV);
+  // Speed setpoints. Derived from the old 6.4 / 5.7 / 1.25 V presets at the 10-10 measured
+  // 0.0184 V per rad/s (no balls), so they are provisional until tuned under load.
+  public static final AngularVelocity kFlywheelIdle = RotationsPerSecond.of(0.0);
+  public static final AngularVelocity kFlywheelShooting = RotationsPerSecond.of(55.358);
+  public static final AngularVelocity kFlywheelShootingSoft = RotationsPerSecond.of(49.303);
   public static final AngularVelocity kFlywheelShootingFar = kFlywheelShooting;
-  public static final AngularVelocity kFlywheelEjecting = RadiansPerSecond.of(1.25 / kFlywheelKV);
+  public static final AngularVelocity kFlywheelEjecting = RotationsPerSecond.of(10.812);
   public static final AngularVelocity kFlywheelMaximumSpeed = kFlywheelShooting;
 
   // WPILib bang-bang on the roboRIO sends voltage only; REV velocity PID is unused.

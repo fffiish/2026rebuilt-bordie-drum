@@ -221,8 +221,8 @@ class ShooterDriverBindingTest {
       robot.axis(0.8);
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
       assertEquals(
-          6.4 / 0.0184,
-          robot.shooter.getTargetState().getFlywheelVelocity().in(RadiansPerSecond),
+          55.358,
+          robot.shooter.getTargetState().getFlywheelVelocity().in(RotationsPerSecond),
           1e-9);
       assertEquals(12.0, robot.flywheelIO.requestedVolts, 1e-9);
       assertFalse(robot.shooter.atSpeed().getAsBoolean(), "Flywheel is still stopped");

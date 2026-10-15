@@ -184,6 +184,8 @@ class IntakeDriverBindingTest {
     }
   }
 
+  // TEMP: auto deploy on enable is disabled in RobotSuperstructure.bindDeploymentTriggers.
+  @org.junit.jupiter.api.Disabled("TEMP: automatic intake deploy on enable disabled")
   @Test
   void autonomousThenTeleopDeploysOnlyOnceAndPracticeTeleopAlsoDeploys() {
     for (boolean runAuto : new boolean[] {true, false}) {

@@ -18,11 +18,9 @@ class ShooterBangBangTest {
   @Test
   void presetsMatchPreviousShotsAndHardwareUsesCoastWithoutRampOrVelocityPid() {
     assertEquals(0, ShooterState.kIdle.getFlywheelVelocity().in(RadiansPerSecond));
-    assertEquals(
-        6.4 / 0.0184, ShooterState.kShootingNear.getFlywheelVelocity().in(RadiansPerSecond));
-    assertEquals(
-        5.7 / 0.0184, ShooterState.kShootingSoft.getFlywheelVelocity().in(RadiansPerSecond));
-    assertEquals(1.25 / 0.0184, ShooterState.kEjecting.getFlywheelVelocity().in(RadiansPerSecond));
+    assertEquals(55.358, targetRps(ShooterState.kShootingNear), 1e-9);
+    assertEquals(49.303, targetRps(ShooterState.kShootingSoft), 1e-9);
+    assertEquals(10.812, targetRps(ShooterState.kEjecting), 1e-9);
     assertEquals(targetRps(ShooterState.kShootingNear), targetRps(ShooterState.kShootingFar));
     var config = ShooterConstants.kFlywheelSparkFlexConfig;
     assertEquals(NeutralModeValue.Coast, config.getNeutralMode());
