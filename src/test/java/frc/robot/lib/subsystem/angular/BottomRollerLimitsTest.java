@@ -113,8 +113,8 @@ class BottomRollerLimitsTest {
     var feeder = IntakeConstants.kFeederSparkFlexConfig;
     assertEquals(28, feeder.getMasterId());
     assertEquals(List.of(35), feeder.getFollowerIds());
-    assertEquals(60, feeder.getSmartCurrentLimit().in(Amps));
-    assertEquals(60, feeder.getSecondaryCurrentLimit().in(Amps));
+    assertEquals(40, feeder.getSmartCurrentLimit().in(Amps));
+    assertEquals(70, feeder.getSecondaryCurrentLimit().in(Amps));
     assertTrue(feeder.getKP() > 0);
     assertTrue(feeder.isFollowerOpposed(35));
     assertEquals(35, IntakeConstants.kFeederIntaking.in(RotationsPerSecond), 1e-9);

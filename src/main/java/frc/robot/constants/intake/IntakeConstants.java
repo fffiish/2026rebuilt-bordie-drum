@@ -33,49 +33,49 @@ public final class IntakeConstants {
   /** Deployed — the arm's normal resting position once auto has put it down. */
   public static final Angle kPivotDeployed = Degrees.of(0.0); // TODO(bringup)
 
-  /** Raised out of the way while shooting, 90 degrees up from deployed. */
-  public static final Angle kPivotRaised = kPivotDeployed.plus(Degrees.of(90.0));
+  /** Raised out of the way while shooting; fixed at 90 degrees, independent of deployed. */
+  public static final Angle kPivotRaised = Degrees.of(90.0);
 
-  // ----- agitation: a slow up/down shuffle during a shot, to settle FUEL toward the indexer -----
+  // ----- agitation: a slow up/down sweep during a shot, to settle FUEL toward the indexer -----
 
-  /** Top of the agitation stroke. Deliberately small — this is a shake, not a lift. */
-  public static final Angle kPivotAgitateHigh =
-      kPivotDeployed.plus(Degrees.of(30.0)); // raised from 20 at the driver's request
-
-  /** Bottom of the agitation stroke. */
-  public static final Angle kPivotAgitateLow = kPivotDeployed;
-
-  /** How long the arm dwells at each end of a stroke. "Slowly" per the driver's request. */
-  public static final Time kAgitateDwell = Seconds.of(0.35); // TODO(bringup)
-
-  /** Number of complete up-down cycles before the arm raises to shoot. */
-  public static final int kAgitateCycles = 3; // TODO(bringup)
-
-  // ----- slow raise: replaces the up/down shake during a shot -----
+  /** Top of the agitation sweep; the bottom is {@link #kPivotDeployed}. */
+  public static final Angle kPivotAgitateHigh = Degrees.of(65.0);
 
   /**
-   * How long the arm takes to rise from where it is to raised during a shot. Moving the goal a
+   * How long one stroke takes, resting to {@link #kPivotAgitateHigh} or back. Moving the goal a
    * little each loop keeps the arm slow and steady instead of jerking, so it needs less current.
    */
-  public static final Time kAgitateRaiseTime = Seconds.of(2.5); // TODO(bringup)
+  public static final Time kAgitateStrokeTime = Seconds.of(0.55);
 
   /**
-   * Pivot current limit during the slow raise only; back to {@link #kPivotCurrentLimit} after.
-   * Raise this if the arm stalls partway up with FUEL on it.
+   * Pivot current limit while agitating only; back to {@link #kPivotCurrentLimit} after. Raise this
+   * if the arm stalls partway up with FUEL on it.
    */
-  public static final Current kPivotAgitateCurrentLimit = Amps.of(60);
+  public static final Current kPivotAgitateCurrentLimit = Amps.of(75);
 
   // ----- current limits -----
 
-  /** Pivot current limit for everything except deploying — holding, agitating, raising to shoot. */
+  /** Pivot current limit for everything except deploying — holding, agitating. */
   public static final Current kPivotCurrentLimit = Amps.of(40);
 
   /**
-   * Pivot current limit while deploying (X, auto start, teleop enable). Breaking the hopper and
-   * intake free takes more than ordinary motion. Raised only for the deploy itself, then dropped
-   * back to {@link #kPivotCurrentLimit}.
+   * Pivot current limit while the arm sits at its deployed resting angle with nothing moving it.
+   * The resting target is a little past where the arm physically stops, so at the normal limit the
+   * motor would push into the stop and stall; this keeps it resting lightly on the stop instead.
+   * Applied automatically near deployed, and dropped back to {@link #kPivotCurrentLimit} as soon as
+   * anything else moves the arm. Raise this if the arm sags off the stop when resting.
    */
-  public static final Current kPivotDeployCurrentLimit = Amps.of(65);
+  public static final Current kPivotRestCurrentLimit = Amps.of(10); // TODO(bringup)
+
+  /**
+   * Pivot current limit for the first, automatic deploy only (auto start, teleop enable). Breaking
+   * the hopper and intake free takes more than ordinary motion. Raised only for that deploy, then
+   * dropped back to {@link #kPivotCurrentLimit}; X and everything else use the normal limit.
+   */
+  public static final Current kPivotDeployCurrentLimit = Amps.of(80);
+
+  /** Pivot current limit while deploying with X; same drop back to normal afterwards. */
+  public static final Current kPivotManualDeployCurrentLimit = Amps.of(65);
 
   /** Drop back to the normal limit after this long even if the arm has not reported arriving. */
   public static final Time kPivotDeployTimeout = Seconds.of(2.0); // TODO(bringup)
@@ -168,7 +168,8 @@ public final class IntakeConstants {
       RotationsPerSecond.of(-35.0); // TODO(bringup)
 
   /** Feeder smart current limit per motor, e.g. while feeding a shot. */
-  public static final Current kFeederCurrentLimit = Amps.of(60);
+  public static final Current kFeederCurrentLimit =
+      Amps.of(40); // lowered from 60 A to cut peak draw
 
   /**
    * TEMPORARY: feeder smart current limit while only intaking (not shooting), so feeder plus floor
@@ -185,7 +186,8 @@ public final class IntakeConstants {
           .motorRotationsPerOutputRotations(1.0) // TODO(bringup): real gear ratio
           .outputAnglePerOutputRotation(Rotations.of(1.0))
           .smartCurrentLimit(kFeederCurrentLimit)
-          .secondaryCurrentLimit(Amps.of(60))
+          .secondaryCurrentLimit(
+              Amps.of(70)) // above the smart limit so it regulates before the cutoff
           // 35 hit 150 A and a gate-driver fault 150 ms after starting a shot. Ease in, and let a
           // fault clear itself rather than leaving the floor rollers off until the next disable.
           .rampRateSeconds(0.3)

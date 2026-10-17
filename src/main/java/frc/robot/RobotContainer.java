@@ -353,8 +353,8 @@ public class RobotContainer {
                 -driverController.getRightStickX()
                     * superstructure.getDriveMultiplier(true, driverController.leftBumper)));
 
-    // X deploys the intake arm at the higher deploy current limit, then drops back to the normal
-    // limit once it arrives. This is the deploy path while testing; auto deploys it on its own.
+    // X deploys the intake arm at 65 A, then drops back to the normal limit. The first, automatic
+    // deploy at enable runs at 80 A.
     driverController.buttonX.onTrue(intake.deploy());
     // B folds the arm back to stowed at 60 A, then drops back to the normal limit. X redeploys.
     driverController.buttonB.onTrue(intake.retract());
@@ -368,7 +368,7 @@ public class RobotContainer {
     - Left trigger: intake rollers     - Right trigger: slow-raise arm, shoot
     - Right bumper: outtake rollers    - Left bumper: slow mode
     The arm deploys at the start of auto and stays down; only a shot raises it.
-    - X: deploy intake arm (80 A, then 40 A)
+    - X: deploy intake arm (65 A, then 40 A; the automatic deploy at enable uses 80 A)
     - B: retract intake arm to stowed (60 A, then 40 A)
     - D-pad down: reverse floor rollers + feeder only; balls at the shooter stay for the next shot
     - A + right trigger: lower-speed shot (about 2958 RPM instead of 3322 RPM); A alone does nothing
@@ -388,7 +388,7 @@ public class RobotContainer {
             0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling);
     shootHeld
         .and(driverController.buttonA.negate())
-        .whileTrue(superstructure.shoot()); // slow raise (agitation), shoot at about 3322 RPM
+        .whileTrue(superstructure.shoot()); // agitate arm 0-65 deg, shoot at about 3322 RPM
     shootHeld
         .and(driverController.buttonA)
         .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at about 2958 RPM

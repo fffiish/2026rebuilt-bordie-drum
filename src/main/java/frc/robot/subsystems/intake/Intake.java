@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Seconds;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Time;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,8 +21,8 @@ import org.littletonrobotics.junction.Logger;
  * Pivoting arm plus the floor-pickup rollers and feeder it carries.
  *
  * <p><b>The arm and the rollers are commanded independently.</b> Holding intake runs the rollers
- * without moving the arm; a shot raises the arm without touching the rollers. Each has its own held
- * state and its own requirement token, so the two never interrupt one another.
+ * without moving the arm; a shot agitates the arm without touching the rollers. Each has its own
+ * held state and its own requirement token, so the two never interrupt one another.
  *
  * <p><b>The arm's resting position changes once per match.</b> It boots {@link
  * IntakePivotState#kStowed}, inside the frame. {@link #deploy()} puts it down and makes {@link
@@ -37,6 +38,12 @@ public class Intake extends VirtualSubsystem {
   private final VirtualSubsystem pivotOwner = new VirtualSubsystem();
 
   private final VirtualSubsystem rollerOwner = new VirtualSubsystem();
+
+  /** True while a deploy, retract or agitation owns the pivot's current limit. */
+  private boolean pivotLimitBusy = false;
+
+  /** True while the pivot is on the low rest limit. */
+  private boolean restLimitActive = false;
 
   private IntakePivotState restingPivot = IntakePivotState.kStowed;
   private IntakePivotState heldPivot = null;
@@ -113,33 +120,73 @@ public class Intake extends VirtualSubsystem {
   }
 
   /**
-   * Like {@link #setPivot}, but the arm travels from wherever it is to {@code state} steadily over
-   * {@code duration} instead of at full speed, then holds there. Runs at {@link
-   * IntakeConstants#kPivotAgitateCurrentLimit}; {@code finallyDo} restores the normal limit and
-   * sends the arm back to its resting position on release.
+   * Sweeps the arm up and down between deployed and {@link IntakeConstants#kPivotAgitateHigh} for
+   * as long as it is scheduled, each stroke taking {@code strokeTime}. Starts at deployed, moving
+   * up. Runs at {@link IntakeConstants#kPivotAgitateCurrentLimit}; {@code finallyDo} restores the
+   * normal limit and sends the arm back to its resting position on release.
    */
-  public Command raiseSlowly(IntakePivotState state, Time duration) {
+  public Command agitate(Time strokeTime) {
     Timer timer = new Timer();
-    Angle[] start = new Angle[1];
+    Angle low = IntakeConstants.kPivotDeployed;
+    Angle high = IntakeConstants.kPivotAgitateHigh;
     return Commands.startRun(
             () -> {
-              start[0] = pivot.getAngle();
-              rampedPivotGoal = start[0];
-              heldPivot = state;
+              rampedPivotGoal = low;
+              heldPivot = IntakePivotState.kAgitating;
               timer.restart();
-              pivot.applyCurrentLimit(IntakeConstants.kPivotAgitateCurrentLimit);
+              beginPivotLimit(IntakeConstants.kPivotAgitateCurrentLimit);
             },
             () -> {
-              double fraction = Math.min(1.0, timer.get() / duration.in(Seconds));
-              rampedPivotGoal = start[0].plus(state.getAngle().minus(start[0]).times(fraction));
+              // Triangle wave: 0 -> 1 over one stroke, 1 -> 0 over the next, repeating.
+              double phase = (timer.get() / strokeTime.in(Seconds)) % 2.0;
+              double fraction = phase <= 1.0 ? phase : 2.0 - phase;
+              rampedPivotGoal = low.plus(high.minus(low).times(fraction));
             },
             pivotOwner)
         .finallyDo(
             () -> {
               rampedPivotGoal = null;
               heldPivot = null;
-              pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit);
+              endPivotLimit();
             });
+  }
+
+  /** A command is taking over the pivot's current limit; the automatic rest limit stays out. */
+  private void beginPivotLimit(Current limit) {
+    pivotLimitBusy = true;
+    restLimitActive = false;
+    pivot.applyCurrentLimit(limit);
+  }
+
+  /** The command is done: back to the normal limit, and the rest limit may take over again. */
+  private void endPivotLimit() {
+    pivotLimitBusy = false;
+    restLimitActive = false;
+    pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit);
+  }
+
+  /**
+   * While the arm sits near its deployed resting angle with nothing else moving it, drops the pivot
+   * to {@link IntakeConstants#kPivotRestCurrentLimit} so a target below the physical stop does not
+   * stall the motor. Backs off to the normal limit when the arm leaves (with hysteresis) or any
+   * other pivot move starts.
+   */
+  private void updateRestLimit() {
+    boolean resting =
+        !pivotLimitBusy
+            && heldPivot == null
+            && rampedPivotGoal == null
+            && restingPivot == IntakePivotState.kDeployed;
+    double error =
+        Math.abs(pivot.getAngle().minus(IntakePivotState.kDeployed.getAngle()).in(Degrees));
+    double tolerance = IntakeConstants.kPivotArrivalTolerance.in(Degrees);
+    if (!restLimitActive && resting && error <= tolerance) {
+      restLimitActive = true;
+      pivot.applyCurrentLimit(IntakeConstants.kPivotRestCurrentLimit);
+    } else if (restLimitActive && !(resting && error <= 2.0 * tolerance)) {
+      restLimitActive = false;
+      pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit);
+    }
   }
 
   /** Runs the rollers at {@code state} while scheduled, then stops them. Does not move the arm. */
@@ -172,6 +219,8 @@ public class Intake extends VirtualSubsystem {
 
   @Override
   public void periodic() {
+    updateRestLimit();
+    Logger.recordOutput("Intake/RestLimitActive", restLimitActive);
     Logger.recordOutput("Intake/TargetState", getPivotState().name());
     Logger.recordOutput("Intake/TargetPivotState", getPivotState().name());
     Logger.recordOutput("Intake/TargetRollerState", getRollerState().name());
@@ -208,10 +257,12 @@ public class Intake extends VirtualSubsystem {
   /**
    * Puts the arm down for the match and makes down its resting position.
    *
-   * <p>Deploying runs at {@link IntakeConstants#kPivotDeployCurrentLimit} (80 A), because breaking
-   * the hopper and intake free costs more than ordinary motion. Once the arm arrives — or after
-   * {@link IntakeConstants#kPivotDeployTimeout} — it drops back to {@link
-   * IntakeConstants#kPivotCurrentLimit} (40 A), which is what shooting and agitating run at.
+   * <p>This manual deploy (X) runs at {@link IntakeConstants#kPivotManualDeployCurrentLimit} (65
+   * A). The first, automatic deploy ({@link #deployOnce()}) runs at {@link
+   * IntakeConstants#kPivotDeployCurrentLimit} (80 A). Breaking the hopper and intake free costs
+   * more than ordinary motion. Once the arm arrives — or after {@link
+   * IntakeConstants#kPivotDeployTimeout} — the limit is back at the normal 40 A, which is what
+   * shooting and raising run at.
    *
    * <p>The drop back is in {@code finallyDo}, so it happens even if the deploy is interrupted or
    * the robot is disabled mid-deploy. Without that, an interrupted deploy would leave the pivot at
@@ -221,13 +272,17 @@ public class Intake extends VirtualSubsystem {
    * previous goal for a loop after the target changes, and would read "arrived" instantly.
    */
   public Command deploy() {
+    return deploy(IntakeConstants.kPivotManualDeployCurrentLimit);
+  }
+
+  /** {@link #deploy()} at {@code limit} until the arm arrives or the timeout passes. */
+  private Command deploy(Current limit) {
     return Commands.sequence(
-            Commands.runOnce(
-                () -> pivot.applyCurrentLimit(IntakeConstants.kPivotDeployCurrentLimit)),
+            Commands.runOnce(() -> beginPivotLimit(limit)),
             Commands.runOnce(() -> restingPivot = IntakePivotState.kDeployed),
             Commands.waitUntil(() -> isPivotNear(IntakePivotState.kDeployed))
                 .withTimeout(IntakeConstants.kPivotDeployTimeout))
-        .finallyDo(() -> pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit));
+        .finallyDo(this::endPivotLimit);
   }
 
   /**
@@ -238,12 +293,11 @@ public class Intake extends VirtualSubsystem {
    */
   public Command retract() {
     return Commands.sequence(
-            Commands.runOnce(
-                () -> pivot.applyCurrentLimit(IntakeConstants.kPivotRetractCurrentLimit)),
+            Commands.runOnce(() -> beginPivotLimit(IntakeConstants.kPivotRetractCurrentLimit)),
             Commands.runOnce(() -> restingPivot = IntakePivotState.kStowed),
             Commands.waitUntil(() -> isPivotNear(IntakePivotState.kStowed))
                 .withTimeout(IntakeConstants.kPivotRetractTimeout))
-        .finallyDo(() -> pivot.applyCurrentLimit(IntakeConstants.kPivotCurrentLimit));
+        .finallyDo(this::endPivotLimit);
   }
 
   /**
@@ -254,7 +308,7 @@ public class Intake extends VirtualSubsystem {
    * is at power-on. It assumes folded and zeroes there. If it was actually down, every later
    * command aims from the wrong starting point and drives the arm toward the floor. This re-zeroes
    * the encoder to the deployed angle and makes deployed the resting position, so the arm stays
-   * where it is and agitation, raising and redeploying all work from the right reference.
+   * where it is and raising and redeploying all work from the right reference.
    *
    * <p>Runs while disabled, so it can be pressed before enabling. Press it once, only when the arm
    * really is down.
@@ -267,17 +321,14 @@ public class Intake extends VirtualSubsystem {
   }
 
   /**
-   * Re-zeroes the arm's encoder to the stowed angle, the same reference it assumes at power-on.
-   * Bound to every enable, so the arm must be folded against its hard stop whenever the robot is
-   * enabled. Leaves the resting position alone.
+   * The automatic deploy: only if it has not already happened this match, and the one deploy that
+   * runs at {@link IntakeConstants#kPivotDeployCurrentLimit} (80 A) to break the hopper and intake
+   * free. Everything after, including X, runs at the normal {@link
+   * IntakeConstants#kPivotCurrentLimit}.
    */
-  public Command zeroPivot() {
-    return pivot.resetAngle(IntakeConstants.kPivotStowed);
-  }
-
-  /** {@link #deploy()}, but only if it has not already happened this match. */
   public Command deployOnce() {
-    return Commands.either(Commands.none(), deploy(), this::isDeployed);
+    return Commands.either(
+        Commands.none(), deploy(IntakeConstants.kPivotDeployCurrentLimit), this::isDeployed);
   }
 
   /** True when the measured arm angle is within tolerance of {@code state}. */
@@ -295,6 +346,6 @@ public class Intake extends VirtualSubsystem {
   }
 
   public Angle getTargetPivotAngle() {
-    return getPivotState().getAngle();
+    return rampedPivotGoal != null ? rampedPivotGoal : getPivotState().getAngle();
   }
 }

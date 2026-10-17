@@ -14,14 +14,11 @@ public enum IntakePivotState {
   /** Down, the arm's resting position for the rest of the match once deployed. */
   kDeployed(IntakeConstants.kPivotDeployed),
 
-  /** Raised 90 degrees from deployed and held there while shooting. */
+  /** Raised to 90 degrees and held there. */
   kRaised(IntakeConstants.kPivotRaised),
 
-  /** Top of the agitation stroke during shooting. */
-  kAgitateHigh(IntakeConstants.kPivotAgitateHigh),
-
-  /** Bottom of the agitation stroke during shooting. */
-  kAgitateLow(IntakeConstants.kPivotAgitateLow);
+  /** Sweeping between deployed and the top of the agitation stroke while shooting. */
+  kAgitating(IntakeConstants.kPivotAgitateHigh);
 
   private final Angle angle;
 

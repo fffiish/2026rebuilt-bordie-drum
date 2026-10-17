@@ -57,12 +57,8 @@ public class RobotSuperstructure {
     return intakeFuel();
   }
 
-  /**
-   * Zeroes the pivot on every enable, then auto deploys once, and teleop also deploys for practice
-   * without an autonomous period. The zero is bound first so it runs before either deploy.
-   */
+  /** Auto deploys once, and teleop also deploys for practice without an autonomous period. */
   public void bindDeploymentTriggers() {
-    new Trigger(DriverStation::isEnabled).onTrue(intake.zeroPivot());
     RobotModeTriggers.autonomous().onTrue(deployIntake());
     RobotModeTriggers.teleop().onTrue(deployIntake());
   }
@@ -74,15 +70,17 @@ public class RobotSuperstructure {
   }
 
   /**
-   * The full shot, held for as long as the trigger is. Two things run side by side from the moment
-   * it is pressed:
+   * The full shot, held for as long as the trigger is. These run side by side from the moment it is
+   * pressed:
    *
    * <ul>
    *   <li><b>Spin-up.</b> The flywheel immediately runs under WPILib bang-bang speed control.
-   *   <li><b>The shot.</b> Once all flywheel motors reach 80% of target, the bottom rollers and
-   *       feeder start together. The arm rises slowly to raised over {@link
-   *       IntakeConstants#kAgitateRaiseTime}, settling FUEL toward the indexer, then holds. In
+   *   <li><b>Agitation.</b> Also immediately, the arm sweeps up to {@link
+   *       IntakeConstants#kPivotAgitateHigh} and back down, {@link
+   *       IntakeConstants#kAgitateStrokeTime} per stroke, settling FUEL toward the indexer. In
    *       autonomous the arm is not moved at all.
+   *   <li><b>The shot.</b> Once all flywheel motors reach 80% of target, the bottom rollers and
+   *       feeder start together.
    * </ul>
    *
    * <p>Releasing the trigger cancels both, and because the arm's resting position is down, it
@@ -97,40 +95,17 @@ public class RobotSuperstructure {
     return shooter
         .set(state)
         .alongWith(
+            // Agitation starts the moment the trigger is pressed, not when the flywheel is up to
+            // speed, and does not depend on the arm having been deployed first. Not in autonomous
+            // (the arm stays down while it shoots).
+            Commands.either(
+                Commands.none(),
+                intake.agitate(IntakeConstants.kAgitateStrokeTime),
+                DriverStation::isAutonomous),
             Commands.waitUntil(
                     () -> !Constants.shooterHardwareExists || shooter.atSpeed().getAsBoolean())
-                .andThen(
-                    indexer
-                        .set(IndexerState.kFeeding)
-                        .alongWith(
-                            intake.feedShooter(),
-                            // Old up/down shake, kept for reference:
-                            // Commands.sequence(
-                            //     agitateArm(), intake.setPivot(IntakePivotState.kRaised))
-                            // Agitation is now one slow, steady raise to the shooting position.
-                            // No agitation in autonomous: the arm stays down while it shoots.
-                            Commands.either(
-                                Commands.none(),
-                                intake.raiseSlowly(
-                                    IntakePivotState.kRaised, IntakeConstants.kAgitateRaiseTime),
-                                DriverStation::isAutonomous))));
+                .andThen(indexer.set(IndexerState.kFeeding).alongWith(intake.feedShooter())));
   }
-
-  // Old up/down shake, replaced by Intake#raiseSlowly; kept commented for reference.
-  // /**
-  //  * A slow up/down shuffle of the arm. Built fresh on each call because a WPILib command
-  //  * instance cannot appear in two compositions, so the steps cannot be shared between cycles.
-  //  */
-  // private Command agitateArm() {
-  //   int cycles = IntakeConstants.kAgitateCycles;
-  //   double dwell = IntakeConstants.kAgitateDwell.in(edu.wpi.first.units.Units.Seconds);
-  //   Command[] strokes = new Command[cycles * 2];
-  //   for (int i = 0; i < cycles; i++) {
-  //     strokes[2 * i] = intake.setPivot(IntakePivotState.kAgitateHigh).withTimeout(dwell);
-  //     strokes[2 * i + 1] = intake.setPivot(IntakePivotState.kAgitateLow).withTimeout(dwell);
-  //   }
-  //   return Commands.sequence(strokes);
-  // }
 
   /** Puts the arm down once per match. Safe to call more than once. */
   public Command deployIntake() {

@@ -395,16 +395,15 @@ class ShooterDriverBindingTest {
       assertEquals(IntakeRollerState.kIntaking, robot.intake.getRollerState());
       assertEquals(ShooterState.kShootingNear, robot.shooter.getTargetState());
       assertEquals(12.0, robot.flywheelIO.requestedVolts, 1e-9);
-      assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
+      // Agitation starts on the press, before the flywheel is up to speed.
+      assertEquals(IntakePivotState.kAgitating, robot.intake.getPivotState());
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
       assertEquals(IndexerState.kFeeding, robot.indexer.getTargetState());
       // Feeder (30/8) is held off while the intake rollers (2/37) run, even in a shot.
       assertEquals(0.0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(35, robot.feederIO.requestedRps, 1e-9);
-      // TODO: agitation disabled for the deadline; restore these checks with agitateArm().
-      // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
-      assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
+      assertEquals(IntakePivotState.kAgitating, robot.intake.getPivotState());
       List<IntakePivotState> states = new ArrayList<>();
       states.add(robot.intake.getPivotState());
       for (int i = 0; i < 140; i++) {
@@ -412,17 +411,8 @@ class ShooterDriverBindingTest {
         var state = robot.intake.getPivotState();
         if (states.get(states.size() - 1) != state) states.add(state);
       }
-      // assertEquals(
-      //     List.of(
-      //         IntakePivotState.kAgitateHigh,
-      //         IntakePivotState.kAgitateLow,
-      //         IntakePivotState.kAgitateHigh,
-      //         IntakePivotState.kAgitateLow,
-      //         IntakePivotState.kAgitateHigh,
-      //         IntakePivotState.kAgitateLow,
-      //         IntakePivotState.kRaised),
-      //     states);
-      assertEquals(List.of(IntakePivotState.kRaised), states);
+      // Agitation keeps sweeping for as long as the trigger is held; it never settles elsewhere.
+      assertEquals(List.of(IntakePivotState.kAgitating), states);
       assertEquals(IntakeRollerState.kIntaking, robot.intake.getRollerState());
       assertTrue(robot.pickupIO.requestedRps > 0);
       assertTrue(robot.feederIO.requestedRps > 0);
@@ -435,8 +425,7 @@ class ShooterDriverBindingTest {
       assertEquals(0, robot.pickupIO.requestedRps);
       assertEquals(0, robot.feederIO.requestedRps);
       robot.axis(0.9);
-      // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
-      assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
+      assertEquals(IntakePivotState.kAgitating, robot.intake.getPivotState());
       robot.axis(0);
       assertEquals(IntakePivotState.kDeployed, robot.intake.getPivotState());
     }
@@ -462,18 +451,18 @@ class ShooterDriverBindingTest {
   }
 
   @Test
-  void shootingWithoutDeploymentSpinsFlywheelAndWaitsBeforeMovingArm() {
+  void shootingWithoutDeploymentAgitatesImmediatelyAndFeedsOnceUpToSpeed() {
     try (var robot = new Fixture(true)) {
       assertFalse(robot.intake.isDeployed());
       robot.axis(0.9);
-      assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
+      // Agitation does not wait for the flywheel or for a deploy.
+      assertEquals(IntakePivotState.kAgitating, robot.intake.getPivotState());
       assertEquals(12.0, robot.flywheelIO.requestedVolts, 1e-9);
       assertEquals(0, robot.indexerIO.requestedVolts, 1e-9);
       assertEquals(0, robot.feederIO.requestedRps, 1e-9);
       robot.flywheelIO.measuredRps = 60;
       robot.tick();
-      // assertEquals(IntakePivotState.kAgitateHigh, robot.intake.getPivotState());
-      assertEquals(IntakePivotState.kRaised, robot.intake.getPivotState());
+      assertEquals(IntakePivotState.kAgitating, robot.intake.getPivotState());
       robot.axis(0);
       assertEquals(IntakePivotState.kStowed, robot.intake.getPivotState());
     }

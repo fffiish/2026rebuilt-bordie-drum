@@ -18,7 +18,7 @@ class HardwareMergeConfigurationTest {
     assertEquals(118.0, pivot.getSoftMaxAngle().in(Degrees), 1e-12);
     assertEquals(0.0, pivot.getSoftMinAngle().in(Degrees), 1e-12);
     assertEquals(40.0, pivot.getSmartCurrentLimit().in(Amps), 1e-12);
-    assertEquals(65.0, IntakeConstants.kPivotDeployCurrentLimit.in(Amps), 1e-12);
+    assertEquals(80.0, IntakeConstants.kPivotDeployCurrentLimit.in(Amps), 1e-12);
     assertEquals(120.0, pivot.getSecondaryCurrentLimit().in(Amps), 1e-12);
     assertEquals(2.0, pivot.getKP(), 1e-12);
     assertEquals(0.5, pivot.getKV(), 1e-12);
@@ -27,12 +27,11 @@ class HardwareMergeConfigurationTest {
 
   @Test
   void mergedAgitationStaysWithinCalibratedPivotTravel() {
-    assertEquals(0.0, IntakeConstants.kPivotAgitateLow.in(Degrees), 1e-12);
-    assertEquals(30.0, IntakeConstants.kPivotAgitateHigh.in(Degrees), 1e-12);
+    assertEquals(0.0, IntakeConstants.kPivotDeployed.in(Degrees), 1e-12);
+    assertEquals(65.0, IntakeConstants.kPivotAgitateHigh.in(Degrees), 1e-12);
+    assertEquals(0.55, IntakeConstants.kAgitateStrokeTime.in(Seconds), 1e-12);
     assertEquals(90.0, IntakeConstants.kPivotRaised.in(Degrees), 1e-12);
-    assertTrue(IntakeConstants.kPivotRaised.lt(IntakeConstants.kPivotStowed));
-    assertEquals(3, IntakeConstants.kAgitateCycles);
-    assertEquals(0.35, IntakeConstants.kAgitateDwell.in(Seconds), 1e-12);
+    assertTrue(IntakeConstants.kPivotAgitateHigh.lt(IntakeConstants.kPivotStowed));
     assertEquals(2.0, IntakeConstants.kPivotDeployTimeout.in(Seconds), 1e-12);
     assertEquals(5.0, IntakeConstants.kPivotArrivalTolerance.in(Degrees), 1e-12);
   }

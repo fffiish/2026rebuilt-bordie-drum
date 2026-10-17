@@ -31,12 +31,6 @@ class IntakeRollerCommandTest {
     double requestedAngleRadians = Double.NaN;
     double measuredDegrees = IntakeConstants.kPivotStowed.in(Degrees);
     final List<Double> currentLimits = new ArrayList<>();
-    final List<Double> angleResetsDegrees = new ArrayList<>();
-
-    @Override
-    public void resetAngle(Angle angle) {
-      angleResetsDegrees.add(angle.in(Degrees));
-    }
 
     @Override
     public void setVelocity(AngularVelocity velocity) {
@@ -210,19 +204,19 @@ class IntakeRollerCommandTest {
       var shot = f.intake.feedShooter();
       shot.schedule();
       f.tick();
-      assertEquals(60.0, limits.get(limits.size() - 1), 1e-9);
+      assertEquals(40.0, limits.get(limits.size() - 1), 1e-9);
       shot.cancel();
       assertEquals(20.0, limits.get(limits.size() - 1), 1e-9);
 
       pickup.cancel();
-      assertEquals(60.0, limits.get(limits.size() - 1), 1e-9);
+      assertEquals(40.0, limits.get(limits.size() - 1), 1e-9);
 
       // Ejecting never sees the low feeder limit, and raises the intake rollers by 7 A.
       var rollerLimits = f.pickupIO.currentLimits;
       var eject = f.intake.setRollers(IntakeRollerState.kEjecting);
       eject.schedule();
       f.tick();
-      assertEquals(60.0, limits.get(limits.size() - 1), 1e-9);
+      assertEquals(40.0, limits.get(limits.size() - 1), 1e-9);
       assertEquals(57.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
       eject.cancel();
       assertEquals(50.0, rollerLimits.get(rollerLimits.size() - 1), 1e-9);
@@ -230,36 +224,78 @@ class IntakeRollerCommandTest {
   }
 
   @Test
-  void slowRaiseMovesTheArmGoalSteadilyThenHoldsAndRestoresTheLimit() {
+  void agitationSweepsUpAndDownRepeatedlyThenRestoresTheLimit() {
     try (var f = new Fixture()) {
       f.intake.setPersistentPivot(IntakePivotState.kDeployed).initialize();
       f.pivotIO.measuredDegrees = IntakeConstants.kPivotDeployed.in(Degrees);
       f.tick();
-      var raise = f.intake.raiseSlowly(IntakePivotState.kRaised, Seconds.of(2.0));
-      raise.schedule();
+      var agitate = f.intake.agitate(IntakeConstants.kAgitateStrokeTime);
+      agitate.schedule();
       f.ticks(1);
       assertEquals(
           IntakeConstants.kPivotAgitateCurrentLimit.in(Amps),
           f.pivotIO.currentLimits.get(f.pivotIO.currentLimits.size() - 1),
           1e-9);
 
-      // Halfway through the 2 s raise, the goal is about halfway from deployed (0) to raised (90).
-      f.ticks(49);
+      // Halfway through the 0.55 s up stroke, the goal is about halfway from 0 to 65 degrees.
+      f.ticks(13);
       double halfway = Math.toDegrees(f.pivotIO.requestedAngleRadians);
-      assertTrue(halfway > 35 && halfway < 55, "goal at 1 s was " + halfway);
+      assertTrue(halfway > 28 && halfway < 38, "goal at 0.28 s was " + halfway);
 
-      // After the raise time it holds at raised.
-      f.ticks(75);
-      assertEquals(90.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 1e-6);
+      // At the top after 0.55 s, back at the bottom after 1.1 s, then up again.
+      f.ticks(14);
+      assertEquals(65.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
+      f.ticks(27);
+      assertEquals(0.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
+      f.ticks(28);
+      assertEquals(65.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
 
-      raise.cancel();
-      f.tick();
+      // Back to the normal limit on release, then the low rest limit once resting at deployed.
+      agitate.cancel();
       assertEquals(
           IntakeConstants.kPivotCurrentLimit.in(Amps),
           f.pivotIO.currentLimits.get(f.pivotIO.currentLimits.size() - 1),
           1e-9);
+      f.tick();
+      assertEquals(
+          IntakeConstants.kPivotRestCurrentLimit.in(Amps),
+          f.pivotIO.currentLimits.get(f.pivotIO.currentLimits.size() - 1),
+          1e-9);
       assertEquals(IntakePivotState.kDeployed, f.intake.getPivotState());
       assertEquals(0.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 1e-6);
+    }
+  }
+
+  @Test
+  void restingAtDeployedUsesTheLowRestLimitSoTheMotorDoesNotStall() {
+    try (var f = new Fixture()) {
+      var limits = f.pivotIO.currentLimits;
+      // Stowed: normal limit, no rest limit.
+      f.ticks(2);
+      assertTrue(limits.isEmpty(), "limits while stowed: " + limits);
+
+      // Resting on the stop, a little above the 2 degree target: low rest limit.
+      f.intake.setPersistentPivot(IntakePivotState.kDeployed).initialize();
+      f.pivotIO.measuredDegrees = 3.0;
+      f.tick();
+      assertEquals(List.of(10.0), limits);
+      f.ticks(5);
+      assertEquals(List.of(10.0), limits);
+
+      // Anything else holding the arm backs off to the normal limit.
+      var raised = f.intake.setPivot(IntakePivotState.kRaised);
+      raised.schedule();
+      f.tick();
+      assertEquals(List.of(10.0, 40.0), limits);
+      raised.cancel();
+
+      // Far from deployed (e.g. mid-travel) it stays on the normal limit.
+      f.pivotIO.measuredDegrees = 60.0;
+      f.ticks(2);
+      assertEquals(List.of(10.0, 40.0), limits);
+      f.pivotIO.measuredDegrees = 2.5;
+      f.tick();
+      assertEquals(List.of(10.0, 40.0, 10.0), limits);
     }
   }
 
