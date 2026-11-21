@@ -108,12 +108,12 @@ public class TunerConstants {
   // Front Left
   private static final int kFrontLeftDriveMotorId = 32;
   private static final int kFrontLeftSteerMotorId = 6;
-  private static final int kFrontLeftEncoderId = 9;
+  private static final int kFrontLeftEncoderId = 19;
   private static final Angle kFrontLeftEncoderOffset =
       Rotations.of(-0.496740004624); // straight-position capture, 2026-10-09 UTC
   // All four drive polarities flipped 2026-10-10: the straight-zero capture pointed every wheel
   // toward the shooter, so the whole chassis drove and turned backwards with the intake as front.
-  private static final boolean kFrontLeftDriveMotorInverted = true;
+  private static final boolean kFrontLeftDriveMotorInverted = false; // flipped from true
   private static final boolean kFrontLeftSteerMotorInverted = true;
   private static final boolean kFrontLeftEncoderInverted = false;
 
@@ -127,7 +127,7 @@ public class TunerConstants {
   private static final Angle kFrontRightEncoderOffset =
       Rotations.of(0.000488281250); // straight-position capture, 2026-10-09 UTC
   // This robot's front-right drive motor needs the opposite direction from the side default.
-  private static final boolean kFrontRightDriveMotorInverted = true;
+  private static final boolean kFrontRightDriveMotorInverted = false; // flipped from true
   private static final boolean kFrontRightSteerMotorInverted = true;
   private static final boolean kFrontRightEncoderInverted = false;
 
@@ -137,7 +137,7 @@ public class TunerConstants {
   // Back Left
   private static final int kBackLeftDriveMotorId = 7;
   private static final int kBackLeftSteerMotorId = 52;
-  private static final int kBackLeftEncoderId = 10;
+  private static final int kBackLeftEncoderId = 5;
   private static final Angle kBackLeftEncoderOffset =
       Rotations.of(0.001436121331); // straight-position capture, 2026-10-09 UTC
   // Positive drive follows the calibrated heading. Do not compensate for a 180-degree steering
