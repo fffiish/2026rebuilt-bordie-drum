@@ -7,11 +7,8 @@
 
 package frc.robot;
 
-import static frc.robot.subsystems.vision.VisionConstants.*;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
 import frc.robot.commands.RobotSuperstructure;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.VisionConstants;
 import frc.robot.constants.indexer.IndexerConstants;
 import frc.robot.constants.intake.IntakeConstants;
 import frc.robot.constants.shooter.ShooterConstants;
@@ -55,15 +51,8 @@ import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeDiagnostics;
-import frc.robot.subsystems.shooter.Hood;
-import frc.robot.subsystems.shooter.HoodIO;
-import frc.robot.subsystems.shooter.HoodIOSparkMax;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.ShooterState;
-import frc.robot.subsystems.vision.Vision;
-import frc.robot.subsystems.vision.VisionIO;
-import frc.robot.subsystems.vision.VisionIOLimelight;
-import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
 import java.util.function.BooleanSupplier;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
@@ -74,9 +63,9 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  *
- * <p>TEMPLATE NOTE: this container is stripped down to drive + vision. Every place a new mechanism
- * subsystem needs to be wired in is marked with a {@code TODO(template)} comment. There are four of
- * them, and they must all be filled in for a subsystem to come alive:
+ * <p>TEMPLATE NOTE: drive, intake, indexer and shooter are wired in below. Every place a new
+ * mechanism subsystem needs to be wired in is marked with a {@code TODO(template)} comment. There
+ * are four of them, and they must all be filled in for a subsystem to come alive:
  *
  * <ol>
  *   <li>Declare the field (see {@link #drive})
@@ -89,7 +78,6 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
  * its commands in {@link RobotSuperstructure#registerAutoCommands()}.
  */
 public class RobotContainer {
-  private static final String SHOOT_PRELOAD_AUTO_KEY = "Auto/Shoot Preload";
 
   // Controller
   private final Joysticks driverController = new Joysticks(0);
@@ -101,7 +89,6 @@ public class RobotContainer {
 
   private final Drive drive;
   private final DriveDiagnostics driveDiagnostics;
-  private final Vision vision;
 
   private final Intake intake;
   private final IntakeDiagnostics intakeDiagnostics;
@@ -138,11 +125,6 @@ public class RobotContainer {
    *     needs to behave differently in auto (e.g. an intake that only auto-oscillates in teleop).
    */
   public RobotContainer(BooleanSupplier isAutonomous) {
-    // Vision pose estimates are rejected more aggressively while a mechanism is "aimed" at a
-    // target. With no aiming mechanism in the template this is always false.
-    // TODO(template): replace with e.g. shooter::isTurretAimed once that subsystem exists.
-    BooleanSupplier aimed = () -> false;
-
     switch (Constants.currentMode) {
       case REAL:
         // Real robot, instantiate hardware IO implementations
@@ -162,17 +144,6 @@ public class RobotContainer {
                   new ModuleIO() {},
                   new ModuleIO() {},
                   new ModuleIO() {});
-        }
-
-        if (Constants.visionHardwareExists) {
-          vision =
-              new Vision(
-                  drive::addVisionMeasurement,
-                  aimed,
-                  new VisionIOLimelight(camera0Name, drive::getRotation),
-                  new VisionIOLimelight(camera1Name, drive::getRotation));
-        } else {
-          vision = new Vision(drive::addVisionMeasurement, aimed, new VisionIO() {});
         }
 
         if (Constants.intakeHardwareExists) {
@@ -207,8 +178,7 @@ public class RobotContainer {
               new Shooter(
                   new AngularSubsystem(
                       new AngularIOSparkFlex(ShooterConstants.kFlywheelSparkFlexConfig),
-                      ShooterConstants.kFlywheelSubsystemConfigReal),
-                  new Hood(new HoodIOSparkMax()));
+                      ShooterConstants.kFlywheelSubsystemConfigReal));
         } else {
           shooter = blankShooter();
         }
@@ -223,12 +193,6 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight, currentDrawCalculatorSim),
                 new ModuleIOSim(TunerConstants.BackLeft, currentDrawCalculatorSim),
                 new ModuleIOSim(TunerConstants.BackRight, currentDrawCalculatorSim));
-        vision =
-            new Vision(
-                drive::addVisionMeasurement,
-                aimed,
-                new VisionIOPhotonVisionSim(camera0Name, robotToCamera0, drive::getPose),
-                new VisionIOPhotonVisionSim(camera1Name, robotToCamera1, drive::getPose));
 
         intake =
             new Intake(
@@ -254,8 +218,7 @@ public class RobotContainer {
             new Shooter(
                 new AngularSubsystem(
                     new AngularIOSim(ShooterConstants.kFlywheelSimConfig, currentDrawCalculatorSim),
-                    ShooterConstants.kFlywheelSubsystemConfigSim),
-                new Hood(new HoodIO() {}));
+                    ShooterConstants.kFlywheelSubsystemConfigSim));
         break;
 
       default:
@@ -267,7 +230,6 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
-        vision = new Vision(drive::addVisionMeasurement, aimed, new VisionIO() {});
 
         intake = blankIntake();
         indexer = blankIndexer();
@@ -287,15 +249,13 @@ public class RobotContainer {
             drive::getPose,
             "Measured",
             RobotConstants.kMeasuredStateColor,
-            intake::getMeasuredPivotAngle,
-            shooter::getHoodMeasuredTravel);
+            intake::getMeasuredPivotAngle);
     targetSuperstructureState =
         new SuperstructureVisualizer(
             drive::getPose,
             "Target",
             RobotConstants.kTargetStateColor,
-            intake::getTargetPivotAngle,
-            shooter::getHoodTargetTravel);
+            intake::getTargetPivotAngle);
 
     // TODO(template): register any subsystem that implements AllianceUpdatedObserver, e.g.
     // allianceChecker.registerObservers(shooter, intake);
@@ -354,9 +314,9 @@ public class RobotContainer {
                     * superstructure.getDriveMultiplier(true, driverController.leftBumper)));
 
     // X deploys the intake arm at 65 A, then drops back to the normal limit. The first, automatic
-    // deploy at enable runs at 80 A.
+    // deploy at the start of auto runs at 80 A.
     driverController.buttonX.onTrue(intake.deploy());
-    // B folds the arm back to stowed at 60 A, then drops back to the normal limit. X redeploys.
+    // B folds the arm back to stowed at 65 A, then drops back to the normal limit. X redeploys.
     driverController.buttonB.onTrue(intake.retract());
 
     // The robot assumes the arm is folded at power-on. If it was powered on with the arm down
@@ -365,13 +325,15 @@ public class RobotContainer {
 
     /* DRIVER
     - Left stick: translate            - Right stick: rotate
-    - Left trigger: intake rollers     - Right trigger: slow-raise arm, shoot
+    - Left trigger: intake rollers     - Right trigger: agitate arm (0-75 deg), shoot
     - Right bumper: outtake rollers    - Left bumper: slow mode
-    The arm deploys at the start of auto and stays down; only a shot raises it.
-    - X: deploy intake arm (65 A, then 40 A; the automatic deploy at enable uses 80 A)
-    - B: retract intake arm to stowed (60 A, then 40 A)
+    The arm deploys once at the start of auto and rests down; only a shot agitates it. Teleop
+    never deploys on its own, so with no auto run, press X.
+    - X: deploy intake arm (65 A, then 40 A; the automatic deploy at auto start uses 80 A)
+    - B: retract intake arm to stowed (65 A, then 40 A)
+    - Back: declare the arm is already down (re-zero to deployed); press once, only if it really is
     - D-pad down: reverse floor rollers + feeder only; balls at the shooter stay for the next shot
-    - A + right trigger: lower-speed shot (about 2958 RPM instead of 3322 RPM); A alone does nothing
+    - A + right trigger: lower-speed shot (about 2958 RPM instead of 4080 RPM); A alone does nothing
     - Y: reset field heading (point robot downfield first)
      */
     // Field-centric driving needs a way to say "this way is forward". Point the robot straight
@@ -388,7 +350,7 @@ public class RobotContainer {
             0.2, edu.wpi.first.math.filter.Debouncer.DebounceType.kFalling);
     shootHeld
         .and(driverController.buttonA.negate())
-        .whileTrue(superstructure.shoot()); // agitate arm 0-65 deg, shoot at about 3322 RPM
+        .whileTrue(superstructure.shoot()); // agitate arm 0-75 deg, shoot at about 4080 RPM
     shootHeld
         .and(driverController.buttonA)
         .whileTrue(superstructure.shoot(ShooterState.kShootingSoft)); // same, at about 2958 RPM
@@ -423,19 +385,6 @@ public class RobotContainer {
 
   private void logInit() {
     SmartDashboard.putData("Field", field);
-    // Shows as a toggle in Shuffleboard; setDefaultBoolean keeps a value the drive team already
-    // set.
-    SmartDashboard.setDefaultBoolean(SHOOT_PRELOAD_AUTO_KEY, true);
-
-    Logger.recordOutput(
-        "Poses/AprilTagField", VisionConstants.kAprilTagField.values().toArray(new Pose3d[0]));
-    Logger.recordOutput(
-        "Poses/WeldedAprilTagField",
-        VisionConstants.kWeldedAprilTagField.values().toArray(new Pose3d[0]));
-    Logger.recordOutput(
-        "Poses/AndyMarkAprilTagField",
-        VisionConstants.kAndyMarkAprilTagField.values().toArray(new Pose3d[0]));
-
     Logger.recordOutput("Drive/TrenchDrive/TrenchY", 0.0);
     Logger.recordOutput("Drive/TrenchDrive/YError", 0.0);
   }
@@ -492,14 +441,12 @@ public class RobotContainer {
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
+   * <p>Auto is always on and is only the preload shot; the auto chooser is not consulted.
+   *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Toggle on the dashboard; when off, auto does nothing.
-    if (SmartDashboard.getBoolean(SHOOT_PRELOAD_AUTO_KEY, true)) {
-      return superstructure.shootPreloadAuto();
-    }
-    return Commands.none();
+    return superstructure.shootPreloadAuto();
   }
 
   // -------------------------------------------------------------------------
@@ -524,8 +471,7 @@ public class RobotContainer {
 
   private static Shooter blankShooter() {
     return new Shooter(
-        new AngularSubsystem(new AngularIO() {}, ShooterConstants.kFlywheelSubsystemConfigReal),
-        new Hood(new HoodIO() {}));
+        new AngularSubsystem(new AngularIO() {}, ShooterConstants.kFlywheelSubsystemConfigReal));
   }
 
   /**

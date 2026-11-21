@@ -237,18 +237,18 @@ class IntakeRollerCommandTest {
           f.pivotIO.currentLimits.get(f.pivotIO.currentLimits.size() - 1),
           1e-9);
 
-      // Halfway through the 0.55 s up stroke, the goal is about halfway from 0 to 65 degrees.
+      // Halfway through the 0.55 s up stroke, the goal is about halfway from 0 to 75 degrees.
       f.ticks(13);
       double halfway = Math.toDegrees(f.pivotIO.requestedAngleRadians);
-      assertTrue(halfway > 28 && halfway < 38, "goal at 0.28 s was " + halfway);
+      assertTrue(halfway > 32 && halfway < 44, "goal at 0.28 s was " + halfway);
 
       // At the top after 0.55 s, back at the bottom after 1.1 s, then up again.
       f.ticks(14);
-      assertEquals(65.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
+      assertEquals(75.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
       f.ticks(27);
       assertEquals(0.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
       f.ticks(28);
-      assertEquals(65.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
+      assertEquals(75.0, Math.toDegrees(f.pivotIO.requestedAngleRadians), 3.0);
 
       // Back to the normal limit on release, then the low rest limit once resting at deployed.
       agitate.cancel();

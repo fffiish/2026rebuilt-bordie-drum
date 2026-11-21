@@ -57,10 +57,9 @@ public class RobotSuperstructure {
     return intakeFuel();
   }
 
-  /** Auto deploys once, and teleop also deploys for practice without an autonomous period. */
+  /** The arm deploys once at the start of auto. Teleop never deploys it; use the X button. */
   public void bindDeploymentTriggers() {
     RobotModeTriggers.autonomous().onTrue(deployIntake());
-    RobotModeTriggers.teleop().onTrue(deployIntake());
   }
 
   /** Explicit deployment for enabled Test with the existing diagnostic selection respected. */
@@ -79,7 +78,7 @@ public class RobotSuperstructure {
    *       IntakeConstants#kPivotAgitateHigh} and back down, {@link
    *       IntakeConstants#kAgitateStrokeTime} per stroke, settling FUEL toward the indexer. In
    *       autonomous the arm is not moved at all.
-   *   <li><b>The shot.</b> Once all flywheel motors reach 80% of target, the bottom rollers and
+   *   <li><b>The shot.</b> Once all flywheel motors reach 97% of target, the bottom rollers and
    *       feeder start together.
    * </ul>
    *

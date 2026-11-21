@@ -39,7 +39,7 @@ public final class IntakeConstants {
   // ----- agitation: a slow up/down sweep during a shot, to settle FUEL toward the indexer -----
 
   /** Top of the agitation sweep; the bottom is {@link #kPivotDeployed}. */
-  public static final Angle kPivotAgitateHigh = Degrees.of(65.0);
+  public static final Angle kPivotAgitateHigh = Degrees.of(75.0);
 
   /**
    * How long one stroke takes, resting to {@link #kPivotAgitateHigh} or back. Moving the goal a
@@ -68,9 +68,9 @@ public final class IntakeConstants {
   public static final Current kPivotRestCurrentLimit = Amps.of(10); // TODO(bringup)
 
   /**
-   * Pivot current limit for the first, automatic deploy only (auto start, teleop enable). Breaking
-   * the hopper and intake free takes more than ordinary motion. Raised only for that deploy, then
-   * dropped back to {@link #kPivotCurrentLimit}; X and everything else use the normal limit.
+   * Pivot current limit for the first, automatic deploy only (auto start). Breaking the hopper and
+   * intake free takes more than ordinary motion. Raised only for that deploy, then dropped back to
+   * {@link #kPivotCurrentLimit}; X and everything else use the normal limit.
    */
   public static final Current kPivotDeployCurrentLimit = Amps.of(80);
 
@@ -158,7 +158,10 @@ public final class IntakeConstants {
 
   // ------------------------------------------------- feeder rollers (on the arm)
 
-  /** The Feeder assembly: two motors on the arm that lift FUEL from the intake into the hopper. */
+  /**
+   * The roller floor (named "Feeder" in this code): two motors on the arm that lift FUEL from the
+   * intake into the hopper. Not the 30/8 feeder, which is {@code IndexerConstants}.
+   */
   public static final int kFeederMasterId = 28; // confirmed: "Feeder #28"
 
   public static final int kFeederFollowerId = 35; // confirmed: "Feeder #35"
@@ -207,7 +210,7 @@ public final class IntakeConstants {
           .supplyCurrentLimit(Amps.of(60))
           .statorCurrentLimit(Amps.of(60))
           .kV(0.12) // TODO(bringup)
-          // Sim-only starting profile: 10 seconds to the unverified 50 rps goal.
+          // Sim-only starting profile: 7 seconds to the unverified 35 rps goal.
           .acceleration(RotationsPerSecondPerSecond.of(5.0))
           .build();
 
@@ -217,7 +220,7 @@ public final class IntakeConstants {
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
           .kP(0.01 / 12.0)
-          .kV(0.12 / (2.0 * Math.PI)) // 6 V feedforward at the 50 rps target
+          .kV(0.12 / (2.0 * Math.PI)) // 4.2 V feedforward at the 35 rps target
           .build(); // TODO(bringup): tune kS/kV/kP against the real rollers
 
   public static final AngularSubsystemConfig kFeederSubsystemConfigSim =
@@ -280,7 +283,7 @@ public final class IntakeConstants {
           .logKey("IntakeRollers")
           .bus(RobotConstants.kRioBus)
           .velocityTolerance(RotationsPerSecond.of(5.0))
-          .kV(0.12 / (2.0 * Math.PI)) // 6 V feedforward at the 50 rps target
+          .kV(0.12 / (2.0 * Math.PI)) // 4.8 V feedforward at the 40 rps target
           .build(); // TODO(bringup): tune kS/kV/kP
 
   public static final AngularSubsystemConfig kIntakeRollerSubsystemConfigSim =

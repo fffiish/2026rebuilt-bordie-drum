@@ -287,7 +287,7 @@ public class Intake extends VirtualSubsystem {
 
   /**
    * Folds the arm back to stowed and makes stowed its resting position, the reverse of {@link
-   * #deploy()}. Runs at {@link IntakeConstants#kPivotRetractCurrentLimit} (60 A) until the arm
+   * #deploy()}. Runs at {@link IntakeConstants#kPivotRetractCurrentLimit} (65 A) until the arm
    * arrives or {@link IntakeConstants#kPivotRetractTimeout} passes, then drops back to {@link
    * IntakeConstants#kPivotCurrentLimit}; {@code finallyDo} covers interruption. X deploys it again.
    */

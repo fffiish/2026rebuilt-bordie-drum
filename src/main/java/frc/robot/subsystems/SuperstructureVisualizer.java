@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.Constants;
 import frc.robot.lib.subsystem.VirtualSubsystem;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d;
@@ -23,16 +22,16 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanismRoot2d;
  *
  * <p>Two of these get built in {@link frc.robot.RobotContainer}: one fed by each mechanism's
  * <em>measured</em> state, one by its <em>target</em> state, in different colours. Overlaid in
- * AdvantageScope, the gap between them <em>is</em> the tracking error — a lagging arm, an
- * overshooting hood, a mechanism that never arrives. Reading that off a picture is far faster than
- * reading it off a number, which is why this is the main tool during the tuning pass.
+ * AdvantageScope, the gap between them <em>is</em> the tracking error — a lagging arm, an mechanism
+ * that never arrives. Reading that off a picture is far faster than reading it off a number, which
+ * is why this is the main tool during the tuning pass.
  *
  * <p>Extends {@link VirtualSubsystem}, not {@code SubsystemBase}: it owns no hardware and must
  * never take part in command requirements, but still needs a {@link #periodic()} every loop.
  *
  * <p><b>The geometry below is placeholder.</b> It is cosmetic — wrong numbers make a wrong-looking
  * picture, not a wrong robot — but the picture is only useful if it resembles the machine. Measure
- * the five {@code TODO(bringup)} values in CAD and the drawing becomes accurate.
+ * the {@code TODO(bringup)} values in CAD and the drawing becomes accurate.
  */
 public class SuperstructureVisualizer extends VirtualSubsystem {
   private static final double PADDING = 22.0; // in, so mechanisms outside the frame stay visible
@@ -57,13 +56,6 @@ public class SuperstructureVisualizer extends VirtualSubsystem {
 
   /** Pivot axis to the far end of the intake rollers. */
   private static final double ARM_LENGTH = 14.0; // pivot shaft to roller shaft
-
-  /** Hood pivot axis. */
-  private static final double HOOD_PIVOT_BEHIND_FRONT = 19.94; // measured in CAD (19 15/16")
-
-  private static final double HOOD_PIVOT_ABOVE_FLOOR = 25.25; // measured in CAD
-
-  private static final double HOOD_LENGTH = 10.0;
 
   /** Height of the drawn frame rail above the floor — cosmetic only. */
   private static final double FRAME_RAIL_ABOVE_FLOOR = 2.0;
@@ -90,29 +82,15 @@ public class SuperstructureVisualizer extends VirtualSubsystem {
                       -1.0,
                       1.0)));
 
-  /**
-   * Hood angle with the actuators extended — its resting, outward position. Absolute value still
-   * unmeasured; a protractor against the hood surface once it is mounted gives it.
-   */
-  private static final double HOOD_FAR_DEG = 20.0; // TODO(bringup): measure absolute angle
-
-  /** Pulling the actuators in tilts the hood this much further inward. Confirmed by mech. */
-  private static final double HOOD_TRAVEL_DEG = 6.0;
-
-  /** Hood angle with the actuators pulled in. */
-  private static final double HOOD_NEAR_DEG = HOOD_FAR_DEG - HOOD_TRAVEL_DEG;
-
   private final LoggedMechanism2d mechanism =
       new LoggedMechanism2d(
           Inches.of(PADDING + FRAME_WIDTH + PADDING).in(Meters),
           Inches.of(CANVAS_HEIGHT).in(Meters));
 
   private final LoggedMechanismLigament2d arm;
-  private final LoggedMechanismLigament2d hood;
 
   private final Supplier<Pose2d> robotPose;
   private final Supplier<Angle> armAngle;
-  private final DoubleSupplier hoodTravel;
   private final String logKey;
 
   /**
@@ -120,18 +98,12 @@ public class SuperstructureVisualizer extends VirtualSubsystem {
    * @param logKey "Measured" or "Target"
    * @param mechColor colour for every ligament in this instance
    * @param armAngle intake pivot angle — measured or target, depending on the instance
-   * @param hoodTravel hood travel, 0.0 retracted to 1.0 extended
    */
   public SuperstructureVisualizer(
-      Supplier<Pose2d> robotPose,
-      String logKey,
-      Color8Bit mechColor,
-      Supplier<Angle> armAngle,
-      DoubleSupplier hoodTravel) {
+      Supplier<Pose2d> robotPose, String logKey, Color8Bit mechColor, Supplier<Angle> armAngle) {
     this.robotPose = robotPose;
     this.logKey = logKey;
     this.armAngle = armAngle;
-    this.hoodTravel = hoodTravel;
 
     // A static outline of the frame, so the moving parts have something to be relative to.
     LoggedMechanismRoot2d frameRoot =
@@ -154,16 +126,6 @@ public class SuperstructureVisualizer extends VirtualSubsystem {
         armRoot.append(
             new LoggedMechanismLigament2d(
                 logKey + "Arm", Inches.of(ARM_LENGTH).in(Meters), 0.0, 6.0, mechColor));
-
-    LoggedMechanismRoot2d hoodRoot =
-        mechanism.getRoot(
-            logKey + "HoodRoot",
-            Inches.of(PADDING + HOOD_PIVOT_BEHIND_FRONT).in(Meters),
-            Inches.of(HOOD_PIVOT_ABOVE_FLOOR).in(Meters));
-    hood =
-        hoodRoot.append(
-            new LoggedMechanismLigament2d(
-                logKey + "Hood", Inches.of(HOOD_LENGTH).in(Meters), HOOD_NEAR_DEG, 6.0, mechColor));
   }
 
   @Override
@@ -174,10 +136,6 @@ public class SuperstructureVisualizer extends VirtualSubsystem {
     }
 
     arm.setAngle(ARM_DRAW_OFFSET_DEG - armAngle.get().in(Degrees));
-
-    // Interpolating means the drawing shows the hood mid-travel, not just at its end points.
-    double travel = MathUtil.clamp(hoodTravel.getAsDouble(), 0.0, 1.0);
-    hood.setAngle(HOOD_NEAR_DEG + travel * (HOOD_FAR_DEG - HOOD_NEAR_DEG));
 
     Logger.recordOutput(String.format("Superstructure/%s", logKey), mechanism);
     Logger.recordOutput(String.format("Superstructure/%sRobotPose", logKey), robotPose.get());

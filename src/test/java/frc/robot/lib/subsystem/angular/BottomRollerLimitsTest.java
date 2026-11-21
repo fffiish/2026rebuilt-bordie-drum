@@ -43,7 +43,7 @@ class BottomRollerLimitsTest {
 
   @Test
   void mainDrumVelocityCapMatchesTheNewNormalTarget() {
-    double normalRps = 55.358;
+    double normalRps = 68.0;
     var config = ShooterConstants.kFlywheelSparkFlexConfig;
     assertEquals(39, config.getMasterId());
     assertEquals(List.of(34, 26, 29), config.getFollowerIds());
@@ -93,7 +93,7 @@ class BottomRollerLimitsTest {
     var config = IndexerConstants.kSparkFlexConfig;
     assertEquals(30, config.getMasterId());
     assertEquals(List.of(8), config.getFollowerIds());
-    assertEquals(35, config.getSmartCurrentLimit().in(Amps));
+    assertEquals(45, config.getSmartCurrentLimit().in(Amps));
     assertEquals(70, config.getSecondaryCurrentLimit().in(Amps));
     assertEquals(3900, config.getMaximumMotorVelocity().in(RPM), 1e-9);
     assertEquals(5.0, config.getMotorRotationsPerOutputRotations(), 1e-12);

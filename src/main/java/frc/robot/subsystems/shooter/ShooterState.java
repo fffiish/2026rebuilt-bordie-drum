@@ -3,43 +3,30 @@ package frc.robot.subsystems.shooter;
 import edu.wpi.first.units.measure.AngularVelocity;
 import frc.robot.constants.shooter.ShooterConstants;
 
-/**
- * Every configuration the shooter can be in: a flywheel velocity target paired with a hood
- * extension.
- *
- * <p>Hood positions are <em>extensions in inches</em>, not launch angles — see {@link
- * ShooterConstants}. Once you have a distance-to-extension interpolating table, add a state that
- * reads from it rather than adding more discrete entries here.
- */
+/** Every configuration the shooter can be in: a flywheel velocity target. */
 public enum ShooterState {
-  /** Everything off, hood stowed. */
-  kIdle(ShooterConstants.kFlywheelIdle, HoodState.kNear),
+  /** Everything off. */
+  kIdle(ShooterConstants.kFlywheelIdle),
 
-  /** Flywheel at speed, hood at the shooting position. */
-  kShootingNear(ShooterConstants.kFlywheelShooting, HoodState.kNear),
+  /** Flywheel at speed. */
+  kShootingNear(ShooterConstants.kFlywheelShooting),
 
-  /** Lower flywheel speed, hood at the shooting position — right trigger while holding A. */
-  kShootingSoft(ShooterConstants.kFlywheelShootingSoft, HoodState.kNear),
+  /** Lower flywheel speed — right trigger while holding A. */
+  kShootingSoft(ShooterConstants.kFlywheelShootingSoft),
 
-  /** Same flywheel speed, hood pulled forward — the long-range preset. */
-  kShootingFar(ShooterConstants.kFlywheelShootingFar, HoodState.kFar),
+  /** Same flywheel speed as {@link #kShootingNear}. */
+  kShootingFar(ShooterConstants.kFlywheelShootingFar),
 
   /** Gentle forward — dump FUEL without launching it across the field. */
-  kEjecting(ShooterConstants.kFlywheelEjecting, HoodState.kNear);
+  kEjecting(ShooterConstants.kFlywheelEjecting);
 
   private final AngularVelocity flywheelVelocity;
-  private final HoodState hoodState;
 
-  ShooterState(AngularVelocity flywheelVelocity, HoodState hoodState) {
+  ShooterState(AngularVelocity flywheelVelocity) {
     this.flywheelVelocity = flywheelVelocity;
-    this.hoodState = hoodState;
   }
 
   public AngularVelocity getFlywheelVelocity() {
     return flywheelVelocity;
-  }
-
-  public HoodState getHoodState() {
-    return hoodState;
   }
 }

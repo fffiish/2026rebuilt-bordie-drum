@@ -200,7 +200,7 @@ class IntakeDriverBindingTest {
   }
 
   @Test
-  void autonomousThenTeleopDeploysOnlyOnceAndPracticeTeleopAlsoDeploys() {
+  void autonomousDeploysOnceAndTeleopNeverDeploysOnItsOwn() {
     for (boolean runAuto : new boolean[] {true, false}) {
       try (var f = new IntakeRollerCommandTest.Fixture()) {
         DriverStationSim.setEnabled(false);
@@ -211,6 +211,11 @@ class IntakeDriverBindingTest {
         DriverStationSim.setEnabled(true);
         f.tick();
         f.tick();
+        if (!runAuto) {
+          assertFalse(f.intake.isDeployed(), "Teleop must not deploy the arm");
+          assertEquals(List.of(), f.pivotIO.currentLimits);
+          continue;
+        }
         assertTrue(f.intake.isDeployed());
         assertEquals(List.of(80.0, 40.0, 10.0), f.pivotIO.currentLimits);
         if (runAuto) {

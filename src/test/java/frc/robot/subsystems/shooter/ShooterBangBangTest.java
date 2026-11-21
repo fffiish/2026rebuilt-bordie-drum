@@ -18,7 +18,7 @@ class ShooterBangBangTest {
   @Test
   void presetsMatchPreviousShotsAndHardwareUsesCoastWithoutRampOrVelocityPid() {
     assertEquals(0, ShooterState.kIdle.getFlywheelVelocity().in(RadiansPerSecond));
-    assertEquals(55.358, targetRps(ShooterState.kShootingNear), 1e-9);
+    assertEquals(68.0, targetRps(ShooterState.kShootingNear), 1e-9);
     assertEquals(49.303, targetRps(ShooterState.kShootingSoft), 1e-9);
     assertEquals(10.812, targetRps(ShooterState.kEjecting), 1e-9);
     assertEquals(targetRps(ShooterState.kShootingNear), targetRps(ShooterState.kShootingFar));
@@ -62,9 +62,12 @@ class ShooterBangBangTest {
   }
 
   @Test
-  void readinessStartsAtEightyPercentAndRejectsOneSlowFollower() {
+  void readinessStartsAtNinetySevenPercentAndRejectsOneSlowFollower() {
     try (var f = new ShooterDriverBindingTest.Fixture(false)) {
-      double floor = targetRps(ShooterState.kShootingNear) * 0.8;
+      // targetRps round-trips through rad/s and comes back one ULP low (59.99999999999999), so a
+      // floor computed from it lands just under the real 97% line. The margin keeps "at the floor"
+      // on the passing side; the 0.001 rps misses below stay far outside it.
+      double floor = targetRps(ShooterState.kShootingNear) * 0.97 + 1e-9;
       f.axis(0.9);
       f.flywheelIO.measuredRps = floor - 0.001;
       f.advanceTicks(1);
@@ -198,7 +201,7 @@ class ShooterBangBangTest {
             f.advanceTicks(1);
             spinupTicks++;
           }
-          assertTrue(f.shooter.atSpeed().getAsBoolean(), "Reach 80% within 2 seconds");
+          assertTrue(f.shooter.atSpeed().getAsBoolean(), "Reach 97% within 2 seconds");
           // Allow the remainder of the two-second startup window before measuring stability.
           f.advanceTicks(100 - spinupTicks);
           double min = Double.POSITIVE_INFINITY;

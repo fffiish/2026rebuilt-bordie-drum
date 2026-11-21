@@ -15,6 +15,8 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
@@ -47,7 +49,6 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.lib.ShuffleboardNumbers;
 import frc.robot.lib.command.CachedTrigger;
-import frc.robot.subsystems.vision.VisionConstants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -66,6 +67,10 @@ public class Drive extends SubsystemBase {
           Math.max(
               Math.hypot(TunerConstants.BackLeft.LocationX, TunerConstants.BackLeft.LocationY),
               Math.hypot(TunerConstants.BackRight.LocationX, TunerConstants.BackRight.LocationY)));
+
+  // Field bounds for the out-of-field pose check in periodic()
+  private static final AprilTagFieldLayout FIELD_LAYOUT =
+      AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
   // PathPlanner config constants
   // TODO(bringup): placeholders. These feed PathPlanner's RobotConfig, so every auto path is
@@ -273,8 +278,8 @@ public class Drive extends SubsystemBase {
     Pose2d newEstimate = poseEstimator.getEstimatedPosition();
     if (newEstimate.getX() < -0.4
         || newEstimate.getY() < -0.4
-        || newEstimate.getX() > (VisionConstants.aprilTagLayout.getFieldLength() + 0.4)
-        || newEstimate.getY() > (VisionConstants.aprilTagLayout.getFieldWidth() + 0.4)
+        || newEstimate.getX() > (FIELD_LAYOUT.getFieldLength() + 0.4)
+        || newEstimate.getY() > (FIELD_LAYOUT.getFieldWidth() + 0.4)
         || !haveCAN.getAsBoolean()) {
       setPose(prev);
     }

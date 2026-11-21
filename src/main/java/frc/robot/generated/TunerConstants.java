@@ -31,7 +31,7 @@ public class TunerConstants {
 
   // Drive motor smart current limit (all four modules), also the slip current PathPlanner uses.
   // This needs to be tuned to your individual robot
-  private static final Current kSlipCurrent = Amps.of(47);
+  private static final Current kSlipCurrent = Amps.of(43);
 
   // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
   // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
@@ -108,12 +108,12 @@ public class TunerConstants {
   // Front Left
   private static final int kFrontLeftDriveMotorId = 32;
   private static final int kFrontLeftSteerMotorId = 6;
-  private static final int kFrontLeftEncoderId = 20;
+  private static final int kFrontLeftEncoderId = 9;
   private static final Angle kFrontLeftEncoderOffset =
       Rotations.of(-0.496740004624); // straight-position capture, 2026-10-09 UTC
   // All four drive polarities flipped 2026-10-10: the straight-zero capture pointed every wheel
   // toward the shooter, so the whole chassis drove and turned backwards with the intake as front.
-  private static final boolean kFrontLeftDriveMotorInverted = false;
+  private static final boolean kFrontLeftDriveMotorInverted = true;
   private static final boolean kFrontLeftSteerMotorInverted = true;
   private static final boolean kFrontLeftEncoderInverted = false;
 

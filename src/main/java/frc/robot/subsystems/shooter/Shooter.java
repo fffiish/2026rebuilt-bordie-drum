@@ -15,31 +15,22 @@ import frc.robot.lib.subsystem.VirtualSubsystem;
 import frc.robot.lib.subsystem.angular.AngularSubsystem;
 import org.littletonrobotics.junction.Logger;
 
-/**
- * Four-motor flywheel plus a linear-actuator hood.
- *
- * <p>The hood is a two-position actuator pair, not a continuously variable surface, so range within
- * a hood position comes from flywheel RPM.
- */
+/** Four-motor flywheel. Range comes from flywheel RPM. */
 public class Shooter extends VirtualSubsystem {
   private static final ShooterState kDefaultState = ShooterState.kIdle;
 
   private final AngularSubsystem flywheel;
-  private final Hood hood;
   private final BangBangController controller = new BangBangController();
   private double bangBangOutput;
   private double requestedVolts;
 
   private ShooterState targetState = kDefaultState;
 
-  public Shooter(AngularSubsystem flywheel, Hood hood) {
+  public Shooter(AngularSubsystem flywheel) {
     this.flywheel = flywheel;
-    this.hood = hood;
 
     flywheel.setDefaultCommand(
         flywheel.openLoop(this::calculateFlywheelVoltage).finallyDo(() -> stopFlywheel()));
-    // The hood is a two-position actuator with no feedback, so it is pushed rather than tracked.
-    hood.setDefaultCommand(hood.run(() -> hood.setState(targetState.getHoodState())));
   }
 
   /** Holds {@code state} while scheduled, then falls back to idle. Bind with {@code whileTrue}. */
@@ -65,7 +56,6 @@ public class Shooter extends VirtualSubsystem {
   public void stopImmediately() {
     targetState = kDefaultState;
     stopFlywheel();
-    hood.stopImmediately();
   }
 
   private boolean feedbackHealthy() {
@@ -102,7 +92,7 @@ public class Shooter extends VirtualSubsystem {
     Logger.recordOutput("Shooter/FeedbackHealthy", feedbackHealthy());
   }
 
-  /** Every connected motor must reach 80% of target before feeding starts. */
+  /** Every connected motor must reach 97% of target before feeding starts. */
   public Trigger atSpeed() {
     return new Trigger(
         () -> {
@@ -122,30 +112,8 @@ public class Shooter extends VirtualSubsystem {
     Logger.recordOutput("Shooter/ReadyToFire", readyToFire().getAsBoolean());
   }
 
-  /**
-   * Hood is believed to have reached its commanded position. Timer-based, not measured — see {@link
-   * Hood}.
-   */
-  public Trigger hoodAtTarget() {
-    return hood.atPosition();
-  }
-
-  /** Both the flywheel and the hood are where the current state asks them to be. */
+  /** The flywheel is where the current state asks it to be. */
   public Trigger readyToFire() {
-    return atSpeed().and(hoodAtTarget());
-  }
-
-  public HoodState getHoodState() {
-    return hood.getTargetState();
-  }
-
-  /** Measured hood travel, 0.0 retracted to 1.0 extended. Zero if the potentiometer is absent. */
-  public double getHoodMeasuredTravel() {
-    return hood.getPositionNormalized();
-  }
-
-  /** Where the current state wants the hood: 0.0 retracted, 1.0 extended. */
-  public double getHoodTargetTravel() {
-    return targetState.getHoodState().isExtended() ? 1.0 : 0.0;
+    return atSpeed();
   }
 }

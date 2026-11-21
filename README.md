@@ -1,6 +1,6 @@
 # Robot2026 Template
 
-A working FRC 2026 robot project with **everything except the mechanisms**. Swerve drive, vision,
+A working FRC 2026 robot project with **everything except the mechanisms**. Swerve drive,
 logging, simulation, and the team's subsystem library are all here and running. Your job is to build
 the mechanism subsystems on top.
 
@@ -35,9 +35,7 @@ subsystem inputs, and every `Logger.recordOutput` call show up as live fields.
 | --- | --- | --- |
 | Subsystem library | `lib/subsystem/` | **Done. Read this first.** |
 | Swerve drive | `subsystems/drive/` | Done — real, sim, and replay IO |
-| Vision | `subsystems/vision/` | Done — Limelight + PhotonVision sim, 4 cameras |
 | Logging / replay | `Robot.java` | Done — AdvantageKit receivers wired for all 3 modes |
-| Field constants | `constants/VisionConstants.java` | Done — 2026 AprilTag layouts |
 | Drive commands | `commands/DriveCommands.java` | Done — joystick drive, trench align, SysId |
 | Mechanism subsystems | `subsystems/` | **Empty. This is your work.** |
 | Autos | `deploy/pathplanner/` | **Empty.** Paths were stripped; draw new ones. |
@@ -117,8 +115,6 @@ constructor, which is how you run the rest of the robot on a half-built chassis.
   non-standard axis mapping (`kLeftX=0, kLeftY=1, kRightX=2, kRightY=3, kRightTrigger=4,
   kLeftTrigger=5`) because the sim GUI enumerates them differently. If a stick does the wrong thing
   in sim but is fine on the robot, that's why.
-- **`Vision.periodic()` runs ~27ms in sim** and will trigger loop-overrun warnings. That's the
-  PhotonVision sim doing camera raycasts, not your code. It does not happen on the real robot.
 - **`AutoBuilder.buildAutoChooser()` reads the deploy directory at construction time.** Every name
   an `.auto` file references must already be registered by `registerAutoCommands()`, which is why
   that call comes first in `RobotContainer`'s constructor.

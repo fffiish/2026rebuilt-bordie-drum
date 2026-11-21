@@ -48,7 +48,7 @@ public final class IndexerConstants {
   // battery has, so it runs at the full 12 V (~21.5 roller rps free). Under load the 5x torque
   // holds speed better than 36/22 did, so the loaded gap should be smaller.
   public static final Voltage kFeedingVoltage = Volts.of(12.0);
-  public static final Voltage kIntakingVoltage = Volts.of(11.7);
+  public static final Voltage kIntakingVoltage = Volts.of(12.0);
   public static final Voltage kUnjammingVoltage = Volts.of(-11.7);
 
   // Baselines from the 10-10 shooter captures: 0.0175 V per motor rad/s matches the measured
@@ -70,11 +70,11 @@ public final class IndexerConstants {
           // Smart limit must sit below the secondary. The secondary is a hard cutoff that briefly
           // kills output; with it at 60 A under an 80 A smart limit, a loaded indexer tripped the
           // cutoff before the smart limit ever regulated, and 36/22 stopped mid-run.
-          // Smart limit lowered 15 A from 50 to 35 A (secondary stays 70 A). Through the 5:1
-          // reduction, 50 A gave the roller about 5x the jam torque
-          // 36/22 had at the same current.
-          // TODO(bringup): near 12 V a stall wants far more than 50 A; watch for cutoff trips.
-          .smartCurrentLimit(Amps.of(35))
+          // Smart limit is 45 A (secondary stays 70 A); it was 35 A, then 42 A, then 50 A, and 45 A
+          // is the current choice. Through the 5:1 reduction, 45 A gives the roller about 5x the
+          // jam torque 36/22 had at the same current.
+          // TODO(bringup): near 12 V a stall wants far more than 45 A; watch for cutoff trips.
+          .smartCurrentLimit(Amps.of(45))
           .secondaryCurrentLimit(Amps.of(70))
           .rampRateSeconds(0.3) // output rises over 0.3 s, not in one step
           .recoverWhileEnabled(true) // a fault must not stop the feeders until the next disable
