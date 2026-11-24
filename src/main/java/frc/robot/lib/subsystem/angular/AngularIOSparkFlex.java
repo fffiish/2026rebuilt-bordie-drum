@@ -67,6 +67,9 @@ public class AngularIOSparkFlex implements AngularIO {
   private final AngularConfigurationState configurationState = new AngularConfigurationState();
   private boolean startupConfigurationHealthy;
   private boolean skipStartupResetOnce;
+  // Every controller answered last cycle. A reconfigure against a missing controller waits out a
+  // CAN timeout on every parameter and stalls the whole robot loop, so it is skipped until then.
+  private boolean telemetryHealthy = true;
   private double outputLimit = 1.0;
   private Voltage requestedVolts = Volts.of(0);
   private final AngularIOInputs verifiedConfiguration = new AngularIOInputs();
@@ -378,6 +381,7 @@ public class AngularIOSparkFlex implements AngularIO {
       configurationState.invalidateController(
           "Controller reset, fault, brownout or unhealthy telemetry: reconfigure disabled and confirm physical reference");
     }
+    telemetryHealthy = healthy;
     if (healthy && !controllerFault) inputs.sampleTimestampSeconds = now;
     inputs.requestedVolts = requestedVolts;
     copyConfigurationInputs(inputs);
@@ -794,6 +798,7 @@ public class AngularIOSparkFlex implements AngularIO {
   }
 
   private void serviceConfiguration() {
+    if (!telemetryHealthy) return;
     configurationState.service(
         DriverStation.isDisabled() || deviceConfig.isRecoverWhileEnabled(),
         Timer.getFPGATimestamp(),
